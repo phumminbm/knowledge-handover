@@ -1,6 +1,6 @@
 # UI redesign: START-HERE and Pack Builder
 
-Status: draft for approval · 2026-11-23
+Status: approved by the owner · 2026-11-23
 
 Mockup: [`2026-11-23-ui-redesign-mockup.html`](2026-11-23-ui-redesign-mockup.html) (open in a browser; desktop home, desktop walk-through, two phone screens).
 
@@ -203,7 +203,7 @@ New optional fields:
 - `SKILL.md` giver mode step 4: one line to propose a view per task.
 - `references/teaching.md`: when teaching from a Pack, follow the task's view (tick through a checklist, go by date for a timeline, ask the branch questions for a decision task, start from the symptom for troubleshooting).
 - `pack-core.js`: `validate()` warns on an unknown view and on a view without the data it needs; `workflow.md` and `PACK-FOR-AI.md` state the view and include `when`.
-- The example Pack sets `view` on its tasks so every view except `decision` and `troubleshoot` appears; e2e tests render all five views from fixtures.
+- The example Pack sets `view` on its two captured tasks (`steps` and `timeline`); the e2e fixture Pack has one task per view, so all five are tested.
 
 ### Search
 
