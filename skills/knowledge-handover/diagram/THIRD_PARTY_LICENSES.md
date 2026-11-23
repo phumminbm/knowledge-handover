@@ -5,7 +5,7 @@
 - **License:** MIT, copyright Cathryn Lavery (see [`LICENSE`](LICENSE))
 - **Upstream:** https://github.com/cathrynlavery/diagram-design
 - **What is bundled:** 11 of the upstream diagram types (architecture, fishbone, flowchart, gantt, journey, sequence, service blueprint, state, swimlane, timeline, tree), their references, templates, icons and the export and check scripts. Copied from upstream 2.x in 2026; the exact commit was not recorded.
-- **Local changes:** `RULES.md` is new and is the entry point for knowledge-handover. The examples, `template.html`, `template-dark.html`, `icons.html`, `style-guide.md` (knowledge-handover skin rules at the top), `semantic-patterns.md`, `type-gantt.md`, `export.md` and `scripts/export_svg.py` were adapted. Compared with upstream commit `e16b8c861b67` on 2026-11-23, the remaining 22 files are identical.
+- **Local changes:** `RULES.md` is new and is the entry point for knowledge-handover. The examples, `template.html`, `template-dark.html`, `icons.html`, `style-guide.md` (knowledge-handover skin rules at the top), `semantic-patterns.md`, `type-gantt.md`, `export.md` and `scripts/export_svg.py` were adapted. The light skin in all templates and examples was recoloured to match START-HERE.html (white paper, near-black ink, neutral grey). Compared with upstream commit `e16b8c861b67` on 2026-11-23, the remaining 22 files are identical.
 
 To update from upstream, compare against the latest upstream `skills/diagram-design/`, keep the local changes listed above, and update the commit noted here.
 

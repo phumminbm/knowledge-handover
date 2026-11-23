@@ -108,7 +108,7 @@ Branches make the walkthrough interactive: a step with `branches` shows one butt
 
 ### Task views
 
-Each task has a `view`: how START-HERE.html lays it out. Pick it from the shape of the work, propose it to the giver in plain words with a one-line reason, offer the others as taps, and set `view_confirmed` when they agree. The receiver can always switch to the step-by-step walk-through.
+Each task has a `view`: how START-HERE.html lays it out. Pick it yourself from the shape of the work and tell the giver in one line what you picked and why; change it only if they object, and set `view_confirmed` only when they say it is right. Do not ask them to choose. The receiver can always switch to the step-by-step walk-through.
 
 | `view` | Fits work like | The receiver sees |
 |---|---|---|

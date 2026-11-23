@@ -17,7 +17,7 @@ The highest-quality move is usually deletion.
 
 ## 2. When to draw
 
-Draw when a reader learns more from a picture than from a paragraph, a table or a numbered list. Do not draw lists of things (use a table) or one-shape "diagrams" (write the sentence). On hosts that cannot render HTML, give numbered steps plus a Mermaid block instead.
+In a Knowledge Pack, draw a diagram for every task with steps, without waiting to be asked; skip it only for a straight run of three steps or fewer. Elsewhere, draw when a reader learns more from a picture than from a paragraph, a table or a numbered list. Do not draw lists of things (use a table) or one-shape "diagrams" (write the sentence). On hosts that cannot render HTML, give numbered steps plus a Mermaid block instead.
 
 ## 3. Pick the type from the shape of the work
 
@@ -94,4 +94,4 @@ Start from `assets/template.html` (minimal), `assets/template-full.html` (with c
 
 A single self-contained `.html` with inline SVG, embedded CSS and fonts, no network requests. Every `<svg>` carries `role="img"` and `aria-labelledby="<slug>-title <slug>-desc"`, with `<title>` first and a one-sentence `<desc>` about the content. Export to PNG/SVG only when asked ([`references/export.md`](references/export.md)).
 
-Inside a Knowledge Pack, store each diagram's `<svg>…</svg>` string in `knowledge.json` (`processes[].diagram_svg`) and keep a Mermaid version plus a plain-text explanation in the process's `workflow.md`, so the knowledge stays readable without rendering.
+Inside a Knowledge Pack, store each diagram's `<svg>…</svg>` string in `knowledge.json` (`processes[].diagram_svg`) when you can write files. On hosts that only give save blocks, leave `diagram_svg` out of the block (a diagram is several thousand characters); START-HERE.html then draws the flow from the steps. Either way, keep a Mermaid version plus a plain-text explanation in the process's `workflow.md`, so the knowledge stays readable without rendering.

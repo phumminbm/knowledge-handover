@@ -56,6 +56,13 @@ test('pack-format.md documents every task view', () => {
   assert.match(doc, /`when`/);
 });
 
+test('example pack has a real diagram that passes validation', () => {
+  const core = require('../../skills/knowledge-handover/scripts/pack-core.js');
+  const k = read('examples/bank-reconciliation/knowledge.json');
+  assert.match(k.processes[0].diagram_svg || '', /^<svg[\s\S]*role="img"[\s\S]*<title id=[\s\S]*<\/svg>$/);
+  assert.deepStrictEqual(core.validate(k, ['P01-S01.png', 'P01-S02.png']).filter((w) => /diagram/.test(w)), []);
+});
+
 test('example pack uses two views', () => {
   const k = read('examples/bank-reconciliation/knowledge.json');
   assert.deepStrictEqual(k.processes.map((p) => p.view), ['steps', 'timeline']);

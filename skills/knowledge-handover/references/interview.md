@@ -57,15 +57,15 @@ Don't silently pick one version. Keep both with their sources, ask the giver whi
 
 ## Show, don't make them write
 
-Whenever the work has a shape, draw it and ask "Is this right?" (`diagram/RULES.md` for choosing the picture). People correct a picture far more easily than they write prose. On text-only hosts, show numbered steps and a short Mermaid block.
+Whenever the work has a shape, draw it without being asked and check the content with "Is this right?" (`diagram/RULES.md` for choosing the picture). People correct a picture far more easily than they write prose. You choose the kind of picture; the giver only checks that what it says is true. On text-only hosts, show numbered steps and a short Mermaid block.
 
 ## Structured fields per step
 
 As you go, fill each step's fields (`references/pack-format.md`): actor, system, inputs, outputs, check, risk, safety. Propose `who_can_do` for each step (human only / AI with human approval / AI alone) based on judgement, risk and access needed. Show the whole task's list and let the giver confirm it in one tap, changing only the exceptions; keep `who_can_do_confirmed` false until they do. For hands-on work, propose "human only" throughout and ask one question instead: could any part (an email, a report, a check of records) be drafted by AI?
 
-## Choosing the task's view
+## Choosing the task's view and drawing it
 
-When a task's steps are captured, propose how the receiver should see it (`view` in `references/pack-format.md`) with a one-line reason, for example "You run this every shift, so I'll show it as a checklist." Offer the other views as taps and record `view_confirmed`. Hands-on and clinical routines usually suit `checklist`; calendar-driven work `timeline` (then ask when each step happens and fill `when`); judgement work `decision`; reactive work `troubleshoot`; screen procedures `steps`.
+When a task's steps are captured, decide yourself how the receiver should see it (`view` in `references/pack-format.md`) and draw its diagram (`diagram/RULES.md`). Do not ask the giver to choose a layout or whether they want a picture; most people don't know what to pick. Tell them in one line what you chose and why, for example "You run this every shift, so I've made it a checklist and drawn the flow below — say if you'd like it differently." Hands-on and clinical routines usually suit `checklist`; calendar-driven work `timeline` (then ask when each step happens and fill `when`); judgement work `decision`; reactive work `troubleshoot`; screen procedures `steps`. Leave `view_confirmed` false unless the giver says the choice is right.
 
 ## Practice scenarios
 
