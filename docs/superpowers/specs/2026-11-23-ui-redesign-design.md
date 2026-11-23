@@ -18,13 +18,14 @@ Today's page serves phase 1 reasonably and phase 2 poorly. The home page is one 
 - A layout that serves both phases: always-visible navigation and search for reference, and a distraction-free step player for learning.
 - A visual system that is monochrome, airy and soft: near-white surfaces, near-black text, pill-shaped buttons, large rounded cards, hairline borders, light-weight large headings, and colour used only as soft decorative gradient "orbs" plus a few small functional marks.
 - Each Pack still looks like its own: the giver's chosen accent colour drives the orbs and the functional marks.
+- Each task is shown in the layout that fits its kind of work (steps, checklist, timeline, decision, troubleshooting), chosen by the AI and confirmed by the giver, inside the same tested template.
 - Works on a phone as well as a desktop.
 - The Pack Builder uses the same system and becomes a clear 1-2-3 flow.
 
 ## Non-goals
 
 - No font change. Poppins and Prompt stay, embedded as today. Only weights and sizes change.
-- No change to `knowledge.json`, the save-block format, or the skill's instructions to the AI, beyond the docs that describe the pages.
+- No breaking change to `knowledge.json` or the save-block format. The only additions are the optional task-view fields below, and the skill text that tells the AI how to choose a view.
 - No dark theme in this round. (Considered and set aside: givers' screenshots are mostly white and glare on dark; offices print. Can be added later as a toggle.)
 - No new runtime dependencies or external requests. Pages stay single self-contained HTML files that work offline.
 - No change to the bundled diagram engine (`diagram/`) in this round. Diagrams keep their current skin and are shown inside a 24px-radius card on the new page. Existing Packs' `diagram_svg` is shown as-is, with no colour remapping.
@@ -173,6 +174,36 @@ Unknown routes fall back to Home.
 - Clicking the screenshot opens it full screen (dialog) with pins, Esc to close.
 - Arrow keys keep working; hint shown only on devices with hover.
 - The current step per task is remembered in `localStorage` for **Continue where you left off**.
+
+### Task views: a layout chosen to fit each task
+
+Added at the owner's request: different kinds of work need different pages. The page stays a fixed, tested template, but each task can be shown in one of five **views**, and the AI picks the view per task from the shape of the work. A view only changes how the same `knowledge.json` data is laid out; no view needs new required fields, so every existing Pack still works.
+
+New optional fields:
+- `processes[].view`: `"steps"` (default) | `"checklist"` | `"timeline"` | `"decision"` | `"troubleshoot"`.
+- `processes[].view_confirmed` (bool): the giver confirmed the view.
+- `steps[].when` (optional text): when this step happens, for example "Day 1", "Before 10:00", "Every Friday". Used by the timeline view.
+
+| View | For work like | Main tab shows | Built from |
+|---|---|---|---|
+| `steps` | software procedures, anything done in order on a screen | the focus-mode walk-through (above) | steps, images, pins, branches |
+| `checklist` | shift handovers, opening/closing routines, maintenance rounds, safety checks | every step on one page as a tick list; safety steps pinned to the top with the safety notice; each item expands to show its image, why and check; ticks kept in this browser with a "Clear ticks" button | steps |
+| `timeline` | month-end close, payroll, anything driven by the calendar or clock | a vertical timeline grouped by `when`, today's group highlighted when `when` is a date; steps without `when` grouped under "Any time" | steps (`when`), handover deadlines for this task |
+| `decision` | approvals, credit and eligibility checks, triage, "it depends" judgement | rules first as "the rules of thumb", then a question-by-question finder that walks only the branch questions and lands on the step to do | rules, steps with branches |
+| `troubleshoot` | on-call, repairs, IT support, anything driven by "what went wrong" | a symptom list with its own filter field; each card shows symptom → likely cause → fix and links to related steps | troubleshooting, steps |
+
+- The tab order follows the view: the view's main page comes first and gets the view's name ("Checklist", "Timeline", "Find what to do", "What's wrong?"). The other tabs (Walk through, Overview, Rules, Troubleshooting, Practice) stay available when their data exists, so a receiver can always fall back to the step-by-step walk-through.
+- Home task cards and the sidebar show a small view label, and the card's primary button names the action ("Open checklist", "See timeline", "Find what to do", "What's wrong?", "Walk me through").
+- `#/task/<id>` with no tab opens the view's main tab. Old Packs have no `view`, so they open the walk-through as before.
+- A view with too little data for it falls back to `steps` and the builder warns (for example `troubleshoot` with no troubleshooting entries, `decision` with no branches or rules).
+
+**How the AI picks the view (skill text).** In giver mode, when a task's steps are captured, the AI proposes a view in plain words with a one-line reason ("This is a routine you run every shift, so I'll show it as a checklist"), with the other views as tappable alternatives, and records `view_confirmed`. Physical and clinical routines lean to `checklist`; calendar-driven work to `timeline`; judgement work to `decision`; reactive work to `troubleshoot`; screen procedures to `steps`. Changes:
+- `references/pack-format.md`: the three fields, the table above in short form.
+- `references/interview.md`: when and how to propose the view, and to ask for `when` on calendar-driven steps.
+- `SKILL.md` giver mode step 4: one line to propose a view per task.
+- `references/teaching.md`: when teaching from a Pack, follow the task's view (tick through a checklist, go by date for a timeline, ask the branch questions for a decision task, start from the symptom for troubleshooting).
+- `pack-core.js`: `validate()` warns on an unknown view and on a view without the data it needs; `workflow.md` and `PACK-FOR-AI.md` state the view and include `when`.
+- The example Pack sets `view` on its tasks so every view except `decision` and `troubleshoot` appears; e2e tests render all five views from fixtures.
 
 ### Search
 
