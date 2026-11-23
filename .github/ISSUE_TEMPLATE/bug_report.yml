@@ -1,0 +1,45 @@
+name: Bug report / แจ้งปัญหา
+description: Something did not work as expected. ใช้งานแล้วไม่เป็นอย่างที่ควร
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please remove passwords, customer data and anything else private before posting. Issues are public.
+        ก่อนส่ง กรุณาลบรหัสผ่าน ข้อมูลลูกค้า และข้อมูลส่วนตัวออกก่อน เพราะ issue เปิดให้ทุกคนเห็น
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where did it happen? / เกิดที่ไหน
+      options:
+        - Interview (giver) / ตอนสัมภาษณ์ผู้ส่งงาน
+        - Teaching (receiver) / ตอนสอนผู้รับงาน
+        - Save block or resuming / save block หรือการทำต่อ
+        - Pack Builder
+        - START-HERE.html
+        - Installing / การติดตั้ง
+        - Other / อื่น ๆ
+    validations:
+      required: true
+  - type: input
+    id: host
+    attributes:
+      label: AI app and plan / ใช้ AI ตัวไหน แพ็กเกจอะไร
+      placeholder: e.g. Claude Free on the web, ChatGPT Team, Claude Code 2.x
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect? / เกิดอะไรขึ้น และควรเป็นอย่างไร
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps or the message you sent / ขั้นตอน หรือข้อความที่พิมพ์
+  - type: input
+    id: version
+    attributes:
+      label: Version / เวอร์ชัน
+      placeholder: e.g. 0.1.0

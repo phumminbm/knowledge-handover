@@ -1,0 +1,15 @@
+name: Idea / ข้อเสนอ
+description: Suggest an improvement. เสนอสิ่งที่อยากให้ปรับหรือเพิ่ม
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do? / อยากทำอะไร
+      description: Describe the handover situation, the job, and who is involved. เล่าสถานการณ์ งาน และคนที่เกี่ยวข้อง
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help? / อะไรจะช่วยได้
