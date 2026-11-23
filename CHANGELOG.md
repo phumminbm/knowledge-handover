@@ -12,6 +12,9 @@ All notable changes to this project are recorded here. The format follows
 - Pages for all urgent items, open questions, glossary and change history.
 
 ### Changed
+- The skill now picks each task's view and draws its diagram on its own, and tells the giver what it chose, instead of asking them to choose.
+- Diagrams use the same monochrome palette as START-HERE.html (white paper, near-black ink, neutral grey).
+- The example Pack includes a flowchart for its main task.
 - New visual system for START-HERE.html and the Pack Builder: white surfaces, near-black text, pill buttons, rounded cards, and soft colour orbs made from the Pack's accent. The accent is darkened automatically when white numbers on it would be hard to read.
 - The Pack Builder shows progress through its three steps.
 

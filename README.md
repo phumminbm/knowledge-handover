@@ -44,7 +44,7 @@ When someone leaves, the handover document is usually written in a rush, misses 
 
 ### Each task gets the layout that fits the work
 
-The AI suggests a layout for every task and the giver confirms it with one tap. The receiver can always switch back to the step-by-step walk-through.
+The AI picks a layout for every task and draws its diagram on its own, then tells the giver what it chose; the giver only speaks up if they want it different. The receiver can always switch back to the step-by-step walk-through.
 
 | Layout | For work like |
 |---|---|

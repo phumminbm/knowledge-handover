@@ -380,6 +380,15 @@ test('overview section labels are labels, not boxes', { skip }, async () => {
   await context.close();
 });
 
+test('the example pack shows its diagram on the overview tab', { skip }, async () => {
+  const { example } = require('./helpers');
+  const { page, errors, context } = await openPack(browser, example(), { hash: '#/task/P01/overview' });
+  assert.match(await page.textContent('.diagram svg title'), /กระทบยอดธนาคาร/);
+  assert.ok((await page.$$('.diagram svg polygon')).length >= 2);
+  assert.deepStrictEqual(errors, []);
+  await context.close();
+});
+
 test('phone walk-through opens the step list from a button', { skip }, async () => {
   const { page, context } = await openPack(browser, fixture(), { hash: '#/task/P01', images: IMAGES, viewport: PHONE });
   assert.strictEqual(await page.isVisible('.rail'), false);
