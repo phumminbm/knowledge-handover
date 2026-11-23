@@ -81,42 +81,70 @@
 </style>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--paper:#f5f5f5;--ink:#2d3142;--muted:#4f5d75;--soft:#5a6580;--rule:rgba(45,49,66,.12);--accent:#bf4520;--tint:rgba(191,69,32,.08);--sans:'Poppins','Prompt',system-ui,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace}
-body{font-family:var(--sans);background:var(--paper);color:var(--ink);padding:2.5rem 1.25rem;line-height:1.6}
-.wrap{max-width:860px;margin:0 auto}
-.eyebrow{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
-h1{font-family:'Prompt','Poppins',sans-serif;font-size:2rem;font-weight:600;line-height:1.2}
-h1 em{font-style:normal;color:var(--accent)}
-.lede{color:var(--muted);margin:.5rem 0 1.5rem}
-.lang{float:right;font-size:.8rem}
-.lang button{border:none;background:none;color:var(--muted);cursor:pointer;font-family:var(--sans);padding:0 .3rem}
-.lang button.on{color:var(--accent);font-weight:600}
-.step{background:#fff;border:1px solid var(--rule);border-radius:6px;padding:1.2rem;margin-bottom:1rem}
-.step h2{font-size:1rem;font-weight:600;margin-bottom:.5rem;display:flex;gap:.6rem;align-items:baseline}
-.step h2 .n{font-family:var(--mono);font-size:.75rem;color:var(--accent)}
-textarea{width:100%;min-height:180px;font-family:var(--mono);font-size:.78rem;border:1px solid var(--rule);border-radius:4px;padding:.6rem;resize:vertical}
-.drop{border:1.5px dashed rgba(45,49,66,.3);border-radius:6px;padding:1.2rem;text-align:center;color:var(--muted);font-size:.88rem;cursor:pointer}
-.drop.over{border-color:var(--accent);background:var(--tint)}
-.row{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;margin-top:.6rem;font-size:.86rem;color:var(--muted)}
-button.act{font-family:var(--sans);font-size:.9rem;padding:.5rem 1rem;border-radius:4px;border:1px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
-button.pri{background:var(--ink);color:#fff}
-button:disabled{opacity:.4;cursor:default}
-.sum{font-size:.86rem;color:var(--muted);margin-top:.6rem}
-.sum b{color:var(--ink)}
-.err{color:#b42318;font-size:.86rem;margin-top:.5rem}
-.warn{font-size:.82rem;color:var(--muted);margin-top:.5rem}
+/* Same system as START-HERE.html: white surfaces, near-black ink, pill controls, colour only in soft orbs. */
+:root{--bg:#fff;--surface:#f6f6f5;--ink:#0b0b0b;--muted:#5f5f5c;--hair:#e6e6e4;--ok:#2f6b3a;--bad:#b42318;--warn-fg:#7a4a00;
+--orb1:#f4a27e;--orb2:#e7dcff;--orb3:#dbeafc;--r-pill:999px;--r-lg:24px;--r-md:16px;--r-sm:12px;
+--sans:'Poppins','Prompt',system-ui,sans-serif;--head:'Prompt','Poppins',system-ui,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.6}
+.page{overflow-x:clip}
+.wrap{max-width:720px;margin:0 auto;padding:2.2rem max(1rem,env(safe-area-inset-right,0px)) 4rem max(1rem,env(safe-area-inset-left,0px))}
+header{position:relative;padding:1.4rem 0 .4rem}
+header>*{position:relative}
+.orb{position:absolute!important;border-radius:50%;filter:blur(42px);pointer-events:none;z-index:0}
+.o1{width:340px;height:340px;right:-150px;top:-180px;background:radial-gradient(circle at 35% 35%,#fff 0%,var(--orb1) 42%,transparent 70%);opacity:.85}
+.o2{width:260px;height:260px;right:120px;top:-150px;background:radial-gradient(circle,var(--orb2),transparent 68%);opacity:.85}
+.o3{width:200px;height:200px;right:20px;top:30px;background:radial-gradient(circle,var(--orb3),transparent 68%);opacity:.7}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.eyebrow{font-size:.76rem;color:var(--muted)}
+.lang{display:inline-flex;gap:2px;padding:3px;border-radius:var(--r-pill);background:var(--surface);font-size:.8rem}
+.lang button{border:0;background:none;border-radius:var(--r-pill);padding:.2rem .75rem;color:var(--muted);cursor:pointer;font-family:var(--sans)}
+.lang button.on{background:var(--bg);color:var(--ink);font-weight:500;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+h1{font-family:var(--head);font-weight:400;font-size:clamp(2rem,3vw + 1rem,2.8rem);line-height:1.12;letter-spacing:-.02em;margin-top:1rem;text-wrap:balance}
+h1 em{font-style:normal}
+.lede{color:var(--muted);margin:.6rem 0 0;max-width:60ch}
+.progress{list-style:none;display:flex;flex-wrap:wrap;gap:.4rem;margin:1.6rem 0 1.2rem}
+.progress li{display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:var(--muted);background:var(--surface);border-radius:var(--r-pill);padding:.3rem .8rem .3rem .35rem}
+.progress .n{width:22px;height:22px;border-radius:50%;background:var(--bg);border:1px solid #cfcfcc;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:600}
+.progress li.done{color:var(--ink)}
+.progress li.done .n{background:var(--ink);border-color:var(--ink);color:#fff}
+.step{border:1px solid var(--hair);border-radius:var(--r-lg);padding:1.3rem 1.4rem;margin-bottom:.9rem;background:var(--bg)}
+.step h2{font-family:var(--head);font-size:1.05rem;font-weight:500;margin-bottom:.7rem;display:flex;gap:.6rem;align-items:center}
+.step h2 .n{flex:none;width:24px;height:24px;border-radius:50%;background:var(--ink);color:#fff;font:600 .74rem var(--sans);display:flex;align-items:center;justify-content:center}
+textarea{width:100%;min-height:180px;font-family:var(--mono);font-size:.78rem;border:1px solid var(--hair);border-radius:var(--r-sm);padding:.75rem .85rem;resize:vertical;background:var(--surface);color:var(--ink)}
+textarea:focus,input:focus-visible,button:focus-visible,.drop:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.drop{border:1.5px dashed #cfcfcc;border-radius:var(--r-md);padding:1.4rem;text-align:center;color:var(--muted);font-size:.88rem;cursor:pointer;background:var(--surface)}
+.drop.over{border-color:var(--ink);background:var(--bg)}
+.row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin-top:.8rem;font-size:.86rem;color:var(--muted)}
+.row label{display:inline-flex;gap:.5rem;align-items:center}
+input[type=color]{width:44px;height:32px;border:1px solid var(--hair);border-radius:var(--r-sm);background:var(--bg);padding:2px;cursor:pointer}
+button.act{font:500 .9rem var(--sans);min-height:44px;padding:.55rem 1.2rem;border-radius:var(--r-pill);border:1px solid var(--hair);background:var(--bg);color:var(--ink);cursor:pointer}
+button.act.pri{background:var(--ink);border-color:var(--ink);color:#fff}
+button:disabled{opacity:.35;cursor:default}
+.sum{font-size:.86rem;color:var(--muted);margin-top:.7rem}
+.sum b{color:var(--ink);font-weight:500}
+.err{color:var(--bad);font-size:.86rem;margin-top:.5rem}
+.warn{font-size:.82rem;color:var(--warn-fg);margin-top:.7rem}
 .warn li{margin-left:1.1rem}
-.imgs{font-size:.8rem;color:var(--muted);margin-top:.5rem}
-.miss{color:var(--accent)}
-.note{font-size:.78rem;color:var(--soft);margin-top:1.5rem}
+.imgs{font-size:.8rem;color:var(--muted);margin-top:.6rem;overflow-wrap:anywhere}
+.miss{color:var(--warn-fg)}
+.note{font-size:.78rem;color:var(--muted);margin-top:1.4rem}
+@media (max-width:600px){.o1{width:240px;height:240px;right:-120px;top:-130px}.o2{width:180px;height:180px;right:40px;top:-110px}.o3{display:none}}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="lang"><button data-l="th">ไทย</button>|<button data-l="en">EN</button></div>
-  <p class="eyebrow">knowledge-handover</p>
-  <h1 data-t="title"></h1>
-  <p class="lede" data-t="lede"></p>
+<div class="page"><div class="wrap">
+  <header>
+    <span class="orb o2" aria-hidden="true"></span><span class="orb o3" aria-hidden="true"></span><span class="orb o1" aria-hidden="true"></span>
+    <div class="topline"><p class="eyebrow">knowledge-handover</p><div class="lang" role="group"><button type="button" data-l="th">ไทย</button><button type="button" data-l="en">EN</button></div></div>
+    <h1 data-t="title"></h1>
+    <p class="lede" data-t="lede"></p>
+  </header>
+
+  <ol class="progress" aria-label="Progress">
+    <li data-step="1"><span class="n">1</span><span data-t="p1"></span></li>
+    <li data-step="2"><span class="n">2</span><span data-t="p2"></span></li>
+    <li data-step="3"><span class="n">3</span><span data-t="p3"></span></li>
+  </ol>
 
   <div class="step">
     <h2><span class="n">1</span><span data-t="s1"></span></h2>
@@ -144,7 +172,7 @@ button:disabled{opacity:.4;cursor:default}
   </div>
 
   <p class="note" data-t="privacy"></p>
-</div>
+</div></div>
 <script>
 /*
  * knowledge-handover pack core.
@@ -728,6 +756,7 @@ button:disabled{opacity:.4;cursor:default}
   var TXT = {
     en: {
       title: 'Build your <em>Knowledge Pack</em>', lede: 'Turn the save block from your AI chat into a pack you can hand over: a START-HERE page, a file any AI can teach from, and your original images in one zip.',
+      p1: 'Paste save block', p2: 'Add images', p3: 'Build',
       s1: 'Paste the latest save block (or several)', s2: 'Add your images (optional)', s3: 'Build',
       drop: 'Drop image files here, or click to choose. Use the file names the AI gave you, e.g. P01-S03.jpg',
       shrink: 'Shrink large photos inside START-HERE.html (originals stay untouched in visuals/)', accent: 'Accent colour',
@@ -737,6 +766,7 @@ button:disabled{opacity:.4;cursor:default}
     },
     th: {
       title: 'สร้าง <em>Knowledge Pack</em>', lede: 'แปลงก้อนเซฟจากแชต AI ให้เป็นไฟล์ส่งต่องาน ได้หน้า START-HERE ไฟล์ที่ AI ใช้สอนได้ และภาพต้นฉบับ รวมใน zip ไฟล์เดียว',
+      p1: 'วาง save block', p2: 'ใส่ภาพ', p3: 'สร้าง Pack',
       s1: 'วางก้อนเซฟล่าสุด (วางหลายก้อนพร้อมกันได้)', s2: 'ใส่ภาพ (ถ้ามี)', s3: 'สร้างไฟล์',
       drop: 'ลากไฟล์ภาพมาวางตรงนี้ หรือคลิกเพื่อเลือก ใช้ชื่อไฟล์ตามที่ AI บอก เช่น P01-S03.jpg',
       shrink: 'ย่อรูปใหญ่ในหน้า START-HERE.html (ภาพต้นฉบับใน visuals/ ไม่ถูกแก้)', accent: 'สีหลัก',
@@ -775,7 +805,7 @@ button:disabled{opacity:.4;cursor:default}
       try {
         var r = KHCore.parseSave(text);
         pack = r.pack;
-        if (pack.accent && /^#[0-9a-f]{6}$/i.test(pack.accent) && !$('accent').dataset.touched) $('accent').value = pack.accent;
+        if (pack.accent && /^#[0-9a-f]{6}$/i.test(pack.accent) && !$('accent').dataset.touched) { $('accent').value = pack.accent; orbs(); }
         $('sum').innerHTML = t.found + ' <b>' + esc(pack.pack_id || '?') + '</b> · ' + t.ver + ' ' + esc(pack.version || 1) + ' · ' +
           (pack.tasks || []).length + ' ' + t.tasks + ' · ' + (pack.processes || []).length + ' ' + t.procs;
       } catch (e) { $('err').textContent = e.message; }
@@ -786,10 +816,27 @@ button:disabled{opacity:.4;cursor:default}
     $('imgs').innerHTML = html;
     ['buildZip', 'buildHtml', 'buildAi'].forEach(function (id) { $(id).disabled = !pack; });
     $('warn').innerHTML = '';
+    builtFor = builtFor === text ? builtFor : null;
+    setDone(1, !!pack);
+    setDone(2, exp.length ? exp.every(function (n) { return images[n]; }) : names.length > 0);
+    setDone(3, !!pack && builtFor === text);
     if (pack) KHCore.validate(pack, names).forEach(function (w) { var li = document.createElement('li'); li.textContent = w; $('warn').appendChild(li); });
   }
+  var builtFor = null;
+  function setDone(n, on) { document.querySelector('.progress [data-step="' + n + '"]').classList.toggle('done', on); }
+  function built() { builtFor = $('save').value.trim(); setDone(3, true); }
+  // Soft orbs in the header follow the chosen accent, as in START-HERE.html.
+  function orbs() {
+    var hx = $('accent').value, rgb = [1, 3, 5].map(function (i) { return parseInt(hx.slice(i, i + 2), 16) / 255; });
+    var mx = Math.max.apply(null, rgb), mn = Math.min.apply(null, rgb), d = mx - mn, h = 0;
+    if (d) { h = mx === rgb[0] ? (rgb[1] - rgb[2]) / d + (rgb[1] < rgb[2] ? 6 : 0) : mx === rgb[1] ? (rgb[2] - rgb[0]) / d + 2 : (rgb[0] - rgb[1]) / d + 4; h *= 60; }
+    var st = document.documentElement.style;
+    st.setProperty('--orb1', 'hsl(' + Math.round(h) + ',85%,72%)');
+    st.setProperty('--orb2', 'hsl(' + Math.round(h + 40) + ',70%,86%)');
+    st.setProperty('--orb3', 'hsl(' + Math.round(h + 300) + ',65%,88%)');
+  }
   $('save').addEventListener('input', refresh);
-  $('accent').addEventListener('input', function () { $('accent').dataset.touched = '1'; });
+  $('accent').addEventListener('input', function () { $('accent').dataset.touched = '1'; orbs(); });
 
   function shrink(file, bytes) {
     return new Promise(function (resolve) {
@@ -839,11 +886,12 @@ button:disabled{opacity:.4;cursor:default}
     document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
   }
   function pick(r, suffix) { return r.files.filter(function (f) { return f.path === r.root + '/' + suffix; })[0]; }
-  $('buildZip').onclick = function () { var r = result(); download(r.zipName, KHCore.zip(r.files), 'application/zip'); };
-  $('buildHtml').onclick = function () { var r = result(); download('START-HERE.html', pick(r, 'START-HERE.html').data, 'text/html'); };
-  $('buildAi').onclick = function () { var r = result(); download('PACK-FOR-AI.md', pick(r, 'PACK-FOR-AI.md').data, 'text/markdown'); };
+  $('buildZip').onclick = function () { var r = result(); download(r.zipName, KHCore.zip(r.files), 'application/zip'); built(); };
+  $('buildHtml').onclick = function () { var r = result(); download('START-HERE.html', pick(r, 'START-HERE.html').data, 'text/html'); built(); };
+  $('buildAi').onclick = function () { var r = result(); download('PACK-FOR-AI.md', pick(r, 'PACK-FOR-AI.md').data, 'text/markdown'); built(); };
 
   applyLang();
+  orbs();
 })();
 </script>
 </body>
