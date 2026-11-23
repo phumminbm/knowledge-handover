@@ -45,7 +45,7 @@ npx playwright install chromium
 2. Set the same version in `.claude-plugin/plugin.json`, `.codex-plugin/plugin.json` and `package.json`.
 3. Merge to `main`, then tag: `git tag v0.2.0 && git push origin v0.2.0`.
 
-The Release workflow checks that the tag matches the version, builds the files, publishes the GitHub Release and updates GitHub Pages.
+The Release workflow checks that the tag matches the version, builds the files and publishes the GitHub Release. GitHub Pages (the Pack Builder and the example Pack) is updated from `main` on every merge.
 
 ## Code of conduct
 
