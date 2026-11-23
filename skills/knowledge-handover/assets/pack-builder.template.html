@@ -104,6 +104,8 @@ button:disabled{opacity:.4;cursor:default}
   var lang = /^th/i.test(navigator.language || '') ? 'th' : 'en';
   var pack = null, images = {}, display = {};
   var $ = function (id) { return document.getElementById(id); };
+  // Everything read from a pasted save block or a dropped file name is untrusted text.
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; }); }
 
   function applyLang() {
     document.documentElement.lang = lang;
@@ -130,14 +132,13 @@ button:disabled{opacity:.4;cursor:default}
         var r = KHCore.parseSave(text);
         pack = r.pack;
         if (pack.accent && /^#[0-9a-f]{6}$/i.test(pack.accent) && !$('accent').dataset.touched) $('accent').value = pack.accent;
-        $('sum').innerHTML = t.found + ' <b>' + (pack.pack_id || '?') + '</b> · ' + t.ver + ' ' + (pack.version || 1) + ' · ' +
+        $('sum').innerHTML = t.found + ' <b>' + esc(pack.pack_id || '?') + '</b> · ' + t.ver + ' ' + esc(pack.version || 1) + ' · ' +
           (pack.tasks || []).length + ' ' + t.tasks + ' · ' + (pack.processes || []).length + ' ' + t.procs;
       } catch (e) { $('err').textContent = e.message; }
     }
     var exp = expected(), names = Object.keys(images);
-    var html = names.length ? names.length + ' ' + t.added + ': ' + names.join(', ') : t.none;
-    var miss = exp.filter(function (n) { return !images[n]; });
-    if (exp.length) html += '<br>' + t.needImgs + ': ' + exp.map(function (n) { return images[n] ? n : '<span class="miss">' + n + ' (' + t.missing + ')</span>'; }).join(', ');
+    var html = names.length ? names.length + ' ' + t.added + ': ' + names.map(esc).join(', ') : t.none;
+    if (exp.length) html += '<br>' + t.needImgs + ': ' + exp.map(function (n) { return images[n] ? esc(n) : '<span class="miss">' + esc(n) + ' (' + t.missing + ')</span>'; }).join(', ');
     $('imgs').innerHTML = html;
     ['buildZip', 'buildHtml', 'buildAi'].forEach(function (id) { $(id).disabled = !pack; });
     $('warn').innerHTML = '';

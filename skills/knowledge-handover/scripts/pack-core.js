@@ -126,6 +126,9 @@
     });
     (k.processes || []).forEach(function (p) {
       if (!p.id) w.push('A process has no id: "' + (p.name || '?') + '".');
+      if (p.diagram_svg && /<script|<foreignObject|\son[a-z]+\s*=|javascript:|@import|url\(\s*['"]?\s*(?!#)/i.test(p.diagram_svg)) {
+        w.push(p.id + ': the diagram contains scripts, event handlers or outside links; START-HERE.html removes them, so check the diagram still reads correctly.');
+      }
       (p.steps || []).forEach(function (s) {
         if (s.status && STATUSES.indexOf(s.status) < 0) w.push(s.id + ': unknown status "' + s.status + '".');
         (s.branches || []).forEach(function (b) {
@@ -157,9 +160,14 @@
   function slug(s) {
     return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40);
   }
+  // Names from a save block become folder and file names, so they must not climb out of the pack.
+  function safeSeg(s, fallback) {
+    s = String(s == null ? '' : s).replace(/[\/\\:*?"<>|\x00-\x1f]+/g, '-').replace(/\.{2,}/g, '.').replace(/^[.\s-]+|[.\s]+$/g, '');
+    return s.slice(0, 80) || fallback;
+  }
   function folderFor(p) {
-    var sl = p.slug || slug(p.name);
-    return (p.id || 'P00') + (sl ? '-' + sl : '');
+    var sl = slug(p.slug || p.name);
+    return safeSeg(p.id, 'P00') + (sl ? '-' + sl : '');
   }
   function st(k, item) {
     var s = (item && item.status) || 'unverified';
@@ -498,7 +506,7 @@
     images = images || {};
     var names = Object.keys(images);
     var warnings = validate(k, names);
-    var root = k.pack_id + '/';
+    var root = safeSeg(k.pack_id, 'KP-DRAFT') + '/';
     var files = [];
     var add = function (path, data) { if (data) files.push({ path: root + path, data: data }); };
 
@@ -529,10 +537,10 @@
     add('glossary.md', mdGlossary(k));
     add('change-log.md', mdChanges(k));
     add('manifest.yaml', manifest(k, names));
-    names.forEach(function (n) { add('visuals/' + n, images[n]); });
+    names.forEach(function (n) { add('visuals/' + safeSeg(n, 'image'), images[n]); });
 
-    var zipName = 'knowledge-handover_' + k.pack_id + '_' + (k.saved_at || today()) + '.zip';
-    return { files: files, warnings: warnings, zipName: zipName, root: k.pack_id, pack: k };
+    var zipName = 'knowledge-handover_' + safeSeg(k.pack_id, 'KP-DRAFT') + '_' + safeSeg(k.saved_at, today()) + '.zip';
+    return { files: files, warnings: warnings, zipName: zipName, root: root.slice(0, -1), pack: k };
   }
 
   return {

@@ -419,11 +419,39 @@ footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--rule);font-si
     footer();
   }
 
+  // Diagrams arrive as SVG text inside the Pack, and a Pack is passed between people,
+  // so treat it as untrusted: parse it in an inert document (nothing runs there), keep only
+  // drawing elements, drop event handlers and every link or URL that leaves the diagram.
+  var SVG_NS = 'http://www.w3.org/2000/svg';
+  var SVG_TAGS = { svg: 1, g: 1, defs: 1, title: 1, desc: 1, style: 1, path: 1, rect: 1, circle: 1, ellipse: 1, line: 1,
+    polyline: 1, polygon: 1, text: 1, tspan: 1, textpath: 1, marker: 1, pattern: 1, lineargradient: 1,
+    radialgradient: 1, stop: 1, clippath: 1, mask: 1, symbol: 1, use: 1 };
+  function cleanCss(s) {
+    return String(s).replace(/@import[^;]*;?/gi, '').replace(/url\(\s*(['"]?)\s*(?!#)[^)]*\)/gi, 'none').replace(/expression\s*\(/gi, '');
+  }
+  function safeSvg(markup) {
+    var doc = new DOMParser().parseFromString(markup, 'text/html');
+    var root = doc.body.firstElementChild;
+    if (!root || root.namespaceURI !== SVG_NS || root.localName !== 'svg') return null;
+    (function clean(node) {
+      Array.prototype.slice.call(node.children).forEach(function (c) {
+        if (c.namespaceURI !== SVG_NS || !SVG_TAGS[c.localName.toLowerCase()]) c.remove();
+        else clean(c);
+      });
+      Array.prototype.slice.call(node.attributes).forEach(function (a) {
+        var n = a.name.toLowerCase(), v = a.value;
+        if (/^on/.test(n) || (/(^|:)href$/.test(n) && v.trim().charAt(0) !== '#') || /javascript:|data:/i.test(v)) node.removeAttribute(a.name);
+        else if (n === 'style') node.setAttribute(a.name, cleanCss(v));
+      });
+      if (node.localName === 'style') node.textContent = cleanCss(node.textContent);
+    })(root);
+    return document.importNode(root, true);
+  }
+
   function overview(p, panel) {
-    if (p.diagram_svg && /^\s*<svg[\s>]/i.test(p.diagram_svg)) {
-      var d = el('div', { cls: 'diagram' });
-      d.innerHTML = p.diagram_svg.replace(/<script[\s\S]*?<\/script>/gi, '').replace(/\son\w+="[^"]*"/gi, '');
-      panel.appendChild(d);
+    var svg = p.diagram_svg && /^\s*<svg[\s>]/i.test(p.diagram_svg) ? safeSvg(p.diagram_svg) : null;
+    if (svg) {
+      panel.appendChild(el('div', { cls: 'diagram' }, [svg]));
     } else if (has(p.steps)) panel.appendChild(flowList(p));
     else panel.appendChild(el('p', { cls: 'meta', text: T.noStep }));
     if (has(p.people)) panel.appendChild(el('div', { cls: 'card list', style: 'margin-top:1rem' }, [el('div', { cls: 'group', text: T.people, style: 'margin-top:0' })].concat(
