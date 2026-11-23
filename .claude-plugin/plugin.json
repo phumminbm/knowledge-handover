@@ -1,0 +1,23 @@
+{
+  "name": "knowledge-handover",
+  "description": "Interview someone about how they really do their job and turn it into a Knowledge Pack: one zip with a browser walkthrough, the giver's real screenshots or photos, urgent handover items and a file any AI can teach from. For anyone leaving, changing role or going on leave, and for the person taking over.",
+  "version": "0.1.0",
+  "author": {
+    "name": "phumminbm",
+    "url": "https://github.com/phumminbm"
+  },
+  "homepage": "https://phumminbm.github.io/knowledge-handover/",
+  "repository": "https://github.com/phumminbm/knowledge-handover",
+  "license": "MIT",
+  "keywords": [
+    "handover",
+    "knowledge-transfer",
+    "offboarding",
+    "onboarding",
+    "sop",
+    "documentation",
+    "training",
+    "thai"
+  ],
+  "icon": "./.claude-plugin/icon.png"
+}

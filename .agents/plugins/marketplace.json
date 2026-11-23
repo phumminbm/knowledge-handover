@@ -1,0 +1,20 @@
+{
+  "name": "knowledge-handover",
+  "interface": {
+    "displayName": "Knowledge Handover"
+  },
+  "plugins": [
+    {
+      "name": "knowledge-handover",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

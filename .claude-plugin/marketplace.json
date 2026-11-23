@@ -1,0 +1,16 @@
+{
+  "name": "knowledge-handover",
+  "metadata": {
+    "description": "Interview someone about how they really do their job and turn it into a Knowledge Pack: one zip with a browser walkthrough, the giver's real screenshots or photos, urgent handover items and a file any AI can teach from. For anyone leaving, changing role or going on leave, and for the person taking over."
+  },
+  "owner": {
+    "name": "phumminbm"
+  },
+  "plugins": [
+    {
+      "name": "knowledge-handover",
+      "source": "./",
+      "description": "Interview someone about how they really do their job and turn it into a Knowledge Pack: one zip with a browser walkthrough, the giver's real screenshots or photos, urgent handover items and a file any AI can teach from. For anyone leaving, changing role or going on leave, and for the person taking over."
+    }
+  ]
+}

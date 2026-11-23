@@ -1,0 +1,18 @@
+{
+  "name": "knowledge-handover",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Development scripts for the knowledge-handover skill. The skill itself has no dependencies.",
+  "license": "MIT",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "python3 tools/build_dist.py",
+    "example": "node skills/knowledge-handover/scripts/build_pack.js examples/bank-reconciliation/knowledge.json --images examples/bank-reconciliation/images --out build/example",
+    "test": "node --test tests/unit/*.test.js",
+    "test:e2e": "node --test tests/e2e/*.test.js",
+    "check": "npm test && npm run build && npm run test:e2e"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0"
+  }
+}

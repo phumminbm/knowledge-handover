@@ -2,15 +2,19 @@
 """Build release artefacts for knowledge-handover.
 
 Outputs:
-  skills/knowledge-handover/assets/pack-builder.html  (shipped inside the skill)
-  dist/pack-builder.html                               (download / GitHub Pages)
-  docs/index.html                                      (GitHub Pages copy)
+  skills/knowledge-handover/assets/pack-builder.html  (shipped inside the skill; committed, CI checks it is current)
+  dist/pack-builder.html                               (release download)
   dist/PROMPT.md                                       (single file for AI chats without skills)
   dist/knowledge-handover.zip                          (skill folder, for uploading to Claude / ChatGPT)
+  site/index.html                                      (GitHub Pages: the Pack Builder)
+
+dist/ and site/ are build output and are not committed. The zip is reproducible:
+the same sources always give the same bytes.
 
 Usage: python3 tools/build_dist.py [--pages-url URL]
 """
 import argparse
+import os
 import json
 import pathlib
 import re
@@ -19,7 +23,7 @@ import zipfile
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SKILL = ROOT / "skills" / "knowledge-handover"
 DIST = ROOT / "dist"
-DOCS = ROOT / "docs"
+SITE = ROOT / "site"
 
 
 def read(p):
@@ -37,7 +41,7 @@ def build_pack_builder():
     out = (tpl.replace("/*__FONTS__*/", fonts, 1)
               .replace("/*__CORE__*/", core, 1)
               .replace('/*__TEMPLATE__*/""', start_js, 1))
-    for target in (SKILL / "assets" / "pack-builder.html", DIST / "pack-builder.html", DOCS / "index.html"):
+    for target in (SKILL / "assets" / "pack-builder.html", DIST / "pack-builder.html", SITE / "index.html"):
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(out, encoding="utf-8")
     return out
@@ -81,7 +85,11 @@ def build_zip():
     with zipfile.ZipFile(target, "w", zipfile.ZIP_DEFLATED) as z:
         for p in sorted(SKILL.rglob("*")):
             if p.is_file() and "__pycache__" not in p.parts and p.suffix != ".pyc":
-                z.write(p, pathlib.Path("knowledge-handover") / p.relative_to(SKILL))
+                info = zipfile.ZipInfo(str(pathlib.PurePosixPath("knowledge-handover") / p.relative_to(SKILL).as_posix()),
+                                       date_time=(1980, 1, 1, 0, 0, 0))
+                info.compress_type = zipfile.ZIP_DEFLATED
+                info.external_attr = (0o755 if os.access(p, os.X_OK) else 0o644) << 16
+                z.writestr(info, p.read_bytes())
     return target
 
 
