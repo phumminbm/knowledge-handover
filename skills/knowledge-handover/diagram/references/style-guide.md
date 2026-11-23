@@ -2,9 +2,10 @@
 
 **The single source of truth for colors, typography, and tokens.** Every diagram draws from this — not from hex values inlined in other reference files. If you want to change the visual skin of the diagrams, change this file.
 
-Default skin is a cool editorial palette — white-smoke paper, jet-black ink, burnt-tangerine accent, blue-slate muted.
+Default skin is a monochrome editorial palette — white paper, near-black ink, neutral grey muted, burnt-tangerine accent — matching START-HERE.html.
 
 **Knowledge-handover skin rules (these override anything below):**
+- Light skin matches the Pack page: `paper #ffffff`, `paper-2 #f6f6f5`, `ink #0b0b0b`, `muted #5f5f5c`, `soft #6b6b67`, `rule rgba(11,11,11,0.12)`, `rule-solid #d9d9d6`. Templates and examples already use these. The dark skin is unchanged.
 - The accent is the only user-changeable token. Default `#bf4520` (dark `#f08a59`). Diagrams shown during the interview use the default orange (or the pack's colour once chosen). The user picks the pack's accent just before the first build (SKILL.md, giver mode step 6), with the default orange offered first; then reuse it for everything in that pack. Derive `accent-tint` as the accent at 0.08 opacity and keep the 4.5:1 contrast contract (darken the user's colour if it fails, and say so).
 - Fonts: Poppins (Latin) + Prompt (Thai) embedded from `../../assets/fonts/poppins-prompt.css`, so output works offline. Page titles use Prompt 600 instead of Instrument Serif (Thai has no Instrument Serif); keep Instrument Serif only where the viewer's system has it. Names use `'Poppins','Prompt',system-ui,sans-serif`. Mono stays a system mono stack for codes and numbers. For other scripts, pick a suitable font yourself.
 - Thai labels follow the same register switch as Korean below: never put Thai in 7–8px mono eyebrows, tags or arrow labels — use 11–12px sans 500 with a 16px mask instead.
@@ -20,14 +21,14 @@ Every token is referred to by **semantic role**, not by its hex value. Type refe
 
 | Role | Purpose | Default (light) | Default (dark) |
 |---|---|---|---|
-| `paper` | Page background, default node fill | `#f5f5f5` (white-smoke) | `#2d3142` (jet-black) |
-| `paper-2` | Diagram container bg, secondary fill | `#ececec` | `#393e53` |
-| `ink` | Primary text, primary stroke | `#2d3142` (jet-black) | `#f5f5f5` (white-smoke) |
+| `paper` | Page background, default node fill | `#ffffff` (white) | `#2d3142` (jet-black) |
+| `paper-2` | Diagram container bg, secondary fill | `#f6f6f5` | `#393e53` |
+| `ink` | Primary text, primary stroke | `#0b0b0b` (near-black) | `#f5f5f5` (white-smoke) |
 | `ink-strong` | High-contrast text on warm accent fills | `#111111` | `#111111` |
-| `muted` | Secondary text, default arrow stroke | `#4f5d75` (blue-slate) | `#bfc0c0` (silver) |
-| `soft` | Sublabels, boundary labels | `#5a6580` | `#949eb2` |
-| `rule` | Hairline borders | `rgba(45,49,66,0.12)` | `rgba(245,245,245,0.12)` |
-| `rule-solid` | Stronger borders, baselines | `#bfc0c0` (silver) | `rgba(191,192,192,0.25)` |
+| `muted` | Secondary text, default arrow stroke | `#5f5f5c` (neutral grey) | `#bfc0c0` (silver) |
+| `soft` | Sublabels, boundary labels | `#6b6b67` | `#949eb2` |
+| `rule` | Hairline borders | `rgba(11,11,11,0.12)` | `rgba(245,245,245,0.12)` |
+| `rule-solid` | Stronger borders, baselines | `#d9d9d6` | `rgba(191,192,192,0.25)` |
 | `accent` | Focal / 1–2 max per diagram | `#bf4520` (burnt-tangerine) | `#f08a59` |
 | `accent-tint` | Fill for accent-bordered boxes | `rgba(191,69,32,0.08)` | `rgba(240,138,89,0.10)` |
 | `link` | HTTP/API calls, external arrows | `#2e5aa8` | `#739fdf` |
@@ -48,11 +49,11 @@ Every token must clear the threshold for each role it plays, against the backgro
 - **A token used in several roles must pass each one.** `accent` is a stroke in one place and a label in another, so it is held to 4.5:1, not the 3:1 its strokes alone would need. Don't assume a token is non-text because it usually is.
 - **Translucent colors are composited first.** An `rgba()` fill or stroke is blended over `paper` before its ratio is measured. A value that clears the bar at full strength can fail at 0.5 opacity.
 - **Surfaces other than `paper` cost contrast.** Inside an `accent-tint` box or on `paper-2` every ratio drops. Measure text placed there against that surface, not against `paper`.
-- **Current defaults:** light `accent` 4.71:1, `soft` 5.34:1, `link` 6.13:1, `muted` 6.11:1 on `#f5f5f5`; dark `accent` 5.21:1, `soft` 4.78:1, `link` 4.76:1 on `#2d3142`.
+- **Current defaults:** light `accent` 5.14:1, `soft` 5.35:1, `link` 6.68:1, `muted` 6.41:1 on `#ffffff`; dark `accent` 5.21:1, `soft` 4.78:1, `link` 4.76:1 on `#2d3142`.
 
 ### Inversion rule (light → dark)
 
-Any `rgba(45,49,66, X)` in light becomes `rgba(245,245,245, X)` in dark. Same opacities, RGB flipped. The accent gets a slight hue-shift brighter to read on dark paper.
+Any `rgba(11,11,11, X)` in light becomes `rgba(245,245,245, X)` in dark. Same opacities, RGB flipped. The accent gets a slight hue-shift brighter to read on dark paper.
 
 ### Series palette (multi-series chart types only)
 

@@ -52,18 +52,18 @@ No `transform`, geometry `style`, or `<style>` rules that move marks.
 ```svg
 <!-- Stage header at column origin x=96; cells in this column reuse that x -->
 <rect x="96" y="24" width="208" height="48" fill="none" data-stage="sign-up"/>
-<text x="200" y="60" fill="#2d3142" font-size="12" font-weight="600"
+<text x="200" y="60" fill="#0b0b0b" font-size="12" font-weight="600"
       font-family="'Geist', sans-serif" text-anchor="middle">Sign up</text>
 
 <g data-layer="customer">
-  <rect x="544" y="128" width="208" height="64" rx="4" fill="#ffffff" stroke="#2d3142"
+  <rect x="544" y="128" width="208" height="64" rx="4" fill="#ffffff" stroke="#0b0b0b"
         stroke-width="1" data-stage="hit-limit" data-name="Retry payment"/>
-  <text x="648" y="164" fill="#2d3142" font-size="12" font-family="'Geist', sans-serif"
+  <text x="648" y="164" fill="#0b0b0b" font-size="12" font-family="'Geist', sans-serif"
         text-anchor="middle">Retry payment</text>
 </g>
 
 <!-- Visibility line: 2px ink @ 0.55, between frontstage bottom and backstage top -->
-<line x1="96" y1="268" x2="1200" y2="268" stroke="rgba(45,49,66,0.55)" stroke-width="2"
+<line x1="96" y1="268" x2="1200" y2="268" stroke="rgba(11,11,11,0.55)" stroke-width="2"
       data-role="visibility"/>
 
 <g data-layer="backstage">
@@ -72,7 +72,7 @@ No `transform`, geometry `style`, or `<style>` rules that move marks.
         data-name="dunning-job timeout" data-focal="true"/>
   <text x="648" y="300" fill="#bf4520" font-size="12" font-weight="600"
         font-family="'Geist', sans-serif" text-anchor="middle">dunning-job timeout</text>
-  <text x="648" y="318" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace"
+  <text x="648" y="318" fill="#5f5f5c" font-size="8" font-family="'Geist Mono', monospace"
         text-anchor="middle">dunning-job · 4h</text>
 </g>
 ```
