@@ -262,6 +262,23 @@ button:disabled{opacity:.4;cursor:default}
     return { pack: packs.length === 1 ? packs[0] : mergePacks(packs), blocks: packs.length, errors: errors };
   }
 
+  // ── Task views ──────────────────────────────────────────────────────────
+  // How a task is laid out in START-HERE.html. Keep in sync with viewOf() in the template.
+  var VIEWS = ['steps', 'checklist', 'timeline', 'decision', 'troubleshoot'];
+  var VIEW_NEEDS = {
+    checklist: function (p) { return has(p.steps); },
+    timeline: function (p) { return has(p.steps); },
+    decision: function (p) { return (p.steps || []).some(function (s) { return has(s.branches); }) || has(p.rules); },
+    troubleshoot: function (p) { return has(p.troubleshooting); }
+  };
+  var VIEW_MISSING = { checklist: 'steps', timeline: 'steps', decision: 'branching steps or rules', troubleshoot: 'troubleshooting entries' };
+  function has(a) { return !!(a && a.length); }
+  function effectiveView(p) {
+    var v = p && p.view;
+    if (VIEWS.indexOf(v) < 0 || v === 'steps') return 'steps';
+    return VIEW_NEEDS[v](p) ? v : 'steps';
+  }
+
   // ── Validation ──────────────────────────────────────────────────────────
   function validate(k, imageNames) {
     var w = [];
@@ -274,6 +291,8 @@ button:disabled{opacity:.4;cursor:default}
     });
     (k.processes || []).forEach(function (p) {
       if (!p.id) w.push('A process has no id: "' + (p.name || '?') + '".');
+      if (p.view && VIEWS.indexOf(p.view) < 0) w.push(p.id + ': unknown view "' + p.view + '"; showing steps instead.');
+      else if (p.view && effectiveView(p) !== p.view) w.push(p.id + ': view "' + p.view + '" needs ' + VIEW_MISSING[p.view] + '; showing steps instead.');
       if (p.diagram_svg && /<script|<foreignObject|\son[a-z]+\s*=|javascript:|@import|url\(\s*['"]?\s*(?!#)/i.test(p.diagram_svg)) {
         w.push(p.id + ': the diagram contains scripts, event handlers or outside links; START-HERE.html removes them, so check the diagram still reads correctly.');
       }
@@ -392,6 +411,7 @@ button:disabled{opacity:.4;cursor:default}
     var o = '# ' + p.id + ' · ' + mdEsc(p.name) + '\n\n';
     o += (p.summary ? p.summary + '\n\n' : '') + line('Starts when', p.trigger) + line('Frequency', p.frequency);
     o += line('Status', (p.complete ? 'complete' : 'incomplete — see open-questions.md'));
+    o += line('View', effectiveView(p));
     if (p.coverage) {
       o += '\n## Coverage\n\n' + Object.keys(p.coverage).map(function (key) { return '- ' + key + ': ' + p.coverage[key] + '\n'; }).join('');
     }
@@ -406,7 +426,7 @@ button:disabled{opacity:.4;cursor:default}
           : s.next === 'end' ? ' → end of task'
           : s.next ? ' → then go to ' + s.next
           : '';
-        return (i + 1) + '. **' + s.id + '** ' + mdEsc(s.title) + nxt + '\n';
+        return (i + 1) + '. **' + s.id + '** ' + mdEsc(s.title) + (s.when ? ' — when: ' + mdEsc(s.when) : '') + nxt + '\n';
       }).join('');
     }
     return o;
@@ -418,7 +438,7 @@ button:disabled{opacity:.4;cursor:default}
     (p.steps || []).forEach(function (s) {
       o += '## ' + s.id + ' · ' + mdEsc(s.title) + '\n\n' + st(k, s) + (s.safety ? ' `' + L.safety + '`' : '') + '\n\n';
       if (s.detail) o += s.detail + '\n\n';
-      o += line('Why', s.why) + line('Who does it', s.actor) + line('System / equipment', s.system) + line('Inputs', s.inputs) + line('Outputs', s.outputs) + line('How to check', s.check) + line('Risk', s.risk);
+      o += line('When', s.when) + line('Why', s.why) + line('Who does it', s.actor) + line('System / equipment', s.system) + line('Inputs', s.inputs) + line('Outputs', s.outputs) + line('How to check', s.check) + line('Risk', s.risk);
       if (s.who_can_do) o += line('Who can do it', L[s.who_can_do] + (s.who_can_do_confirmed ? '' : ' (proposed, not confirmed)'));
       if (s.image) o += line('Image', 'visuals/' + s.image);
       (s.pins || []).forEach(function (pin) { o += '  - Pin ' + pin.n + ': ' + mdEsc(pin.label) + (pin.confirmed ? '' : ' (position not confirmed)') + '\n'; });
@@ -692,7 +712,7 @@ button:disabled{opacity:.4;cursor:default}
   }
 
   return {
-    STATUSES: STATUSES, BADGE: BADGE, labels: labels,
+    STATUSES: STATUSES, BADGE: BADGE, labels: labels, VIEWS: VIEWS, effectiveView: effectiveView,
     parseSave: parseSave, mergePacks: mergePacks, validate: validate,
     build: build, zip: zip, base64: base64, crc32: crc32,
     autoMermaid: autoMermaid, mdForAI: mdForAI, renderStartHere: renderStartHere

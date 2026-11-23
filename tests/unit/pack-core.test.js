@@ -135,3 +135,31 @@ test('example and recorded test packs build without broken links', () => {
     assert.deepStrictEqual(w, [], path.relative(ROOT, d));
   }
 });
+
+test('effectiveView falls back to steps', () => {
+  assert.strictEqual(core.effectiveView({ steps: [{ id: 'S1' }] }), 'steps');
+  assert.strictEqual(core.effectiveView({ view: 'checklist', steps: [{ id: 'S1' }] }), 'checklist');
+  assert.strictEqual(core.effectiveView({ view: 'troubleshoot', steps: [{ id: 'S1' }] }), 'steps');
+  assert.strictEqual(core.effectiveView({ view: 'troubleshoot', troubleshooting: [{ id: 'T1' }] }), 'troubleshoot');
+  assert.strictEqual(core.effectiveView({ view: 'decision', rules: [{ id: 'R1' }] }), 'decision');
+  assert.strictEqual(core.effectiveView({ view: 'banana', steps: [{ id: 'S1' }] }), 'steps');
+});
+
+test('validate warns about unknown views and views without data', () => {
+  const w = core.validate({ pack_id: 'KP-1', processes: [
+    { id: 'P01', view: 'banana', steps: [{ id: 'P01.S01' }] },
+    { id: 'P02', view: 'troubleshoot', steps: [{ id: 'P02.S01' }] }] }, []).join('\n');
+  assert.match(w, /P01: unknown view "banana"/);
+  assert.match(w, /P02: view "troubleshoot" needs troubleshooting entries; showing steps instead/);
+});
+
+test('Markdown output names the view and step timing', () => {
+  const k = { pack_id: 'KP-1', title: 'x', processes: [{ id: 'P01', name: 'Close', view: 'timeline',
+    steps: [{ id: 'P01.S01', title: 'Export', when: 'Day 1' }] }] };
+  const r = core.build(k, {}, { template, fontsCss: '' });
+  const wf = r.files.find((f) => /workflow\.md$/.test(f.path)).data;
+  const ai = r.files.find((f) => /PACK-FOR-AI\.md$/.test(f.path)).data;
+  assert.match(wf, /\*\*View:\*\* timeline/);
+  assert.match(ai, /\*\*View:\*\* timeline/);
+  assert.match(ai, /Day 1/);
+});
