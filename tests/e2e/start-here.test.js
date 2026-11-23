@@ -110,3 +110,112 @@ test('ask AI shows a prompt to copy', { skip }, async () => {
   assert.match(await page.textContent('#ai-panel'), /Teach me from this pack/);
   await context.close();
 });
+
+// ── Search and walk-through (Task 4) ──────────────────────────────────────
+
+const { exampleImage } = require('./helpers');
+const IMAGES = { 'P01-S01.png': exampleImage('P01-S01.png') };
+const hashOf = (page) => page.evaluate(() => location.hash);
+
+test('/ opens search; a glossary term opens the glossary', { skip }, async () => {
+  const { page, context } = await openPack(browser, fixture());
+  await page.keyboard.press('/');
+  await page.fill('#search-q', 'reconcile');
+  const first = await page.textContent('#search [role=option]');
+  assert.match(first, /Reconcile/);
+  await page.keyboard.press('Enter');
+  assert.strictEqual(await hashOf(page), '#/glossary');
+  await context.close();
+});
+
+test('Ctrl+K search finds a step and opens the walk-through at it', { skip }, async () => {
+  const { page, context } = await openPack(browser, fixture());
+  await page.keyboard.press('Control+k');
+  await page.fill('#search-q', 'take payment');
+  await page.keyboard.press('Enter');
+  assert.strictEqual(await hashOf(page), '#/task/P01/walk/P01.S04');
+  assert.match(await page.textContent('.step-title'), /Take payment at the desk/);
+  await context.close();
+});
+
+test('search shows pack text as text, not markup', { skip }, async () => {
+  const { page, context } = await openPack(browser, fixture());
+  await page.click('#search-open');
+  await page.fill('#search-q', '<b>');
+  assert.match(await page.textContent('#search'), /<b>x<\/b>/);
+  assert.strictEqual(await page.$('#search [role=option] b'), null);
+  await context.close();
+});
+
+test('#/task/P01 opens the walk-through with the step rail and action bar', { skip }, async () => {
+  const { page, context } = await openPack(browser, fixture(), { hash: '#/task/P01', images: IMAGES });
+  assert.strictEqual((await page.$$('.rail a[data-step]')).length, 4);
+  assert.ok(await page.$('.actionbar #next'));
+  assert.ok(await page.$('.actionbar #ask-step'));
+  await context.close();
+});
+
+test('rail jumps to a step, arrow keys move, Back returns', { skip }, async () => {
+  const { page, context } = await openPack(browser, fixture(), { hash: '#/task/P03/walk', images: IMAGES });
+  await page.click('.rail a[data-step="P03.S03"]');
+  assert.match(await page.textContent('.step-title'), /Send to the accountant/);
+  await page.keyboard.press('ArrowRight');
+  assert.match(await page.textContent('.step-title'), /File the paper copies/);
+  await page.click('#back');
+  assert.match(await page.textContent('.step-title'), /Send to the accountant/);
+  await context.close();
+});
+
+test('a branch step hides Next until a choice is made', { skip }, async () => {
+  const { page, context } = await openPack(browser, fixture(), { hash: '#/task/P01/walk/P01.S02', images: IMAGES });
+  assert.strictEqual(await page.isVisible('#next'), false);
+  await page.click('.choice >> text=Not insured');
+  assert.match(await page.textContent('.step-title'), /Take payment at the desk/);
+  await context.close();
+});
+
+test('home continues where the receiver left off', { skip }, async () => {
+  const { page, context } = await openPack(browser, fixture(), { hash: '#/task/P01/walk/P01.S04', images: IMAGES });
+  await page.evaluate(() => { location.hash = '#/'; });
+  await page.waitForSelector('.hero');
+  await page.click('#hero-go');
+  assert.strictEqual(await hashOf(page), '#/task/P01/walk/P01.S04');
+  await context.close();
+});
+
+test('walk-through works when localStorage is blocked', { skip }, async () => {
+  const init = () => { Object.defineProperty(window, 'localStorage', { get() { throw new Error('blocked'); } }); };
+  const { page, errors, context } = await openPack(browser, fixture(), { hash: '#/task/P01', images: IMAGES, init });
+  await page.click('#next');
+  assert.match(await page.textContent('.step-title'), /Is the patient insured/);
+  await page.evaluate(() => { location.hash = '#/'; });
+  await page.waitForSelector('.hero');
+  assert.deepStrictEqual(errors, []);
+  await context.close();
+});
+
+test('missing task falls back to home, missing step to step 1', { skip }, async () => {
+  let r = await openPack(browser, fixture(), { hash: '#/task/NOPE' });
+  assert.ok(await r.page.$('.hero'));
+  await r.context.close();
+  r = await openPack(browser, fixture(), { hash: '#/task/P01/walk/NOPE', images: IMAGES });
+  assert.match(await r.page.textContent('.step-title'), /Open the billing screen/);
+  await r.context.close();
+});
+
+test('the screenshot opens full screen and Esc closes it', { skip }, async () => {
+  const { page, context } = await openPack(browser, fixture(), { hash: '#/task/P01', images: IMAGES });
+  await page.click('.shot');
+  assert.strictEqual(await page.isVisible('#lightbox'), true);
+  await page.keyboard.press('Escape');
+  assert.strictEqual(await page.isVisible('#lightbox'), false);
+  await context.close();
+});
+
+test('phone walk-through opens the step list from a button', { skip }, async () => {
+  const { page, context } = await openPack(browser, fixture(), { hash: '#/task/P01', images: IMAGES, viewport: PHONE });
+  assert.strictEqual(await page.isVisible('.rail'), false);
+  await page.click('#steps-open');
+  assert.strictEqual(await page.isVisible('.rail'), true);
+  await context.close();
+});

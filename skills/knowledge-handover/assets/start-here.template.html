@@ -177,6 +177,45 @@ td,th{text-align:left;vertical-align:top;padding:.7rem .4rem;border-top:1px soli
 th{font-size:.74rem;color:var(--muted);font-weight:500;border-top:none}
 footer{margin-top:3.5rem;padding-top:1rem;border-top:1px solid var(--hair);font-size:.74rem;color:var(--faint);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
 /* Phone */
+.page-h1.small{font-size:1.35rem;font-weight:500;letter-spacing:-.01em}
+.phone-only{display:none}
+.rail{display:flex;flex-direction:column;gap:.9rem}
+.rail .back{margin:0;padding:.2rem .4rem}
+.rail .brand{padding:0 .4rem}
+.steps{display:grid;gap:2px;font-size:.88rem}
+.steps a{display:flex;gap:.6rem;align-items:flex-start;padding:.5rem .6rem;border-radius:var(--r-sm);text-decoration:none;overflow-wrap:anywhere}
+.steps a:hover{background:rgba(0,0,0,.04)}
+.steps a[aria-current="step"]{background:var(--bg);box-shadow:0 1px 2px rgba(0,0,0,.07);font-weight:500}
+.steps .k{flex:none;width:22px;height:22px;border-radius:50%;border:1px solid #cfcfcc;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--muted);background:var(--bg)}
+.steps a.seen .k{background:var(--ink);border-color:var(--ink);color:#fff}
+.steps a[aria-current="step"] .k{border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 3px var(--accent-tint)}
+.steps small{display:block;font-size:.72rem;color:var(--muted);font-weight:400}
+button.shot{display:block;width:100%;padding:0;cursor:zoom-in;text-align:left}
+.actionbar{position:sticky;bottom:0;z-index:20;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;margin:1.8rem -1rem 0;padding:.8rem 1rem calc(.8rem + env(safe-area-inset-bottom,0px));background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-top:1px solid var(--hair)}
+.actionbar .kbd{margin-left:0;margin-right:auto}
+.lightbox{position:fixed;inset:0;z-index:80;background:rgba(10,10,10,.82);display:flex;align-items:center;justify-content:center;padding:max(1rem,env(safe-area-inset-top,0px)) 1rem;cursor:zoom-out}
+.lb-fig{position:relative;max-width:min(1200px,100%);max-height:100%}
+.lb-fig img{display:block;max-width:100%;max-height:calc(100vh - 4rem);border-radius:var(--r-md)}
+.lb-close{position:absolute;top:max(1rem,env(safe-area-inset-top,0px));right:1rem}
+.searchwrap{position:fixed;inset:0;z-index:70;background:rgba(10,10,10,.3);display:flex;justify-content:center;align-items:flex-start;padding:10vh 1rem 1rem}
+.searchpanel{width:min(640px,100%);max-height:70vh;display:flex;flex-direction:column;background:var(--bg);border-radius:var(--r-md);box-shadow:0 30px 80px -20px rgba(0,0,0,.4);overflow:hidden}
+.searchhead{display:flex;align-items:center;gap:.6rem;padding:.7rem 1rem;border-bottom:1px solid var(--hair)}
+.searchhead input{flex:1;min-width:0;border:0;outline:0;font:400 1rem var(--sans);background:none;color:var(--ink);padding:.3rem 0}
+#search-results{overflow-y:auto;padding:.3rem .6rem 1rem}
+#search-results .glabel{margin:1rem .5rem .3rem}
+.opt{display:flex;flex-direction:column;padding:.55rem .7rem;border-radius:var(--r-sm);cursor:pointer}
+.opt[aria-selected="true"],.opt:hover{background:var(--surface)}
+.opt-t{font-weight:500;font-size:.92rem;overflow-wrap:anywhere}
+.opt-w{font-size:.78rem;color:var(--muted);overflow-wrap:anywhere}
+@media (max-width:959px){
+  .phone-only{display:inline-flex}.desk-only{display:none}
+  .walk-top{align-items:center}
+  .searchwrap{padding:0}
+  .searchpanel{width:100%;max-height:none;height:100%;border-radius:0}
+  .actionbar{margin:1.6rem calc(-1 * max(1rem,env(safe-area-inset-left,0px))) 0}
+  .actionbar .kbd{display:none}
+  .actionbar #next{flex:1}
+}
 @media (max-width:959px){
   .shell{grid-template-columns:minmax(0,1fr)}
   .side{display:none;position:fixed;left:0;top:0;bottom:0;width:min(86vw,320px);height:auto;box-shadow:0 0 60px rgba(0,0,0,.25);padding-top:calc(1.2rem + env(safe-area-inset-top,0px))}
@@ -271,13 +310,17 @@ footer{margin-top:3.5rem;padding-top:1rem;border-top:1px solid var(--hair);font-
     navHome: 'หน้าแรก', navUrgent: 'เรื่องด่วน', navTasks: 'งาน', navRef: 'ข้อมูลอ้างอิง', menu: 'เมนู', closeMenu: 'ปิดเมนู',
     searchPh: 'ค้นหาใน Pack', askAiBtn: 'ถาม AI', start: 'เริ่มจากงานแรก', seeUrgent: 'ดูเรื่องด่วน',
     g3s: 'ปุ่มถาม AI อยู่ด้านบนและในทุกขั้นตอน', noQ: 'ยังไม่มีคำถามที่ค้างอยู่', noGloss: 'ยังไม่มีคำศัพท์', noChanges: 'ยังไม่มีประวัติการแก้ไข',
-    close: 'ปิด', notCapShort: 'ยังไม่ได้เก็บ',
+    close: 'ปิด', notCapShort: 'ยังไม่ได้เก็บ', allTasks: 'งานทั้งหมด', branchMark: 'มีทางเลือก', stepList: 'รายการขั้น', zoom: 'ดูภาพเต็มจอ',
+    when: 'เมื่อไร', searchHint: 'ค้นหางาน ขั้นตอน กฎ วิธีแก้ปัญหา คำศัพท์ และคำถาม', noHits: 'ไม่พบสิ่งที่ค้นหา', cont: 'เรียนต่อจากเดิม',
+    groups: { task: 'งาน', step: 'ขั้นตอน', rule: 'กฎ', trouble: 'วิธีแก้ปัญหา', term: 'คำศัพท์', question: 'คำถามที่ค้าง', urgent: 'เรื่องด่วน' },
     learnedOf: function (a, b) { return 'เรียนแล้ว ' + a + ' จาก ' + b + ' ขั้น'; }
   } : {
     navHome: 'Home', navUrgent: 'Urgent', navTasks: 'Tasks', navRef: 'Reference', menu: 'Menu', closeMenu: 'Close menu',
     searchPh: 'Search this pack', askAiBtn: 'Ask AI', start: 'Start with the first task', seeUrgent: 'See urgent items',
     g3s: 'The Ask AI button is at the top and on every step', noQ: 'No open questions', noGloss: 'No terms recorded', noChanges: 'No changes recorded',
-    close: 'Close', notCapShort: 'not captured yet',
+    close: 'Close', notCapShort: 'not captured yet', allTasks: 'All tasks', branchMark: 'has choices', stepList: 'Steps', zoom: 'View full screen',
+    when: 'When', searchHint: 'Search tasks, steps, rules, fixes, terms and questions', noHits: 'Nothing found', cont: 'Continue where you left off',
+    groups: { task: 'Tasks', step: 'Steps', rule: 'Rules', trouble: 'Fixes', term: 'Glossary', question: 'Open questions', urgent: 'Urgent' },
     learnedOf: function (a, b) { return 'Learned ' + a + ' of ' + b + ' steps'; }
   };
   Object.keys(T2).forEach(function (k) { T[k] = T2[k]; });
@@ -506,7 +549,7 @@ footer{margin-top:3.5rem;padding-top:1rem;border-top:1px solid var(--hair);font-
       el('span', { cls: 'bar', role: 'progressbar', 'aria-valuemin': '0', 'aria-valuemax': String(tot[1]), 'aria-valuenow': String(tot[0]) }, [el('i', { style: 'width:' + Math.round(tot[0] / tot[1] * 100) + '%' })])]));
     var ft = firstTask();
     hero.appendChild(el('div', { cls: 'cta' }, [
-      ft ? el('a', { cls: 'btn pri big', id: 'hero-go', href: '#/task/' + ft.id, text: T.start + ' ›' }) : null,
+      ft ? el('a', { cls: 'btn pri big', id: 'hero-go', href: resumeRoute() || '#/task/' + ft.id, text: (resumeRoute() ? T.cont : T.start) + ' ›' }) : null,
       el('a', { cls: 'btn big', href: '#/urgent', text: T.seeUrgent })
     ]));
     app.appendChild(hero);
@@ -620,40 +663,6 @@ footer{margin-top:3.5rem;padding-top:1rem;border-top:1px solid var(--hair);font-
     return f;
   }
 
-  function task(pid, tab, stepId) {
-    var p = byId[pid];
-    if (!p) return home();
-    clear();
-    app.appendChild(el('a', { cls: 'back', href: '#/', text: T.home }));
-    app.appendChild(el('h1', { cls: 'page-h1', text: p.name || '' }));
-    if (p.summary) app.appendChild(el('p', { cls: 'lede', text: p.summary }));
-    app.appendChild(el('div', { cls: 'chips' }, [
-      p.frequency ? el('span', { cls: 'pill', text: T.freq + ': ' + p.frequency }) : null,
-      p.trigger ? el('span', { cls: 'pill', text: T.trigger + ': ' + p.trigger }) : null,
-      el('span', { cls: 'code-id', text: p.id })
-    ]));
-    if (!p.complete) app.appendChild(el('div', { cls: 'notice open', text: T.incNote }));
-
-    var tabs = [];
-    if (has(p.steps)) tabs.push(['walk', T.walk]);
-    tabs.push(['overview', T.overview]);
-    if (has(p.rules)) tabs.push(['rules', T.tRules]);
-    if (has(p.troubleshooting)) tabs.push(['trouble', T.tTrouble]);
-    if (has(p.scenarios)) tabs.push(['quiz', T.tQuiz]);
-    if (!tabs.some(function (t) { return t[0] === tab; })) tab = tabs[0][0];
-    var bar = el('div', { cls: 'tabs', role: 'tablist' });
-    tabs.forEach(function (t) {
-      bar.appendChild(el('button', { type: 'button', role: 'tab', 'aria-selected': String(t[0] === tab), text: t[1], onclick: function () { location.hash = '#/task/' + p.id + '/' + t[0]; } }));
-    });
-    app.appendChild(bar);
-    var sel = bar.querySelector('[aria-selected="true"]');
-    if (sel && bar.scrollWidth > bar.clientWidth) bar.scrollLeft = Math.max(0, (sel.previousElementSibling || sel).offsetLeft - bar.offsetLeft);
-    var panel = el('section', { cls: 'panel', role: 'tabpanel' });
-    app.appendChild(panel);
-    ({ walk: walk, overview: overview, rules: rules, trouble: trouble, quiz: quiz })[tab](p, panel, stepId);
-    footer();
-  }
-
   // Diagrams arrive as SVG text inside the Pack, and a Pack is passed between people,
   // so treat it as untrusted: parse it in an inert document (nothing runs there), keep only
   // drawing elements, drop event handlers and every link or URL that leaves the diagram.
@@ -695,6 +704,77 @@ footer{margin-top:3.5rem;padding-top:1rem;border-top:1px solid var(--hair);font-
       p.systems.map(function (x) { return el('div', { cls: 'row' }, [el('b', { text: x.name || '' }), el('div', { cls: 'sub', text: (x.purpose || '') + (x.source_of_truth ? ' · ' + T.sot : '') })]); }))));
   }
 
+  // ── Resume: the last step seen per task, kept only in this browser ─────
+  var LKEY = 'kh-last-' + (K.pack_id || 'pack');
+  var last = {};
+  try { last = JSON.parse(localStorage.getItem(LKEY) || '{}') || {}; } catch (e) { last = {}; }
+  function lastStep(pid) { return (last.steps || {})[pid] || null; }
+  function setLastStep(pid, sid) {
+    last.steps = last.steps || {}; last.steps[pid] = sid; last.recent = pid;
+    try { localStorage.setItem(LKEY, JSON.stringify(last)); } catch (e) { /* storage unavailable */ }
+  }
+  function resumeRoute() {
+    var pid = last.recent, sid = pid && lastStep(pid), p = pid && byId[pid];
+    if (!p || !(p.steps || []).some(function (s) { return s.id === sid; })) return null;
+    return '#/task/' + p.id + '/walk/' + sid;
+  }
+
+  // ── Task ───────────────────────────────────────────────────────────────
+  function task(pid, tab, stepId) {
+    var p = byId[pid];
+    clear();
+    var tabs = [];
+    if (has(p.steps)) tabs.push(['walk', T.walk]);
+    tabs.push(['overview', T.overview]);
+    if (has(p.rules)) tabs.push(['rules', T.tRules]);
+    if (has(p.troubleshooting)) tabs.push(['trouble', T.tTrouble]);
+    if (has(p.scenarios)) tabs.push(['quiz', T.tQuiz]);
+    if (!tabs.some(function (t) { return t[0] === tab; })) tab = tabs[0][0];
+    var focus = tab === 'walk';
+    document.body.classList.toggle('focus', focus);
+    if (!focus) app.appendChild(el('a', { cls: 'back', href: '#/', text: T.home }));
+    app.appendChild(el('h1', { cls: 'page-h1' + (focus ? ' small' : ''), text: p.name || '' }));
+    if (!focus && p.summary) app.appendChild(el('p', { cls: 'lede', text: p.summary }));
+    if (!focus) app.appendChild(el('div', { cls: 'chips' }, [
+      p.frequency ? el('span', { cls: 'pill', text: T.freq + ': ' + p.frequency }) : null,
+      p.trigger ? el('span', { cls: 'pill', text: T.trigger + ': ' + p.trigger }) : null,
+      el('span', { cls: 'code-id', text: p.id })
+    ]));
+    if (!focus && !p.complete) app.appendChild(el('div', { cls: 'notice open', text: T.incNote }));
+    var bar = el('div', { cls: 'tabs', role: 'tablist' });
+    tabs.forEach(function (t) {
+      bar.appendChild(el('button', { type: 'button', role: 'tab', 'data-tab': t[0], 'aria-selected': String(t[0] === tab), text: t[1], onclick: function () { location.hash = '#/task/' + p.id + '/' + t[0]; } }));
+    });
+    app.appendChild(bar);
+    var sel = bar.querySelector('[aria-selected="true"]');
+    if (sel && bar.scrollWidth > bar.clientWidth) bar.scrollLeft = Math.max(0, sel.offsetLeft - bar.offsetLeft - 24);
+    var panel = el('section', { cls: 'panel', role: 'tabpanel' });
+    app.appendChild(panel);
+    if (focus && !stepId) stepId = lastStep(p.id);
+    ({ walk: walk, overview: overview, rules: rules, trouble: trouble, quiz: quiz })[tab](p, panel, stepId);
+    if (!focus) footer();
+  }
+
+  // The step rail replaces the app navigation while walking through a task.
+  function renderRail(p, curId, onPick) {
+    side.innerHTML = '';
+    var rail = el('div', { cls: 'rail' }, [
+      el('a', { cls: 'back', href: '#/', text: '‹ ' + T.allTasks }),
+      el('div', { cls: 'brand' }, [el('b', { text: p.name || '' }), el('span', { text: [p.frequency, p.trigger].filter(Boolean).join(' · ') })])
+    ]);
+    var list = el('div', { cls: 'steps' });
+    (p.steps || []).forEach(function (s, i) {
+      var cur = s.id === curId;
+      list.appendChild(el('a', { href: '#/task/' + p.id + '/walk/' + s.id, 'data-step': s.id, 'aria-current': cur ? 'step' : null, cls: seen[s.id] && !cur ? 'seen' : '',
+        onclick: function (e) { if (onPick && !cur) { e.preventDefault(); setMenu(false); onPick(i); } } }, [
+        el('span', { cls: 'k', text: seen[s.id] && !cur ? '✓' : String(i + 1) }),
+        el('span', null, [s.title || s.id, has(s.branches) ? el('small', { text: T.branchMark }) : null])
+      ]));
+    });
+    rail.appendChild(list);
+    side.appendChild(rail);
+  }
+
   var keyHandler = null;
   function walk(p, panel, stepId) {
     var steps = p.steps || [];
@@ -703,6 +783,7 @@ footer{margin-top:3.5rem;padding-top:1rem;border-top:1px solid var(--hair);font-
     var cur = stepId && stepId in index ? index[stepId] : 0;
     var hist = [];
     function go(i) { hist.push(cur); cur = i; draw(); }
+    function back() { if (hist.length) { cur = hist.pop(); draw(); } }
     // Where a step without branches leads: its `next` (a step ID or "end"), otherwise the following step.
     function after(i) {
       var n = steps[i].next;
@@ -712,15 +793,21 @@ footer{margin-top:3.5rem;padding-top:1rem;border-top:1px solid var(--hair);font-
     }
     function draw() {
       panel.innerHTML = '';
-      if (cur === -1) return finished();
+      if (cur === -1) { renderRail(p, null); return finished(); }
       var s = steps[cur];
       markSeen(s.id);
-      panel.appendChild(el('div', { cls: 'walk-top' }, [el('span', { text: T.step + ' ' + (cur + 1) + ' ' + T.of + ' ' + steps.length }), el('span', { cls: 'code-id', text: s.id })]));
+      setLastStep(p.id, s.id);
+      try { history.replaceState(null, '', '#/task/' + p.id + '/walk/' + s.id); } catch (e) { /* file: URLs in some browsers */ }
+      renderRail(p, s.id, go);
+      panel.appendChild(el('div', { cls: 'walk-top' }, [
+        el('button', { cls: 'btn phone-only', id: 'steps-open', type: 'button', 'aria-label': T.stepList, onclick: function () { setMenu(true); } }, [T.step + ' ' + (cur + 1) + ' ' + T.of + ' ' + steps.length + ' ▾']),
+        el('span', { cls: 'desk-only', text: T.step + ' ' + (cur + 1) + ' ' + T.of + ' ' + steps.length }),
+        el('span', { cls: 'code-id', text: s.id })]));
       panel.appendChild(el('div', { cls: 'walkbar' }, [el('i', { style: 'width:' + Math.round((cur + 1) / steps.length * 100) + '%' })]));
       var src = s.image && IMG[s.image];
       var left = null;
       if (src) {
-        var shot = el('div', { cls: 'shot' }, [el('img', { src: src, alt: s.title || s.id })]);
+        var shot = el('button', { cls: 'shot', type: 'button', 'aria-label': T.zoom, onclick: function () { lightbox(src, s); } }, [el('img', { src: src, alt: s.title || s.id })]);
         (s.pins || []).forEach(function (pin) {
           shot.appendChild(el('span', { cls: 'pin' + (pin.confirmed ? '' : ' u'), style: 'left:' + (pin.x * 100) + '%;top:' + (pin.y * 100) + '%', 'aria-hidden': 'true', text: String(pin.n) }));
         });
@@ -729,16 +816,17 @@ footer{margin-top:3.5rem;padding-top:1rem;border-top:1px solid var(--hair);font-
         })) : null]);
       }
       var facts = el('div', { cls: 'facts' }, [
-        s.check ? el('div', null, [el('b', { text: T.check + ': ' }), s.check]) : null,
-        has(s.inputs) ? el('div', null, [el('b', { text: T.inputs + ': ' }), s.inputs.join(', ')]) : null,
-        has(s.outputs) ? el('div', null, [el('b', { text: T.outputs + ': ' }), s.outputs.join(', ')]) : null,
-        s.system ? el('div', null, [el('b', { text: T.system + ': ' }), s.system]) : null,
-        s.actor ? el('div', null, [el('b', { text: T.who + ': ' }), s.actor]) : null
+        s.when ? el('div', null, [el('b', { text: T.when }), el('span', { text: s.when })]) : null,
+        s.check ? el('div', null, [el('b', { text: T.check }), el('span', { text: s.check })]) : null,
+        has(s.inputs) ? el('div', null, [el('b', { text: T.inputs }), el('span', { text: s.inputs.join(', ') })]) : null,
+        has(s.outputs) ? el('div', null, [el('b', { text: T.outputs }), el('span', { text: s.outputs.join(', ') })]) : null,
+        s.system ? el('div', null, [el('b', { text: T.system }), el('span', { text: s.system })]) : null,
+        s.actor ? el('div', null, [el('b', { text: T.who }), el('span', { text: s.actor })]) : null
       ]);
-      panel.appendChild(el('h3', { cls: 'step-title', text: s.title || '' }));
+      panel.appendChild(el('h2', { cls: 'step-title', text: s.title || '' }));
       var right = el('div', { cls: 'step' }, [
         s.detail ? el('p', { text: s.detail }) : null,
-        s.why ? el('div', { cls: 'why' }, [el('b', { text: T.why + ': ' }), s.why]) : null,
+        s.why ? el('div', { cls: 'why' }, [el('b', { text: T.why + ' ' }), s.why]) : null,
         s.safety ? el('div', { cls: 'notice safe' }, [el('b', { text: T.safety }), ' · ' + T.safetyNote]) : null,
         facts,
         statusBlock(s, p.id)
@@ -750,16 +838,16 @@ footer{margin-top:3.5rem;padding-top:1rem;border-top:1px solid var(--hair);font-
         });
         right.appendChild(ch);
       }
-      var nav = el('div', { cls: 'nav' });
-      if (!has(s.branches)) {
-        if (after(cur) >= 0) nav.appendChild(el('button', { cls: 'btn pri big', type: 'button', text: T.next + ' ›', onclick: function () { go(after(cur)); } }));
-        else nav.appendChild(el('button', { cls: 'btn pri big', type: 'button', text: T.finish + ' ✓', onclick: function () { go(-1); } }));
-      }
-      if (hist.length) nav.appendChild(el('button', { cls: 'btn', type: 'button', text: '‹ ' + T.back, onclick: function () { cur = hist.pop(); draw(); } }));
-      nav.appendChild(copyButton(T.askAI, T.aiStep(s)));
-      nav.appendChild(el('span', { cls: 'kbd', text: T.keys }));
-      right.appendChild(nav);
       panel.appendChild(el('div', { cls: 'walk' + (left ? '' : ' noimg') }, [left, right]));
+      var a = after(cur);
+      panel.appendChild(el('div', { cls: 'actionbar' }, [
+        hist.length ? el('button', { cls: 'btn', id: 'back', type: 'button', text: '‹ ' + T.back, onclick: back }) : null,
+        el('span', { cls: 'kbd', text: T.keys }),
+        el('button', { cls: 'btn', id: 'ask-step', type: 'button', text: T.askAI, onclick: function () {
+          var b = this; copyText(T.aiStep(s), function () { b.textContent = T.copied; setTimeout(function () { b.textContent = T.askAI; }, 2500); });
+        } }),
+        el('button', { cls: 'btn pri big', id: 'next', type: 'button', hidden: has(s.branches), text: a >= 0 ? T.next + ' ›' : T.finish + ' ✓', onclick: function () { go(after(cur)); } })
+      ]));
     }
     function finished() {
       panel.appendChild(el('div', { cls: 'card done' }, [el('div', { cls: 'big', text: '✓' }), el('h3', { text: T.doneTitle }), el('p', { cls: 'meta', text: T.doneSub }),
@@ -771,13 +859,93 @@ footer{margin-top:3.5rem;padding-top:1rem;border-top:1px solid var(--hair);font-
     }
     if (keyHandler) document.removeEventListener('keydown', keyHandler);
     keyHandler = function (e) {
-      if (!panel.isConnected || /input|textarea/i.test((e.target || {}).tagName || '')) return;
-      if (e.key === 'ArrowLeft' && hist.length) { cur = hist.pop(); draw(); }
+      if (!panel.isConnected || !lb.hidden || !searchBox.hidden || /input|textarea/i.test((e.target || {}).tagName || '')) return;
+      if (e.key === 'ArrowLeft') back();
       if (e.key === 'ArrowRight' && cur >= 0 && !has(steps[cur].branches)) go(after(cur));
     };
     document.addEventListener('keydown', keyHandler);
     draw();
   }
+
+  // ── Full-screen image ──────────────────────────────────────────────────
+  var lb = el('div', { cls: 'lightbox', id: 'lightbox', role: 'dialog', 'aria-modal': 'true', hidden: true, onclick: function () { lb.hidden = true; } });
+  document.body.appendChild(lb);
+  function lightbox(src, s) {
+    lb.innerHTML = '';
+    var fig = el('div', { cls: 'lb-fig' }, [el('img', { src: src, alt: s.title || s.id })]);
+    (s.pins || []).forEach(function (pin) {
+      fig.appendChild(el('span', { cls: 'pin' + (pin.confirmed ? '' : ' u'), style: 'left:' + (pin.x * 100) + '%;top:' + (pin.y * 100) + '%', 'aria-hidden': 'true', text: String(pin.n) }));
+    });
+    lb.appendChild(el('button', { cls: 'btn lb-close', type: 'button', text: T.close }));
+    lb.appendChild(fig);
+    lb.hidden = false;
+  }
+
+  // ── Search ─────────────────────────────────────────────────────────────
+  var GROUPS = ['task', 'step', 'rule', 'trouble', 'term', 'question', 'urgent'];
+  function norm(s) { s = String(s == null ? '' : s).toLowerCase(); return s.normalize ? s.normalize('NFC') : s; }
+  function searchIndex() {
+    var out = [];
+    procs.forEach(function (p) {
+      out.push({ type: 'task', title: p.name || p.id, text: [p.name, p.summary].join(' '), route: '#/task/' + p.id, where: p.frequency || '' });
+      (p.steps || []).forEach(function (s) { out.push({ type: 'step', title: s.title || s.id, text: [s.title, s.detail, s.why, s.check].join(' '), route: '#/task/' + p.id + '/walk/' + s.id, where: p.name || '' }); });
+      (p.rules || []).forEach(function (r) { out.push({ type: 'rule', title: r.text || r.id, text: [r.text, r.why, r.applies_when].join(' '), route: '#/task/' + p.id + '/rules', where: p.name || '' }); });
+      (p.troubleshooting || []).forEach(function (t) { out.push({ type: 'trouble', title: t.symptom || t.id, text: [t.symptom, t.cause, t.fix].join(' '), route: '#/task/' + p.id + '/trouble', where: p.name || '' }); });
+    });
+    (K.glossary || []).forEach(function (g) { out.push({ type: 'term', title: g.term || '', text: [g.term, g.meaning].join(' '), route: '#/glossary', where: g.meaning || '' }); });
+    OQ.forEach(function (q) { out.push({ type: 'question', title: q.question || '', text: [q.question, q.who_to_ask].join(' '), route: '#/questions', where: q.who_to_ask || '' }); });
+    urgentRows().forEach(function (r) { out.push({ type: 'urgent', title: r.what || '', text: [r.what, r.sub].join(' '), route: '#/urgent', where: r.when || r.tag || '' }); });
+    (H.watch || []).forEach(function (d) { out.push({ type: 'urgent', title: d.what || '', text: [d.what, d.why].join(' '), route: '#/urgent', where: T.watch }); });
+    (H.access || []).forEach(function (d) { out.push({ type: 'urgent', title: d.system || '', text: [d.system, d.account_or_role].join(' '), route: '#/urgent', where: T.access }); });
+    return out;
+  }
+  var searchInput = el('input', { id: 'search-q', type: 'search', autocomplete: 'off', placeholder: T.searchPh, 'aria-label': T.searchPh, 'aria-controls': 'search-results' });
+  var searchList = el('div', { id: 'search-results', role: 'listbox' });
+  var searchBox = el('div', { cls: 'searchwrap', id: 'search', role: 'dialog', 'aria-modal': 'true', 'aria-label': T.searchPh, hidden: true }, [
+    el('div', { cls: 'searchpanel' }, [el('div', { cls: 'searchhead' }, [icon('search'), searchInput, el('button', { cls: 'btn txt', type: 'button', text: T.close, onclick: closeSearch })]), searchList])]);
+  searchBox.addEventListener('click', function (e) { if (e.target === searchBox) closeSearch(); });
+  document.body.appendChild(searchBox);
+  var active = 0, results = [];
+  function openSearch() { searchBox.hidden = false; searchInput.value = ''; renderResults(); searchInput.focus(); }
+  function closeSearch() { searchBox.hidden = true; }
+  function pick(r) { closeSearch(); if (location.hash === r.route) route(); else location.hash = r.route; }
+  function renderResults() {
+    var q = norm(searchInput.value.trim());
+    searchList.innerHTML = '';
+    results = [];
+    if (!q) { searchList.appendChild(el('p', { cls: 'empty', text: T.searchHint })); return; }
+    var all = searchIndex().filter(function (r) { return norm(r.text).indexOf(q) >= 0; });
+    GROUPS.forEach(function (g) {
+      var hits = all.filter(function (r) { return r.type === g; }).slice(0, 8);
+      if (!hits.length) return;
+      searchList.appendChild(el('div', { cls: 'glabel', text: T.groups[g] }));
+      hits.forEach(function (r) {
+        var i = results.length;
+        results.push(r);
+        searchList.appendChild(el('div', { cls: 'opt', role: 'option', id: 'opt-' + i, 'aria-selected': String(i === active), onclick: function () { pick(r); } }, [
+          el('span', { cls: 'opt-t', text: r.title }), r.where ? el('span', { cls: 'opt-w', text: r.where }) : null]));
+      });
+    });
+    if (!results.length) searchList.appendChild(el('p', { cls: 'empty', text: T.noHits }));
+  }
+  function setActive(i) {
+    if (!results.length) return;
+    active = (i + results.length) % results.length;
+    Array.prototype.forEach.call(searchList.querySelectorAll('[role=option]'), function (o, j) { o.setAttribute('aria-selected', String(j === active)); });
+    var o = document.getElementById('opt-' + active); if (o && o.scrollIntoView) o.scrollIntoView({ block: 'nearest' });
+  }
+  searchInput.addEventListener('input', function () { active = 0; renderResults(); });
+  searchInput.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowDown') { e.preventDefault(); setActive(active + 1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(active - 1); }
+    else if (e.key === 'Enter' && results[active]) { e.preventDefault(); pick(results[active]); }
+  });
+  document.addEventListener('keydown', function (e) {
+    var typing = /input|textarea|select/i.test((e.target || {}).tagName || '');
+    if ((e.key === 'k' || e.key === 'K') && (e.ctrlKey || e.metaKey)) { e.preventDefault(); openSearch(); return; }
+    if (e.key === '/' && !typing && searchBox.hidden) { e.preventDefault(); openSearch(); return; }
+    if (e.key === 'Escape') { closeSearch(); lb.hidden = true; }
+  });
 
   function rules(p, panel) {
     panel.appendChild(el('div', { cls: 'card list' }, p.rules.map(function (r) {
@@ -824,11 +992,13 @@ footer{margin-top:3.5rem;padding-top:1rem;border-top:1px solid var(--hair);font-
       renderSide('#/task/' + pid);
       return task(pid, m[2] || 'walk', m[3] ? decodeURIComponent(m[3]) : null);
     }
+    document.body.classList.remove('focus');
     if (VIEWS_REF[h]) { renderSide(h); return VIEWS_REF[h](); }
     renderSide('#/');
     home();
   }
   renderTop();
+  document.getElementById('search-open').addEventListener('click', openSearch);
   window.addEventListener('hashchange', route);
   route();
 })();
