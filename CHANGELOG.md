@@ -6,6 +6,15 @@ All notable changes to this project are recorded here. The format follows
 
 ## [Unreleased]
 
+### Added
+- START-HERE.html is rebuilt as an app: a sidebar with every task and its progress, search across the whole Pack (`/` or Ctrl+K), a focus mode for walk-throughs with a step list and an action bar that stays on screen, full-screen images, and "continue where you left off".
+- Task views: each task can be shown as a step-by-step walk-through, a checklist, a timeline, a decision finder or a troubleshooting list. New optional fields `view`, `view_confirmed` and `steps[].when`; the skill proposes a view per task and the giver confirms it.
+- Pages for all urgent items, open questions, glossary and change history.
+
+### Changed
+- New visual system for START-HERE.html and the Pack Builder: white surfaces, near-black text, pill buttons, rounded cards, and soft colour orbs made from the Pack's accent. The accent is darkened automatically when white numbers on it would be hard to read.
+- The Pack Builder shows progress through its three steps.
+
 ### Fixed
 - GitHub Pages deploys from `main` instead of from release tags, which the `github-pages` environment refuses.
 

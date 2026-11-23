@@ -28,7 +28,7 @@ npx playwright install chromium
    ```bash
    npm test                       # unit tests for the pack builder and manifests
    python3 tools/build_dist.py    # rebuilds the Pack Builder, PROMPT.md and the skill zip
-   npm run test:e2e               # browser tests: hostile packs must not run code
+   npm run test:e2e               # browser tests: page behaviour, task views, and hostile packs must not run code
    ```
 
 4. If you changed the skill's behaviour, run the relevant scenarios in `tests/scenarios.md` with a real AI and note the result in the pull request.
