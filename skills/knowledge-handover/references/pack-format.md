@@ -71,6 +71,8 @@ handover         { snapshot_date, expires,
                    watch:        [{ what, why, status }],
                    access:       [{ system, account_or_role, action: "transfer"|"revoke"|"request", status }] }
 processes        [{ id, name, summary, trigger, frequency, complete (bool),
+                    view: "steps"|"checklist"|"timeline"|"decision"|"troubleshoot",   optional, default "steps"
+                    view_confirmed (bool),
                     coverage: { trigger, steps, inputs_outputs, systems, people, decisions,
                                 exceptions, checks, failures, deadlines, risk, wish_known }
                               each "done" | "skipped" | "missing",
@@ -84,6 +86,7 @@ processes        [{ id, name, summary, trigger, frequency, complete (bool),
                               who_can_do_confirmed (bool),
                               image, pins: [{ n, x, y, label, confirmed (bool) }],
                               branches: [{ label, goto }],          goto = a step ID
+                              when,                                 optional: when the step happens ("Day 1", "Before 10:00")
                               branch_question,                      optional: the question shown above the branch buttons
                               next,                                 optional: step ID (or "end") to go to after this step
                               status, source }],
@@ -102,6 +105,20 @@ handover_message text the giver can send with the zip (written in the giver's la
 Pins use fractions of the image size: `x` and `y` from 0 (left/top) to 1 (right/bottom). Ask the giver to confirm pin positions; unconfirmed pins are drawn dashed.
 
 Branches make the walkthrough interactive: a step with `branches` shows one button per branch and jumps to its `goto` step. Add `branch_question` (for example "Do the two totals match?") so the receiver knows what they are choosing; without it the page shows a generic "Which case are you in?". After a step without branches, the walkthrough goes to the following step in the array, unless the step has `next`: a step ID to jump to, or `"end"` to finish the task. Set `next` wherever a branch option rejoins the main path or should end the task early (for example, "small difference → adjust → done" must not fall through into the "large difference" steps); the builder warns when a branch option falls straight into a sibling option without `next`. Walk every branch path once before building.
+
+### Task views
+
+Each task has a `view`: how START-HERE.html lays it out. Pick it from the shape of the work, propose it to the giver in plain words with a one-line reason, offer the others as taps, and set `view_confirmed` when they agree. The receiver can always switch to the step-by-step walk-through.
+
+| `view` | Fits work like | The receiver sees |
+|---|---|---|
+| `steps` | software procedures, anything done in order on a screen | one step at a time with the real image and pins |
+| `checklist` | shift handovers, opening and closing routines, maintenance rounds, safety checks | every step as a tick list, safety steps first |
+| `timeline` | month-end close, payroll, work driven by the calendar or the clock | steps grouped by their `when` |
+| `decision` | approvals, eligibility checks, triage, "it depends" judgement | the rules of thumb, then the branch questions one by one |
+| `troubleshoot` | on-call, repairs, IT support, "something went wrong" | symptoms first, each with cause and fix |
+
+A view needs its data: `checklist` and `timeline` need steps, `decision` needs branching steps or rules, `troubleshoot` needs troubleshooting entries. Without it the page falls back to `steps` and the builder warns. For a `timeline`, give every step a `when`.
 
 ## 4. Minimal example
 

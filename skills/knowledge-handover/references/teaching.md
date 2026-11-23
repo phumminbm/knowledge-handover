@@ -32,6 +32,8 @@ Never wait to be asked for "a flow" or "a diagram"; most people don't know those
 | A single screen or machine | The real image with numbered pins |
 | Several options to compare | A short table |
 
+Each task in the Pack also has a `view`; follow it when you teach that task: tick through a `checklist` item by item, go date by date through a `timeline`, ask the branch questions of a `decision` task one at a time, and start a `troubleshoot` task from the symptom the receiver has.
+
 Use `diagram/RULES.md` when you can render HTML; otherwise numbered steps and a Mermaid block. Only ever show the giver's real images as evidence.
 
 ## Ten ways to teach
