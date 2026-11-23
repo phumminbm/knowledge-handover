@@ -1,0 +1,266 @@
+{
+  "schema_version": "1.0",
+  "pack_id": "KP-2026-1515",
+  "version": 3,
+  "saved_at": "2026-11-23",
+  "language": "en",
+  "accent": "#0f766e",
+  "title": "Cycle counts and stock discrepancies · Warehouse (test)",
+  "confidentiality": "internal",
+  "giver": {
+    "role_title": "Stock controller"
+  },
+  "stage": "complete",
+  "role": {
+    "summary": "Runs cycle counts, investigates and adjusts stock discrepancies, produces the month-end stock report",
+    "status": "employee_provided"
+  },
+  "tasks": [
+    {
+      "id": "P01",
+      "name": "Handle a count discrepancy",
+      "frequency": "Daily",
+      "priority": 1,
+      "why_priority": "Only the giver does it; money at risk",
+      "captured": "complete"
+    },
+    {
+      "id": "P02",
+      "name": "Weekly cycle count",
+      "frequency": "Weekly",
+      "priority": 2,
+      "captured": "partial"
+    },
+    {
+      "id": "P03",
+      "name": "Month-end stock report",
+      "frequency": "Monthly",
+      "priority": 3,
+      "captured": "not_started"
+    }
+  ],
+  "handover": {
+    "snapshot_date": "2026-11-23",
+    "expires": "2026-12-14",
+    "deadlines": [
+      {
+        "what": "November stock report to finance",
+        "when": "2026-12-02",
+        "status": "employee_provided"
+      }
+    ],
+    "in_progress": [
+      {
+        "item": "Discrepancy on SKU 88-104 (12 units short)",
+        "state": "Recounted once, still short",
+        "next_step": "Check putaway log, then tell the manager",
+        "status": "employee_provided"
+      }
+    ],
+    "access": [
+      {
+        "system": "WMS",
+        "account_or_role": "Stock adjustment role",
+        "action": "transfer",
+        "status": "employee_provided"
+      }
+    ]
+  },
+  "processes": [
+    {
+      "id": "P01",
+      "name": "Handle a count discrepancy",
+      "summary": "Decide whether to adjust, recount or escalate when a count differs from the WMS",
+      "trigger": "A count differs from the WMS quantity",
+      "frequency": "Daily",
+      "complete": true,
+      "coverage": {
+        "trigger": "done",
+        "steps": "done",
+        "inputs_outputs": "done",
+        "systems": "done",
+        "people": "done",
+        "decisions": "done",
+        "exceptions": "done",
+        "checks": "done",
+        "failures": "done",
+        "deadlines": "skipped",
+        "risk": "done",
+        "wish_known": "done"
+      },
+      "systems": [
+        {
+          "name": "WMS",
+          "purpose": "Stock quantities",
+          "source_of_truth": true
+        },
+        {
+          "name": "Known-issues spreadsheet",
+          "purpose": "Explains recurring discrepancies",
+          "source_of_truth": false
+        }
+      ],
+      "people": [
+        {
+          "name_or_role": "Warehouse manager",
+          "involvement": "Approves large or serialised adjustments"
+        },
+        {
+          "name_or_role": "Licensed forklift driver",
+          "involvement": "Counts upper racking"
+        }
+      ],
+      "steps": [
+        {
+          "id": "P01.S01",
+          "title": "Check the value and item type",
+          "detail": "Work out the value of the difference; check whether the item is serialised",
+          "why": "Policy SOP-WH-12 sets who may adjust",
+          "branch_question": "Over 5,000 baht or serialised?",
+          "branches": [
+            {
+              "label": "No — small, not serialised",
+              "goto": "P01.S02"
+            },
+            {
+              "label": "Yes",
+              "goto": "P01.S03"
+            }
+          ],
+          "who_can_do": "ai_with_approval",
+          "who_can_do_confirmed": true,
+          "status": "source_supported"
+        },
+        {
+          "id": "P01.S02",
+          "title": "Adjust in the WMS with a reason code",
+          "detail": "Post the adjustment and note the reason in the known-issues spreadsheet",
+          "why": "The spreadsheet explains repeat issues next month",
+          "check": "WMS quantity equals the count",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided",
+          "next": "P01.S06"
+        },
+        {
+          "id": "P01.S03",
+          "title": "Check the putaway log for the last 7 days",
+          "detail": "Look for stock put in the wrong location",
+          "why": "Most large differences are misplaced, not missing",
+          "who_can_do": "ai_with_approval",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P01.S04",
+          "title": "Recount (upper racking: forklift driver only)",
+          "detail": "Recount the location; upper levels need a licensed driver",
+          "why": "Safety and accuracy",
+          "safety": true,
+          "risk": "high",
+          "actor": "Licensed forklift driver",
+          "branch_question": "Does the recount match the WMS?",
+          "branches": [
+            {
+              "label": "Yes",
+              "goto": "P01.S06"
+            },
+            {
+              "label": "No",
+              "goto": "P01.S05"
+            }
+          ],
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P01.S05",
+          "title": "Tell the warehouse manager",
+          "detail": "Send location, SKU, counts and what you checked",
+          "why": "Large adjustments need approval (SOP-WH-12)",
+          "who_can_do": "ai_with_approval",
+          "who_can_do_confirmed": true,
+          "status": "source_supported",
+          "next": "P01.S06"
+        },
+        {
+          "id": "P01.S06",
+          "title": "Close the discrepancy",
+          "detail": "Mark it resolved in the spreadsheet",
+          "who_can_do": "ai_with_approval",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        }
+      ],
+      "rules": [
+        {
+          "id": "R-001",
+          "text": "Differences over 5,000 baht or on serialised items need a recount and the manager's approval",
+          "why": "Company policy",
+          "status": "source_supported",
+          "source": "SOP-WH-12 as quoted by the giver"
+        },
+        {
+          "id": "R-002",
+          "text": "The WMS wins for quantities; the spreadsheet only explains",
+          "why": "Auditors use the WMS",
+          "status": "employee_provided"
+        }
+      ],
+      "scenarios": [
+        {
+          "id": "Q-001",
+          "situation": "Count shows 3 fewer units of a 900-baht item, not serialised.",
+          "question": "What do you do?",
+          "options": [
+            "Escalate to the manager",
+            "Adjust in the WMS with a reason code",
+            "Ignore it"
+          ],
+          "answer": 1,
+          "explanation": "Under 5,000 baht and not serialised (R-001)",
+          "refs": [
+            "R-001",
+            "P01.S02"
+          ]
+        },
+        {
+          "id": "Q-002",
+          "situation": "A serialised scanner is missing from its location.",
+          "question": "First step?",
+          "options": [
+            "Adjust it out",
+            "Check the putaway log for the last 7 days",
+            "Buy a new one"
+          ],
+          "answer": 1,
+          "explanation": "Serialised → investigate first (P01.S03)",
+          "refs": [
+            "P01.S03"
+          ]
+        }
+      ],
+      "status": "employee_provided"
+    }
+  ],
+  "open_questions": [
+    {
+      "id": "OQ-001",
+      "question": "Month-end stock report not captured",
+      "who_to_ask": "Finance",
+      "refs": [
+        "P03"
+      ],
+      "origin": "skipped"
+    }
+  ],
+  "change_log": [
+    {
+      "date": "2026-11-23",
+      "version": 3,
+      "change": "Discrepancy process complete",
+      "by": "giver"
+    }
+  ]
+}

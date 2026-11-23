@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "pack_id": "KP-2026-2020",
+  "version": 2,
+  "saved_at": "2026-11-23",
+  "language": "en",
+  "accent": "#bf4520",
+  "title": "Incoming inspection · Moulded parts (test)",
+  "confidentiality": "internal",
+  "giver": { "role_title": "QC inspector" },
+  "stage": "complete",
+  "role": { "summary": "Inspects incoming moulded parts per lot, releases or rejects them", "status": "employee_provided" },
+  "tasks": [{ "id": "P01", "name": "Inspect an incoming lot", "frequency": "Daily", "priority": 1, "captured": "complete" }],
+  "handover": { "snapshot_date": "2026-11-23", "expires": "2026-12-07",
+    "in_progress": [{ "item": "Lot 4471-B on hold (sink marks)", "state": "NCR raised", "next_step": "Wait for SQE decision", "status": "employee_provided" }] },
+  "processes": [
+    { "id": "P01", "name": "Inspect an incoming lot", "summary": "Sample, check cosmetics and dimensions, then release or reject", "trigger": "Goods receipt for moulded parts", "frequency": "Daily", "complete": true,
+      "coverage": { "trigger": "done", "steps": "done", "inputs_outputs": "done", "systems": "done", "people": "done", "decisions": "done", "exceptions": "done", "checks": "done", "failures": "done", "deadlines": "done", "risk": "done", "wish_known": "done" },
+      "people": [{ "name_or_role": "SQE", "involvement": "Receives NCRs, decides on supplier action" }],
+      "steps": [
+        { "id": "P01.S01", "title": "Pull the sample", "detail": "Take the sample size from the sampling table for the lot size", "why": "Consistent sampling", "who_can_do": "human_only", "who_can_do_confirmed": true, "status": "employee_provided" },
+        { "id": "P01.S02", "title": "Compare with the limit samples", "detail": "Limit samples are in the QC cabinet, drawer 3", "why": "Physical reference beats memory", "who_can_do": "human_only", "who_can_do_confirmed": true, "status": "employee_provided" },
+        { "id": "P01.S03", "title": "Check cosmetic defects", "detail": "Inspect under the light box, visible faces first", "image": "P01-S03.jpg", "pins": [{ "n": 1, "x": 0.48, "y": 0.46, "label": "Sink mark", "confirmed": true }], "who_can_do": "human_only", "who_can_do_confirmed": true, "status": "employee_provided" },
+        { "id": "P01.S04", "title": "Measure the boss diameter", "detail": "Caliper on the boss, compare with the drawing tolerance", "image": "P01-S04.jpg", "pins": [{ "n": 1, "x": 0.5, "y": 0.5, "label": "Boss", "confirmed": false }], "branch_question": "Did the sample pass both checks?", "branches": [{ "label": "Pass", "goto": "P01.S07" }, { "label": "Fail", "goto": "P01.S05" }], "who_can_do": "human_only", "who_can_do_confirmed": true, "status": "employee_provided" },
+        { "id": "P01.S05", "title": "Quarantine the lot", "detail": "Red tag and move to the hold area", "who_can_do": "human_only", "who_can_do_confirmed": true, "status": "employee_provided" },
+        { "id": "P01.S06", "title": "Raise an NCR to the SQE", "detail": "Photos, lot number, what failed", "who_can_do": "ai_with_approval", "who_can_do_confirmed": true, "status": "employee_provided" },
+        { "id": "P01.S07", "title": "Record results", "detail": "Enter pass/fail in the inspection log", "who_can_do": "ai_with_approval", "who_can_do_confirmed": true, "status": "employee_provided" }
+      ],
+      "rules": [
+        { "id": "R-001", "text": "Sink mark visible at arm's length on a visible face → reject", "why": "Customer sees that face", "status": "employee_provided" },
+        { "id": "R-002", "text": "Anything you can catch with a fingernail → reject, any face", "why": "Indicates a deep defect", "status": "employee_provided" }
+      ],
+      "scenarios": [{ "id": "Q-001", "situation": "A faint sink mark on the inside face; you can't feel it with a fingernail.", "question": "Accept or reject?", "options": ["Accept", "Reject"], "answer": 0, "explanation": "Hidden face and not catchable (R-001, R-002)", "refs": ["R-001", "R-002"] }],
+      "status": "employee_provided" }
+  ],
+  "open_questions": [],
+  "images": { "P01-S03.jpg": { "caption": "Sink mark under the light box", "sensitive_checked": true }, "P01-S04.jpg": { "caption": "Caliper on the boss", "sensitive_checked": true } },
+  "change_log": [{ "date": "2026-11-23", "version": 2, "change": "Inspection captured", "by": "giver" }]
+}

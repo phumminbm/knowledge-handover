@@ -1,0 +1,292 @@
+{
+  "schema_version": "1.0",
+  "pack_id": "KP-2026-1010",
+  "version": 2,
+  "saved_at": "2026-11-23",
+  "language": "en",
+  "accent": "#2563eb",
+  "title": "Orthopaedic theatre preparation · Main OR (test)",
+  "confidentiality": "confidential",
+  "giver": {
+    "role_title": "OR nurse",
+    "team": "Main theatres (fictional)"
+  },
+  "stage": "complete",
+  "role": {
+    "summary": "Prepares theatres for orthopaedic lists and arranges loan implant kits with suppliers",
+    "status": "employee_provided"
+  },
+  "tasks": [
+    {
+      "id": "P01",
+      "name": "Arrange loan implant kits",
+      "frequency": "Weekly",
+      "priority": 1,
+      "why_priority": "Only the giver does it; one kit due 3 Dec",
+      "captured": "complete"
+    },
+    {
+      "id": "P02",
+      "name": "Prepare theatre for an ortho list",
+      "frequency": "Daily",
+      "priority": 2,
+      "captured": "partial"
+    },
+    {
+      "id": "P03",
+      "name": "Turnover between cases",
+      "frequency": "Daily",
+      "priority": 3,
+      "captured": "not_started"
+    }
+  ],
+  "handover": {
+    "snapshot_date": "2026-11-23",
+    "expires": "2026-12-04",
+    "deadlines": [
+      {
+        "what": "Loan kit for revision hip list (rep not yet confirmed)",
+        "when": "2026-12-03",
+        "status": "employee_provided"
+      }
+    ],
+    "waiting_on_us": [
+      {
+        "who": "Implant rep (supplier X)",
+        "what": "Confirmation call for the 3 Dec kit",
+        "status": "employee_provided"
+      }
+    ],
+    "access": [
+      {
+        "system": "Theatre management system",
+        "account_or_role": "Preference card editor",
+        "action": "request",
+        "status": "employee_provided"
+      }
+    ]
+  },
+  "processes": [
+    {
+      "id": "P01",
+      "name": "Arrange loan implant kits",
+      "summary": "Book, confirm and track supplier loan kits so they are sterilised in time",
+      "trigger": "A case needing a loan kit appears on the list",
+      "frequency": "Weekly",
+      "complete": true,
+      "coverage": {
+        "trigger": "done",
+        "steps": "done",
+        "inputs_outputs": "done",
+        "systems": "done",
+        "people": "done",
+        "decisions": "done",
+        "exceptions": "done",
+        "checks": "done",
+        "failures": "done",
+        "deadlines": "done",
+        "risk": "done",
+        "wish_known": "skipped"
+      },
+      "people": [
+        {
+          "name_or_role": "Supplier rep",
+          "involvement": "Delivers the loan kit"
+        },
+        {
+          "name_or_role": "Theatre coordinator",
+          "involvement": "Escalation if the kit is late"
+        },
+        {
+          "name_or_role": "Sterile services (CSSD)",
+          "involvement": "Sterilises the kit"
+        }
+      ],
+      "systems": [
+        {
+          "name": "Theatre list",
+          "purpose": "Shows which cases need kits",
+          "source_of_truth": true
+        },
+        {
+          "name": "Hospital protocol ORT-07",
+          "purpose": "Official set-up and sterilisation requirements",
+          "source_of_truth": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "P01.S01",
+          "title": "Spot cases needing a loan kit",
+          "detail": "Check next week's list for revisions and procedures using supplier implants",
+          "why": "Kits need lead time for delivery and sterilisation",
+          "actor": "OR nurse",
+          "system": "Theatre list",
+          "who_can_do": "ai_with_approval",
+          "who_can_do_confirmed": false,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P01.S02",
+          "title": "Call the rep one week before",
+          "detail": "Phone the rep, then send an email confirming kit, date and theatre",
+          "why": "Phone gets a quick yes; the email is the record",
+          "actor": "OR nurse",
+          "who_can_do": "ai_with_approval",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided",
+          "source": "giver: AI could draft the email"
+        },
+        {
+          "id": "P01.S03",
+          "title": "Check the kit has arrived by 2 pm the day before",
+          "detail": "Ask CSSD whether the kit arrived and is booked for sterilisation",
+          "why": "The hospital requires 48 hours for sterilisation (ORT-07); 2 pm is the giver's cut-off to still escalate",
+          "check": "CSSD confirms receipt",
+          "actor": "OR nurse",
+          "safety": true,
+          "risk": "high",
+          "branch_question": "Has the kit arrived?",
+          "branches": [
+            {
+              "label": "Yes, with CSSD",
+              "goto": "P01.S05"
+            },
+            {
+              "label": "No",
+              "goto": "P01.S04"
+            }
+          ],
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P01.S04",
+          "title": "Escalate to the theatre coordinator",
+          "detail": "Tell the coordinator so the list can be changed in time",
+          "why": "Starting without a sterile kit is never an option",
+          "actor": "OR nurse",
+          "safety": true,
+          "risk": "high",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided",
+          "next": "P01.S05"
+        },
+        {
+          "id": "P01.S05",
+          "title": "Note the kit on the case record",
+          "detail": "Record kit name and CSSD confirmation as ORT-07 requires",
+          "actor": "OR nurse",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        }
+      ],
+      "rules": [
+        {
+          "id": "R-001",
+          "text": "Loan kits must be with CSSD 48 hours before the case",
+          "why": "Time needed for sterilisation",
+          "status": "source_supported",
+          "source": "ORT-07 as quoted by the giver"
+        },
+        {
+          "id": "R-002",
+          "text": "Contact the rep one week ahead",
+          "why": "Giver's practice; leaves room for delays",
+          "status": "employee_provided"
+        }
+      ],
+      "scenarios": [
+        {
+          "id": "Q-001",
+          "situation": "It's 3 pm the day before a revision hip and CSSD hasn't seen the kit.",
+          "question": "What do you do?",
+          "options": [
+            "Wait until the morning",
+            "Escalate to the theatre coordinator now",
+            "Ask the surgeon to bring one"
+          ],
+          "answer": 1,
+          "explanation": "Past the 2 pm cut-off, escalate so the list can change (P01.S04).",
+          "refs": [
+            "P01.S04"
+          ]
+        }
+      ],
+      "status": "employee_provided"
+    },
+    {
+      "id": "P02",
+      "name": "Prepare theatre for an ortho list",
+      "summary": "Room and positioning equipment checks before the first case",
+      "frequency": "Daily",
+      "complete": false,
+      "coverage": {
+        "trigger": "done",
+        "steps": "done",
+        "checks": "done",
+        "risk": "done",
+        "inputs_outputs": "missing",
+        "failures": "missing",
+        "wish_known": "missing"
+      },
+      "steps": [
+        {
+          "id": "P02.S01",
+          "title": "Follow ORT-07 room set-up",
+          "detail": "Use the official checklist; this pack does not repeat it",
+          "why": "The protocol is the source of truth",
+          "safety": true,
+          "risk": "high",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P02.S02",
+          "title": "Check traction table and padding",
+          "detail": "Traction table working, padding present for pressure areas",
+          "why": "Missing padding risks pressure injury",
+          "check": "If padding is missing, do not start",
+          "safety": true,
+          "risk": "high",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        }
+      ],
+      "status": "employee_provided"
+    }
+  ],
+  "open_questions": [
+    {
+      "id": "OQ-001",
+      "question": "Which protocol gives tourniquet settings for ortho cases?",
+      "who_to_ask": "Theatre coordinator",
+      "refs": [
+        "P02"
+      ],
+      "origin": "skipped"
+    },
+    {
+      "id": "OQ-002",
+      "question": "Turnover between cases was not captured",
+      "who_to_ask": "Theatre coordinator",
+      "refs": [
+        "P03"
+      ],
+      "origin": "skipped"
+    }
+  ],
+  "change_log": [
+    {
+      "date": "2026-11-23",
+      "version": 2,
+      "change": "Loan kits complete; theatre prep partial",
+      "by": "giver"
+    }
+  ]
+}

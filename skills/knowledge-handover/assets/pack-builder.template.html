@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Knowledge Pack Builder</title>
+<style id="kh-fonts">
+/*__FONTS__*/
+</style>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--paper:#f5f5f5;--ink:#2d3142;--muted:#4f5d75;--soft:#5a6580;--rule:rgba(45,49,66,.12);--accent:#bf4520;--tint:rgba(191,69,32,.08);--sans:'Poppins','Prompt',system-ui,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);padding:2.5rem 1.25rem;line-height:1.6}
+.wrap{max-width:860px;margin:0 auto}
+.eyebrow{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+h1{font-family:'Prompt','Poppins',sans-serif;font-size:2rem;font-weight:600;line-height:1.2}
+h1 em{font-style:normal;color:var(--accent)}
+.lede{color:var(--muted);margin:.5rem 0 1.5rem}
+.lang{float:right;font-size:.8rem}
+.lang button{border:none;background:none;color:var(--muted);cursor:pointer;font-family:var(--sans);padding:0 .3rem}
+.lang button.on{color:var(--accent);font-weight:600}
+.step{background:#fff;border:1px solid var(--rule);border-radius:6px;padding:1.2rem;margin-bottom:1rem}
+.step h2{font-size:1rem;font-weight:600;margin-bottom:.5rem;display:flex;gap:.6rem;align-items:baseline}
+.step h2 .n{font-family:var(--mono);font-size:.75rem;color:var(--accent)}
+textarea{width:100%;min-height:180px;font-family:var(--mono);font-size:.78rem;border:1px solid var(--rule);border-radius:4px;padding:.6rem;resize:vertical}
+.drop{border:1.5px dashed rgba(45,49,66,.3);border-radius:6px;padding:1.2rem;text-align:center;color:var(--muted);font-size:.88rem;cursor:pointer}
+.drop.over{border-color:var(--accent);background:var(--tint)}
+.row{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;margin-top:.6rem;font-size:.86rem;color:var(--muted)}
+button.act{font-family:var(--sans);font-size:.9rem;padding:.5rem 1rem;border-radius:4px;border:1px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
+button.pri{background:var(--ink);color:#fff}
+button:disabled{opacity:.4;cursor:default}
+.sum{font-size:.86rem;color:var(--muted);margin-top:.6rem}
+.sum b{color:var(--ink)}
+.err{color:#b42318;font-size:.86rem;margin-top:.5rem}
+.warn{font-size:.82rem;color:var(--muted);margin-top:.5rem}
+.warn li{margin-left:1.1rem}
+.imgs{font-size:.8rem;color:var(--muted);margin-top:.5rem}
+.miss{color:var(--accent)}
+.note{font-size:.78rem;color:var(--soft);margin-top:1.5rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="lang"><button data-l="th">ไทย</button>|<button data-l="en">EN</button></div>
+  <p class="eyebrow">knowledge-handover</p>
+  <h1 data-t="title"></h1>
+  <p class="lede" data-t="lede"></p>
+
+  <div class="step">
+    <h2><span class="n">1</span><span data-t="s1"></span></h2>
+    <textarea id="save" spellcheck="false"></textarea>
+    <div class="sum" id="sum"></div>
+    <div class="err" id="err"></div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">2</span><span data-t="s2"></span></h2>
+    <div class="drop" id="drop"><span data-t="drop"></span><input type="file" id="files" multiple accept="image/*" hidden></div>
+    <div class="imgs" id="imgs"></div>
+    <div class="row"><label><input type="checkbox" id="shrink" checked> <span data-t="shrink"></span></label></div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">3</span><span data-t="s3"></span></h2>
+    <div class="row"><label><span data-t="accent"></span> <input type="color" id="accent" value="#bf4520"></label></div>
+    <div class="row">
+      <button class="act pri" id="buildZip" disabled data-t="zip"></button>
+      <button class="act" id="buildHtml" disabled data-t="html"></button>
+      <button class="act" id="buildAi" disabled data-t="ai"></button>
+    </div>
+    <ul class="warn" id="warn"></ul>
+  </div>
+
+  <p class="note" data-t="privacy"></p>
+</div>
+<script>
+/*__CORE__*/
+</script>
+<script>
+(function () {
+  'use strict';
+  var TEMPLATE = /*__TEMPLATE__*/"";
+  var FONTS = document.getElementById('kh-fonts').textContent;
+  var TXT = {
+    en: {
+      title: 'Build your <em>Knowledge Pack</em>', lede: 'Turn the save block from your AI chat into a pack you can hand over: a START-HERE page, a file any AI can teach from, and your original images in one zip.',
+      s1: 'Paste the latest save block (or several)', s2: 'Add your images (optional)', s3: 'Build',
+      drop: 'Drop image files here, or click to choose. Use the file names the AI gave you, e.g. P01-S03.jpg',
+      shrink: 'Shrink large photos inside START-HERE.html (originals stay untouched in visuals/)', accent: 'Accent colour',
+      zip: 'Download pack (.zip)', html: 'START-HERE.html only', ai: 'PACK-FOR-AI.md only',
+      privacy: 'Everything happens in this browser. Nothing is uploaded anywhere. Store and share the pack only through channels your organisation approves.',
+      found: 'Pack', ver: 'version', tasks: 'tasks', procs: 'tasks with steps', needImgs: 'Images the pack expects', missing: 'missing', none: 'No images added.', added: 'added'
+    },
+    th: {
+      title: 'สร้าง <em>Knowledge Pack</em>', lede: 'แปลงก้อนเซฟจากแชต AI ให้เป็นไฟล์ส่งต่องาน ได้หน้า START-HERE ไฟล์ที่ AI ใช้สอนได้ และภาพต้นฉบับ รวมใน zip ไฟล์เดียว',
+      s1: 'วางก้อนเซฟล่าสุด (วางหลายก้อนพร้อมกันได้)', s2: 'ใส่ภาพ (ถ้ามี)', s3: 'สร้างไฟล์',
+      drop: 'ลากไฟล์ภาพมาวางตรงนี้ หรือคลิกเพื่อเลือก ใช้ชื่อไฟล์ตามที่ AI บอก เช่น P01-S03.jpg',
+      shrink: 'ย่อรูปใหญ่ในหน้า START-HERE.html (ภาพต้นฉบับใน visuals/ ไม่ถูกแก้)', accent: 'สีหลัก',
+      zip: 'ดาวน์โหลด Pack (.zip)', html: 'เฉพาะ START-HERE.html', ai: 'เฉพาะ PACK-FOR-AI.md',
+      privacy: 'ทุกอย่างทำงานในเบราว์เซอร์นี้ ไม่มีการอัปโหลดข้อมูลไปที่ไหน เก็บและส่งต่อ Pack ผ่านช่องทางที่องค์กรอนุญาตเท่านั้น',
+      found: 'Pack', ver: 'เวอร์ชัน', tasks: 'งาน', procs: 'งานที่มีขั้นตอน', needImgs: 'ภาพที่ Pack ต้องใช้', missing: 'ยังไม่มี', none: 'ยังไม่ได้ใส่ภาพ', added: 'ใส่แล้ว'
+    }
+  };
+  var lang = /^th/i.test(navigator.language || '') ? 'th' : 'en';
+  var pack = null, images = {}, display = {};
+  var $ = function (id) { return document.getElementById(id); };
+
+  function applyLang() {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-t]').forEach(function (e) { e.innerHTML = TXT[lang][e.getAttribute('data-t')]; });
+    document.querySelectorAll('.lang button').forEach(function (b) { b.className = b.getAttribute('data-l') === lang ? 'on' : ''; });
+    refresh();
+  }
+  document.querySelectorAll('.lang button').forEach(function (b) { b.onclick = function () { lang = b.getAttribute('data-l'); applyLang(); }; });
+
+  function expected() {
+    var out = [];
+    ((pack && pack.processes) || []).forEach(function (p) { (p.steps || []).forEach(function (s) { if (s.image) out.push(s.image); }); });
+    return out;
+  }
+
+  function refresh() {
+    var t = TXT[lang];
+    $('err').textContent = '';
+    $('sum').innerHTML = '';
+    var text = $('save').value.trim();
+    pack = null;
+    if (text) {
+      try {
+        var r = KHCore.parseSave(text);
+        pack = r.pack;
+        if (pack.accent && /^#[0-9a-f]{6}$/i.test(pack.accent) && !$('accent').dataset.touched) $('accent').value = pack.accent;
+        $('sum').innerHTML = t.found + ' <b>' + (pack.pack_id || '?') + '</b> · ' + t.ver + ' ' + (pack.version || 1) + ' · ' +
+          (pack.tasks || []).length + ' ' + t.tasks + ' · ' + (pack.processes || []).length + ' ' + t.procs;
+      } catch (e) { $('err').textContent = e.message; }
+    }
+    var exp = expected(), names = Object.keys(images);
+    var html = names.length ? names.length + ' ' + t.added + ': ' + names.join(', ') : t.none;
+    var miss = exp.filter(function (n) { return !images[n]; });
+    if (exp.length) html += '<br>' + t.needImgs + ': ' + exp.map(function (n) { return images[n] ? n : '<span class="miss">' + n + ' (' + t.missing + ')</span>'; }).join(', ');
+    $('imgs').innerHTML = html;
+    ['buildZip', 'buildHtml', 'buildAi'].forEach(function (id) { $(id).disabled = !pack; });
+    $('warn').innerHTML = '';
+    if (pack) KHCore.validate(pack, names).forEach(function (w) { var li = document.createElement('li'); li.textContent = w; $('warn').appendChild(li); });
+  }
+  $('save').addEventListener('input', refresh);
+  $('accent').addEventListener('input', function () { $('accent').dataset.touched = '1'; });
+
+  function shrink(file, bytes) {
+    return new Promise(function (resolve) {
+      if (!$('shrink').checked || !/^image\/(jpeg|png|webp)$/.test(file.type)) return resolve(null);
+      var url = URL.createObjectURL(file), img = new Image();
+      img.onload = function () {
+        var max = 1600, w = img.naturalWidth, h = img.naturalHeight, sc = Math.min(1, max / Math.max(w, h));
+        if (sc >= 1 && bytes.length < 600000) { URL.revokeObjectURL(url); return resolve(null); }
+        var c = document.createElement('canvas'); c.width = Math.round(w * sc); c.height = Math.round(h * sc);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        c.toBlob(function (blob) {
+          URL.revokeObjectURL(url);
+          if (!blob) return resolve(null);
+          blob.arrayBuffer().then(function (ab) { resolve({ bytes: new Uint8Array(ab), mime: 'image/jpeg' }); });
+        }, 'image/jpeg', 0.85);
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); resolve(null); };
+      img.src = url;
+    });
+  }
+
+  function addFiles(list) {
+    var jobs = Array.prototype.map.call(list, function (f) {
+      return f.arrayBuffer().then(function (ab) {
+        var bytes = new Uint8Array(ab);
+        images[f.name] = bytes;
+        return shrink(f, bytes).then(function (d) { if (d) display[f.name] = d; else delete display[f.name]; });
+      });
+    });
+    Promise.all(jobs).then(refresh);
+  }
+  var drop = $('drop');
+  drop.onclick = function () { $('files').click(); };
+  $('files').onchange = function (e) { addFiles(e.target.files); };
+  drop.ondragover = function (e) { e.preventDefault(); drop.classList.add('over'); };
+  drop.ondragleave = function () { drop.classList.remove('over'); };
+  drop.ondrop = function (e) { e.preventDefault(); drop.classList.remove('over'); addFiles(e.dataTransfer.files); };
+
+  function result() {
+    var p = JSON.parse(JSON.stringify(pack));
+    p.accent = $('accent').value;
+    return KHCore.build(p, images, { template: TEMPLATE, fontsCss: FONTS, displayImages: display });
+  }
+  function download(name, data, type) {
+    var blob = new Blob([data], { type: type });
+    var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  }
+  function pick(r, suffix) { return r.files.filter(function (f) { return f.path === r.root + '/' + suffix; })[0]; }
+  $('buildZip').onclick = function () { var r = result(); download(r.zipName, KHCore.zip(r.files), 'application/zip'); };
+  $('buildHtml').onclick = function () { var r = result(); download('START-HERE.html', pick(r, 'START-HERE.html').data, 'text/html'); };
+  $('buildAi').onclick = function () { var r = result(); download('PACK-FOR-AI.md', pick(r, 'PACK-FOR-AI.md').data, 'text/markdown'); };
+
+  applyLang();
+})();
+</script>
+</body>
+</html>

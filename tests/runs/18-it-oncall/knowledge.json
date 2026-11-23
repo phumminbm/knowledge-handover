@@ -1,0 +1,215 @@
+{
+  "schema_version": "1.0",
+  "pack_id": "KP-2569-1818",
+  "version": 2,
+  "saved_at": "2026-11-23",
+  "language": "th",
+  "accent": "#7c3aed",
+  "title": "กู้คืนระบบและต่ออายุ SSL · ทีม IT (ทดสอบ)",
+  "confidentiality": "confidential",
+  "giver": {
+    "role_title": "System administrator"
+  },
+  "stage": "complete",
+  "role": {
+    "summary": "ดูแลเซิร์ฟเวอร์ backup และใบรับรอง SSL ของบริษัท",
+    "status": "employee_provided"
+  },
+  "tasks": [
+    {
+      "id": "P01",
+      "name": "กู้คืนข้อมูลจาก backup",
+      "frequency": "เมื่อเกิดเหตุ",
+      "priority": 1,
+      "why_priority": "ไม่มีใครทำเป็น ความเสี่ยงสูง",
+      "captured": "complete"
+    },
+    {
+      "id": "P02",
+      "name": "ต่ออายุ SSL",
+      "frequency": "ปีละครั้ง",
+      "priority": 2,
+      "captured": "complete"
+    }
+  ],
+  "handover": {
+    "snapshot_date": "2026-11-23",
+    "expires": "2027-01-10",
+    "deadlines": [
+      {
+        "what": "SSL ของเว็บหลักหมดอายุ",
+        "when": "2027-01-15",
+        "status": "employee_provided"
+      }
+    ],
+    "access": [
+      {
+        "system": "Backup bucket (S3)",
+        "account_or_role": "Access key ของ backup (เก็บใน password manager)",
+        "action": "transfer",
+        "status": "employee_provided"
+      },
+      {
+        "system": "DNS / ผู้ให้บริการโดเมน",
+        "account_or_role": "Admin",
+        "action": "transfer",
+        "status": "employee_provided"
+      }
+    ]
+  },
+  "processes": [
+    {
+      "id": "P01",
+      "name": "กู้คืนข้อมูลจาก backup",
+      "summary": "ลองกู้ที่ staging ก่อนเสมอ ยกเว้นระบบล่มทั้งหมดและ CTO อนุมัติ",
+      "trigger": "ข้อมูลหายหรือระบบเสีย",
+      "frequency": "เมื่อเกิดเหตุ",
+      "complete": true,
+      "coverage": {
+        "trigger": "done",
+        "steps": "done",
+        "inputs_outputs": "done",
+        "systems": "done",
+        "people": "done",
+        "decisions": "done",
+        "exceptions": "done",
+        "checks": "done",
+        "failures": "done",
+        "deadlines": "skipped",
+        "risk": "done",
+        "wish_known": "done"
+      },
+      "systems": [
+        {
+          "name": "restic + S3 bucket",
+          "purpose": "เก็บ backup",
+          "source_of_truth": true
+        },
+        {
+          "name": "เครื่อง staging",
+          "purpose": "ทดสอบกู้คืน",
+          "source_of_truth": false
+        }
+      ],
+      "steps": [
+        {
+          "id": "P01.S01",
+          "title": "เช็คว่า backup ล่าสุดเมื่อไร",
+          "detail": "รัน restic snapshots ดูวันที่ล่าสุด",
+          "why": "รู้ว่าข้อมูลจะหายไปช่วงไหน",
+          "who_can_do": "ai_with_approval",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P01.S02",
+          "title": "ระบบล่มทั้งหมดหรือไม่",
+          "detail": "ถ้าระบบยังใช้ได้บางส่วน ให้ลองที่ staging ก่อน",
+          "branch_question": "ระบบล่มทั้งหมดและ CTO อนุมัติให้กู้ทับเลยไหม",
+          "branches": [
+            {
+              "label": "ไม่ — ลองที่ staging",
+              "goto": "P01.S03"
+            },
+            {
+              "label": "ใช่ และ CTO อนุมัติแล้ว",
+              "goto": "P01.S05"
+            }
+          ],
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P01.S03",
+          "title": "กู้คืนที่ staging",
+          "detail": "restic restore latest --target /srv บนเครื่อง staging (key ขอจากหัวหน้าทีม IT)",
+          "why": "ถ้า backup เสีย จะได้ไม่ทับของจริง",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P01.S04",
+          "title": "ตรวจข้อมูลที่กู้",
+          "detail": "เปิดแอปบน staging เช็ครายการล่าสุด",
+          "check": "รายการล่าสุดตรงกับเวลา backup",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P01.S05",
+          "title": "กู้คืนที่ production",
+          "detail": "ทำแบบเดียวกันที่ production — ต้องได้อนุมัติจาก CTO ก่อนเสมอ (R-001)",
+          "why": "ทับข้อมูลจริง ย้อนกลับไม่ได้",
+          "risk": "high",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        }
+      ],
+      "rules": [
+        {
+          "id": "R-001",
+          "text": "กู้ทับ production ได้เมื่อ CTO อนุมัติเท่านั้น",
+          "why": "ย้อนกลับไม่ได้",
+          "status": "employee_provided"
+        }
+      ],
+      "status": "employee_provided"
+    },
+    {
+      "id": "P02",
+      "name": "ต่ออายุ SSL",
+      "summary": "ต่ออายุใบรับรองก่อนหมด 2 สัปดาห์",
+      "trigger": "เตือนจากผู้ให้บริการ",
+      "frequency": "ปีละครั้ง",
+      "complete": true,
+      "coverage": {
+        "trigger": "done",
+        "steps": "done",
+        "systems": "done",
+        "checks": "done",
+        "deadlines": "done"
+      },
+      "steps": [
+        {
+          "id": "P02.S01",
+          "title": "สร้าง CSR และส่งผู้ให้บริการ",
+          "detail": "ใช้ openssl สร้าง CSR ตามชื่อโดเมนเดิม",
+          "who_can_do": "ai_with_approval",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P02.S02",
+          "title": "ยืนยันโดเมนผ่าน DNS",
+          "detail": "เพิ่ม TXT record ตามที่ผู้ให้บริการให้",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P02.S03",
+          "title": "ติดตั้งและรีสตาร์ท web server",
+          "check": "เปิดเว็บแล้ววันหมดอายุเป็นปีถัดไป",
+          "risk": "medium",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        }
+      ],
+      "status": "employee_provided"
+    }
+  ],
+  "open_questions": [],
+  "change_log": [
+    {
+      "date": "2026-11-23",
+      "version": 2,
+      "change": "เก็บครบสองงาน (ไม่บันทึก access key ตามนโยบาย)",
+      "by": "giver"
+    }
+  ]
+}

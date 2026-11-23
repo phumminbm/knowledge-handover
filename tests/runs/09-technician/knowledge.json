@@ -1,0 +1,321 @@
+{
+  "schema_version": "1.0",
+  "pack_id": "KP-2569-0911",
+  "version": 3,
+  "saved_at": "2026-11-23",
+  "language": "th",
+  "accent": "#bf4520",
+  "title": "งานล้างและตรวจเช็คแอร์ · ทีมช่าง (ทดสอบ)",
+  "confidentiality": "internal",
+  "giver": {
+    "role_title": "ช่างแอร์",
+    "team": "ทีมช่างสาขาบางนา (สมมติ)"
+  },
+  "stage": "complete",
+  "role": {
+    "summary": "ล้าง ตรวจเช็ค และซ่อมแอร์บ้านและคอนโดตามนัด",
+    "status": "employee_provided"
+  },
+  "tasks": [
+    {
+      "id": "P01",
+      "name": "ล้างแอร์และตรวจเช็ค",
+      "frequency": "ทุกวัน",
+      "priority": 1,
+      "why_priority": "ทำบ่อยที่สุด มีนัด 2 ธ.ค.",
+      "captured": "complete"
+    },
+    {
+      "id": "P02",
+      "name": "ซ่อมแอร์น้ำหยด",
+      "frequency": "สัปดาห์ละ 2-3 งาน",
+      "priority": 2,
+      "captured": "not_started"
+    },
+    {
+      "id": "P03",
+      "name": "เบิกอะไหล่และน้ำยา",
+      "frequency": "ทุกสัปดาห์",
+      "priority": 3,
+      "captured": "not_started"
+    }
+  ],
+  "handover": {
+    "snapshot_date": "2026-11-23",
+    "expires": "2026-12-07",
+    "deadlines": [
+      {
+        "what": "ล้างแอร์คอนโด 12 เครื่อง (ลูกค้า A)",
+        "when": "2026-12-02",
+        "status": "employee_provided"
+      }
+    ],
+    "in_progress": [
+      {
+        "item": "ลูกค้า B แอร์น้ำหยด",
+        "state": "รอท่อน้ำทิ้งชุดใหม่",
+        "next_step": "ของมาแล้วโทรนัดลูกค้า",
+        "status": "employee_provided"
+      }
+    ],
+    "access": [
+      {
+        "system": "แอปนัดงานของบริษัท",
+        "account_or_role": "บัญชีช่าง",
+        "action": "request",
+        "status": "employee_provided"
+      }
+    ]
+  },
+  "processes": [
+    {
+      "id": "P01",
+      "name": "ล้างแอร์และตรวจเช็ค",
+      "summary": "ตรวจอาการก่อนล้าง ล้างตัวในและตัวนอก แล้วทดสอบเปิดเครื่อง",
+      "trigger": "มีนัดล้างจากแอดมิน",
+      "frequency": "ทุกวัน",
+      "complete": true,
+      "coverage": {
+        "trigger": "done",
+        "steps": "done",
+        "inputs_outputs": "done",
+        "systems": "done",
+        "people": "done",
+        "decisions": "done",
+        "exceptions": "done",
+        "checks": "done",
+        "failures": "done",
+        "deadlines": "skipped",
+        "risk": "done",
+        "wish_known": "done"
+      },
+      "people": [
+        {
+          "name_or_role": "แอดมินสาขา",
+          "involvement": "นัดลูกค้าและส่งใบงาน"
+        },
+        {
+          "name_or_role": "หัวหน้าช่าง",
+          "involvement": "อนุมัติถ้าต้องเปลี่ยนอะไหล่"
+        }
+      ],
+      "systems": [
+        {
+          "name": "แอปนัดงาน",
+          "purpose": "ดูใบงานและปิดงาน",
+          "source_of_truth": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "P01.S01",
+          "title": "ปิดเบรกเกอร์และถอดปลั๊ก",
+          "detail": "ปิดเบรกเกอร์ของแอร์ตัวที่จะล้าง ถ้ามีปลั๊กให้ถอดด้วย",
+          "why": "กันไฟดูดระหว่างฉีดน้ำ",
+          "actor": "ช่าง",
+          "safety": true,
+          "risk": "high",
+          "check": "เปิดรีโมตแล้วเครื่องไม่ติด",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided",
+          "source": "interview 2026-11-23"
+        },
+        {
+          "id": "P01.S02",
+          "title": "ตรวจอาการก่อนล้างและถอดฟิลเตอร์",
+          "detail": "ถามลูกค้าว่ามีอาการอะไรไหม แล้วเปิดฝาหน้า ถอดฟิลเตอร์สองแผ่น",
+          "why": "ถ้ามีอาการเสียอยู่ก่อน ต้องแจ้งลูกค้าก่อนล้าง จะได้ไม่โดนว่าล้างแล้วเสีย",
+          "actor": "ช่าง",
+          "image": "P01-S02.jpg",
+          "pins": [
+            {
+              "n": 1,
+              "x": 0.31,
+              "y": 0.42,
+              "label": "ฟิลเตอร์ซ้าย",
+              "confirmed": true
+            },
+            {
+              "n": 2,
+              "x": 0.65,
+              "y": 0.42,
+              "label": "ฟิลเตอร์ขวา",
+              "confirmed": true
+            }
+          ],
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P01.S03",
+          "title": "คลุมถุงและฉีดล้างคอยล์เย็น",
+          "detail": "คลุมถุงรองน้ำใต้เครื่อง ฉีดน้ำแรงดันต่ำที่คอยล์",
+          "why": "แรงดันสูงทำครีบคอยล์พับ",
+          "check": "น้ำที่ไหลลงถุงใส ครีบไม่มีฝุ่นจับ",
+          "actor": "ช่าง",
+          "safety": true,
+          "risk": "medium",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P01.S04",
+          "title": "ทำงานบนที่สูง: ตั้งบันไดให้มั่นคง",
+          "detail": "ใช้บันไดของบริษัท มีคนจับถ้าสูงเกิน 2 เมตร",
+          "why": "ตกบันไดเป็นอุบัติเหตุที่เจอบ่อยสุด",
+          "actor": "ช่าง",
+          "safety": true,
+          "risk": "high",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "ai_inferred",
+          "source": "giver mentioned ladders; height threshold not confirmed"
+        },
+        {
+          "id": "P01.S05",
+          "title": "ล้างตัวนอกและเช็คท่อน้ำทิ้ง",
+          "detail": "ฉีดล้างคอยล์ร้อน เทน้ำลงถาดตัวในแล้วดูว่าไหลออกท่อ",
+          "why": "ท่อตันคือสาเหตุน้ำหยดอันดับหนึ่ง",
+          "check": "น้ำไหลออกปลายท่อภายในไม่กี่วินาที",
+          "image": "P01-S05.jpg",
+          "pins": [
+            {
+              "n": 1,
+              "x": 0.45,
+              "y": 0.45,
+              "label": "คอยล์ร้อน",
+              "confirmed": true
+            },
+            {
+              "n": 2,
+              "x": 0.87,
+              "y": 0.75,
+              "label": "ท่อน้ำทิ้ง",
+              "confirmed": false
+            }
+          ],
+          "branch_question": "น้ำไหลออกท่อปกติไหม",
+          "branches": [
+            {
+              "label": "ไหลปกติ",
+              "goto": "P01.S06"
+            },
+            {
+              "label": "ไหลช้าหรือไม่ไหล",
+              "goto": "P01.S07"
+            }
+          ],
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P01.S07",
+          "title": "ท่อตัน: ใช้ปั๊มเป่าท่อ",
+          "detail": "เป่าลมจากปลายท่อด้านนอก แล้วเทน้ำทดสอบซ้ำ",
+          "why": "ไม่ต้องรื้อท่อถ้าแค่ตะกอนอุด",
+          "actor": "ช่าง",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided",
+          "next": "P01.S06"
+        },
+        {
+          "id": "P01.S06",
+          "title": "ประกอบคืนและเปิดทดสอบ 15 นาที",
+          "detail": "ใส่ฟิลเตอร์ เปิดเบรกเกอร์ เปิดแอร์ 15 นาที วัดลมเย็นที่ช่องลม",
+          "why": "ให้แน่ใจว่าเย็นและไม่มีน้ำหยดก่อนกลับ",
+          "check": "ลมออกเย็น ไม่มีน้ำหยดใน 15 นาที",
+          "actor": "ช่าง",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        }
+      ],
+      "rules": [
+        {
+          "id": "R-001",
+          "text": "ถ้าเจออาการเสียก่อนล้าง ให้ถ่ายรูปและแจ้งลูกค้าก่อนเริ่ม",
+          "why": "กันข้อพิพาทว่าล้างแล้วเสีย",
+          "status": "employee_provided"
+        },
+        {
+          "id": "R-002",
+          "text": "เปลี่ยนอะไหล่ต้องให้หัวหน้าช่างอนุมัติก่อน",
+          "why": "ราคาอะไหล่ต้องแจ้งลูกค้าตามใบเสนอราคา",
+          "status": "employee_provided"
+        }
+      ],
+      "troubleshooting": [
+        {
+          "id": "T-001",
+          "symptom": "ล้างเสร็จแล้วน้ำหยดจากตัวใน",
+          "cause": "ถาดน้ำทิ้งเอียงหรือท่อยังตัน",
+          "fix": "เช็คระดับเครื่อง เป่าท่อซ้ำ",
+          "status": "employee_provided"
+        }
+      ],
+      "scenarios": [
+        {
+          "id": "Q-001",
+          "situation": "ล้างเสร็จ เปิดทดสอบไป 5 นาที มีน้ำหยดจากเครื่อง",
+          "question": "ควรเช็คอะไรก่อน",
+          "options": [
+            "เติมน้ำยา",
+            "ท่อน้ำทิ้งและระดับเครื่อง",
+            "เปลี่ยนรีโมต"
+          ],
+          "answer": 1,
+          "explanation": "ท่อตันหรือเครื่องเอียงคือสาเหตุที่พบบ่อยที่สุด (T-001)",
+          "refs": [
+            "T-001",
+            "P01.S05"
+          ]
+        }
+      ],
+      "status": "employee_provided"
+    }
+  ],
+  "open_questions": [
+    {
+      "id": "OQ-001",
+      "question": "ความสูงเท่าไรที่ต้องมีคนจับบันได (2 เมตรเป็นค่าที่ AI เดาจากบทสนทนา)",
+      "who_to_ask": "หัวหน้าช่าง",
+      "refs": [
+        "P01.S04"
+      ],
+      "origin": "inferred"
+    },
+    {
+      "id": "OQ-002",
+      "question": "ขั้นตอนซ่อมน้ำหยดและการเบิกของยังไม่ได้เก็บ",
+      "who_to_ask": "หัวหน้าช่าง",
+      "refs": [
+        "P02",
+        "P03"
+      ],
+      "origin": "skipped"
+    }
+  ],
+  "images": {
+    "P01-S02.jpg": {
+      "caption": "แอร์ตัวในเปิดฝาหน้า",
+      "sensitive_checked": true
+    },
+    "P01-S05.jpg": {
+      "caption": "คอยล์ร้อนและท่อน้ำทิ้ง",
+      "sensitive_checked": true
+    }
+  },
+  "change_log": [
+    {
+      "date": "2026-11-23",
+      "version": 3,
+      "change": "เก็บงานล้างแอร์ครบ",
+      "by": "giver"
+    }
+  ]
+}

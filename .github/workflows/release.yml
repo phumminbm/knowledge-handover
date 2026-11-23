@@ -1,0 +1,43 @@
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - name: Build release files
+        run: python3 tools/build_dist.py --pages-url "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
+      - name: Smoke test the example pack
+        run: node skills/knowledge-handover/scripts/build_pack.js examples/bank-reconciliation/knowledge.json --images examples/bank-reconciliation/images --out /tmp/pack
+      - name: Publish release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/knowledge-handover.zip
+            dist/PROMPT.md
+            dist/pack-builder.html
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: docs }
+
+  pages:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: { name: github-pages, url: "${{ steps.deploy.outputs.page_url }}" }
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

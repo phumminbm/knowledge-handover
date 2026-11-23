@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "pack_id": "KP-2569-1414",
+  "version": 2,
+  "saved_at": "2026-11-23",
+  "language": "th",
+  "accent": "#bf4520",
+  "title": "งานครัวเช้า · ร้านอาหารตามสั่ง (ทดสอบ)",
+  "confidentiality": "internal",
+  "giver": { "role_title": "กุ๊กหลัก" },
+  "stage": "review",
+  "role": { "summary": "เตรียมวัตถุดิบตอนเช้า ต้มน้ำซุป และทำอาหารตามสั่ง", "status": "employee_provided" },
+  "tasks": [
+    { "id": "P01", "name": "เตรียมของตอนเช้า", "frequency": "ทุกวัน", "priority": 1, "captured": "complete" },
+    { "id": "P02", "name": "ต้มน้ำซุปกระดูกหมู", "frequency": "ทุกวัน", "priority": 1, "captured": "complete" },
+    { "id": "P03", "name": "สั่งของกับแม่ค้าตลาด", "frequency": "วันเว้นวัน", "priority": 2, "captured": "partial" }
+  ],
+  "handover": { "snapshot_date": "2026-11-23", "expires": "2026-12-15",
+    "watch": [{ "what": "ตำแหน่งวางเนื้อดิบในตู้เย็น", "why": "ร้านวางหมูไว้ชั้นบน แต่พี่บอกว่าควรอยู่ชั้นล่างสุด รอเจ้าของร้านตัดสิน", "status": "needs_update" }] },
+  "processes": [
+    { "id": "P01", "name": "เตรียมของตอนเช้า", "summary": "เช็คของในตู้ ล้างผัก หั่นเตรียม ก่อนเปิดร้าน 10 โมง", "trigger": "ทุกวัน 7 โมงเช้า", "frequency": "ทุกวัน", "complete": true,
+      "coverage": { "trigger": "done", "steps": "done", "inputs_outputs": "done", "systems": "skipped", "people": "done", "decisions": "done", "exceptions": "done", "checks": "done", "failures": "done", "deadlines": "done", "risk": "done", "wish_known": "done" },
+      "steps": [
+        { "id": "P01.S01", "title": "เช็คของในตู้เย็น", "detail": "ดูว่าหมู ไก่ ผัก พอสำหรับวันนี้ไหม ดมกลิ่นและดูสีเนื้อ", "why": "ของไม่พอต้องโทรสั่งก่อน 8 โมงถึงจะมาทัน", "check": "เนื้อไม่มีกลิ่นเปรี้ยว ไม่เป็นเมือก", "image": "P01-S01.jpg", "pins": [{ "n": 1, "x": 0.19, "y": 0.28, "label": "หมู (ที่ร้านวางตอนนี้)", "confirmed": true }, { "n": 2, "x": 0.79, "y": 0.28, "label": "ผัก", "confirmed": true }], "safety": true, "risk": "high", "who_can_do": "human_only", "who_can_do_confirmed": true, "status": "employee_provided" },
+        { "id": "P01.S02", "title": "ล้างและหั่นผัก", "detail": "ล้างผักสามน้ำ หั่นใส่กล่องแยกชนิด", "why": "ตอนเที่ยงไม่มีเวลาหั่น", "who_can_do": "human_only", "who_can_do_confirmed": true, "status": "employee_provided" },
+        { "id": "P01.S03", "title": "แยกเขียงเนื้อดิบกับของสุก", "detail": "เขียงแดงสำหรับเนื้อดิบ เขียงเขียวสำหรับผักและของสุก", "why": "กันเชื้อจากเนื้อดิบ", "safety": true, "risk": "high", "who_can_do": "human_only", "who_can_do_confirmed": true, "status": "employee_provided" }
+      ],
+      "rules": [{ "id": "R-001", "text": "เนื้อดิบควรอยู่ชั้นล่างสุดของตู้เย็น", "why": "กันน้ำจากเนื้อดิบหยดใส่ของอื่น", "status": "needs_update", "source": "พี่กุ๊กบอก ขัดกับที่ร้านวางจริง" }],
+      "status": "employee_provided" },
+    { "id": "P02", "name": "ต้มน้ำซุปกระดูกหมู", "summary": "ต้มซุปหม้อใหญ่สำหรับทั้งวัน", "trigger": "หลังเช็คของเสร็จ", "frequency": "ทุกวัน", "complete": true,
+      "coverage": { "trigger": "done", "steps": "done", "inputs_outputs": "done", "checks": "done", "failures": "done", "wish_known": "done" },
+      "steps": [
+        { "id": "P02.S01", "title": "ลวกกระดูกก่อน", "detail": "ลวกกระดูกหมูในน้ำเดือด 5 นาที เทน้ำทิ้ง", "why": "น้ำซุปจะใส ไม่มีฟอง", "who_can_do": "human_only", "who_can_do_confirmed": true, "status": "employee_provided" },
+        { "id": "P02.S02", "title": "ต้มกับไชเท้า", "detail": "หม้อ 30 ลิตร กระดูกประมาณครึ่งหม้อ น้ำเต็มหม้อ ใส่ไชเท้า ต้มไฟอ่อน 2 ชั่วโมง", "why": "ไฟแรงทำให้ซุปขุ่น", "check": "น้ำซุปใส มีกลิ่นกระดูก", "who_can_do": "human_only", "who_can_do_confirmed": true, "status": "employee_provided" },
+        { "id": "P02.S03", "title": "ปรุงรส", "detail": "เติมซีอิ๊วทีละช้อนแล้วชิม", "why": "ซีอิ๊วแต่ละล็อตเค็มไม่เท่ากัน", "check": "เค็มนำนิดๆ ไม่หวาน", "who_can_do": "human_only", "who_can_do_confirmed": true, "status": "employee_provided" }
+      ],
+      "troubleshooting": [{ "id": "T-001", "symptom": "ซุปขุ่น", "cause": "ไม่ได้ลวกกระดูกหรือไฟแรงเกิน", "fix": "รอบหน้าลวกก่อนและลดไฟ", "status": "employee_provided" }],
+      "scenarios": [{ "id": "Q-001", "situation": "ต้มไปชั่วโมงแรก ซุปขุ่นมีฟองเยอะ", "question": "น่าจะพลาดตรงไหน", "options": ["ใส่ไชเท้าน้อย", "ไม่ได้ลวกกระดูกหรือไฟแรงเกิน", "ซีอิ๊วผิดยี่ห้อ"], "answer": 1, "explanation": "ดู T-001", "refs": ["T-001"] }],
+      "status": "employee_provided" }
+  ],
+  "open_questions": [
+    { "id": "OQ-001", "question": "ตู้เย็นควรวางเนื้อดิบชั้นไหน (ที่ร้านทำอยู่ขัดกับที่กุ๊กบอก)", "who_to_ask": "เจ้าของร้าน", "refs": ["R-001", "P01.S01"], "origin": "conflict" },
+    { "id": "OQ-002", "question": "ปริมาณซีอิ๊วและกระดูกเป็นกรัม (ยังไม่เคยชั่ง)", "who_to_ask": "กุ๊กหลัก (ชั่งให้ครั้งหนึ่งก่อนไป)", "refs": ["P02.S02", "P02.S03"], "origin": "skipped" }
+  ],
+  "images": { "P01-S01.jpg": { "caption": "ชั้นวางในตู้เย็น", "sensitive_checked": true } },
+  "change_log": [{ "date": "2026-11-23", "version": 2, "change": "เก็บงานเช้าและน้ำซุป", "by": "giver" }]
+}

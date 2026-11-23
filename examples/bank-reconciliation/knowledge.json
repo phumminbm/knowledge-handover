@@ -1,0 +1,429 @@
+{
+  "schema_version": "1.0",
+  "pack_id": "KP-2569-0001",
+  "version": 5,
+  "saved_at": "2026-11-23",
+  "language": "th",
+  "accent": "#bf4520",
+  "title": "งานบัญชีเงินสด · ฝ่ายบัญชี (ตัวอย่าง)",
+  "confidentiality": "internal",
+  "giver": {
+    "role_title": "เจ้าหน้าที่บัญชี",
+    "team": "ฝ่ายบัญชี",
+    "organization": "บริษัทตัวอย่าง จำกัด"
+  },
+  "stage": "review",
+  "role": {
+    "summary": "ดูแลบัญชีเงินสดและธนาคาร ปิดงวดสิ้นเดือน และเตรียมข้อมูลภาษีซื้อ-ขาย",
+    "context": "ทำงานคนเดียวในส่วนนี้ หัวหน้าบัญชีตรวจทุกสิ้นเดือน",
+    "stakeholders": [
+      {
+        "name": "หัวหน้าบัญชี",
+        "relationship": "ตรวจและอนุมัติไฟล์กระทบยอดทุกเดือน"
+      },
+      {
+        "name": "ฝ่ายการเงิน",
+        "relationship": "ส่งรายการโอนและเช็คจ่ายให้ทุกสัปดาห์"
+      }
+    ],
+    "status": "employee_provided"
+  },
+  "tasks": [
+    {
+      "id": "P01",
+      "name": "กระทบยอดธนาคารสิ้นเดือน",
+      "frequency": "ทุกเดือน",
+      "priority": 1,
+      "why_priority": "ทำคนเดียว และต้องเสร็จก่อนปิดงวด",
+      "captured": "complete"
+    },
+    {
+      "id": "P02",
+      "name": "เตรียมข้อมูลภาษีซื้อ-ขาย",
+      "frequency": "ทุกเดือน",
+      "priority": 2,
+      "why_priority": "มีกำหนดส่ง",
+      "captured": "partial"
+    },
+    {
+      "id": "P03",
+      "name": "บันทึกเงินรับรายวัน",
+      "frequency": "ทุกวัน",
+      "priority": 3,
+      "captured": "not_started"
+    }
+  ],
+  "handover": {
+    "snapshot_date": "2026-11-23",
+    "expires": "2026-12-07",
+    "deadlines": [
+      {
+        "what": "ส่งไฟล์กระทบยอด พ.ย. ให้หัวหน้า",
+        "when": "2026-12-03",
+        "status": "employee_provided"
+      },
+      {
+        "what": "ส่งข้อมูลภาษี พ.ย. ให้สำนักงานบัญชี",
+        "when": "2026-12-10",
+        "status": "employee_provided"
+      }
+    ],
+    "in_progress": [
+      {
+        "item": "ยอดต่าง ต.ค. 1,200 บาท",
+        "state": "ยังหาไม่เจอ",
+        "next_step": "ถามฝ่ายการเงินเรื่องเช็ค #4471",
+        "status": "employee_provided"
+      }
+    ],
+    "waiting_on_us": [
+      {
+        "who": "หัวหน้าบัญชี",
+        "what": "สรุปยอดต่าง ต.ค.",
+        "status": "employee_provided"
+      }
+    ],
+    "watch": [
+      {
+        "what": "ค่าธรรมเนียมธนาคารใหม่",
+        "why": "ธนาคารแจ้งปรับค่าธรรมเนียมตั้งแต่ ธ.ค.",
+        "status": "employee_provided"
+      }
+    ],
+    "access": [
+      {
+        "system": "ระบบบัญชี",
+        "account_or_role": "สิทธิ์ผู้บันทึก",
+        "action": "transfer",
+        "status": "employee_provided"
+      },
+      {
+        "system": "ธนาคารออนไลน์ (ดูอย่างเดียว)",
+        "account_or_role": "ผู้ใช้ของเจ้าหน้าที่บัญชี",
+        "action": "request",
+        "status": "employee_provided"
+      }
+    ]
+  },
+  "processes": [
+    {
+      "id": "P01",
+      "slug": "bank-reconciliation",
+      "name": "กระทบยอดธนาคารสิ้นเดือน",
+      "summary": "เทียบยอดเงินในบัญชีธนาคารกับยอดในระบบบัญชี ให้ตรงกันก่อนปิดงวด",
+      "trigger": "วันทำการแรกของเดือน หลังธนาคารออก statement",
+      "frequency": "ทุกเดือน",
+      "complete": true,
+      "coverage": {
+        "trigger": "done",
+        "steps": "done",
+        "inputs_outputs": "done",
+        "systems": "done",
+        "people": "done",
+        "decisions": "done",
+        "exceptions": "done",
+        "checks": "done",
+        "failures": "done",
+        "deadlines": "done",
+        "risk": "done",
+        "wish_known": "done"
+      },
+      "people": [
+        {
+          "name_or_role": "หัวหน้าบัญชี",
+          "involvement": "ตรวจและอนุมัติไฟล์ recon"
+        },
+        {
+          "name_or_role": "ฝ่ายการเงิน",
+          "involvement": "ยืนยันเช็คที่ยังไม่ขึ้นเงิน"
+        }
+      ],
+      "systems": [
+        {
+          "name": "ธนาคารออนไลน์",
+          "purpose": "ดาวน์โหลด statement",
+          "source_of_truth": true
+        },
+        {
+          "name": "ระบบบัญชี",
+          "purpose": "ดึงรายงานเงินสด",
+          "source_of_truth": false
+        }
+      ],
+      "steps": [
+        {
+          "id": "P01.S01",
+          "title": "ดาวน์โหลด statement เดือนที่แล้ว",
+          "detail": "เข้าธนาคารออนไลน์ เลือกบัญชีกระแสรายวัน แล้วดาวน์โหลดเป็น PDF",
+          "why": "ยอดจากธนาคารคือตัวตั้งที่ถูกต้องที่สุด",
+          "actor": "เจ้าหน้าที่บัญชี",
+          "system": "ธนาคารออนไลน์",
+          "outputs": [
+            "statement PDF"
+          ],
+          "check": "ชื่อไฟล์และช่วงวันที่ตรงกับเดือนที่ปิด",
+          "risk": "low",
+          "who_can_do": "ai_with_approval",
+          "who_can_do_confirmed": true,
+          "image": "P01-S01.png",
+          "pins": [
+            {
+              "n": 1,
+              "x": 0.5,
+              "y": 0.22,
+              "label": "เลือกบัญชีกระแสรายวัน",
+              "confirmed": true
+            },
+            {
+              "n": 2,
+              "x": 0.55,
+              "y": 0.51,
+              "label": "ปุ่มดาวน์โหลด PDF",
+              "confirmed": true
+            }
+          ],
+          "status": "employee_provided",
+          "source": "สัมภาษณ์ 2026-11-20"
+        },
+        {
+          "id": "P01.S02",
+          "title": "ดึงรายงานเงินสดจากระบบบัญชี",
+          "detail": "เลือกช่วงวันที่ 1 ถึงวันสุดท้ายของเดือน แล้วกดดึงรายงาน",
+          "why": "ถ้าช่วงวันไม่ตรงกับ statement ยอดจะเพี้ยนทันที",
+          "actor": "เจ้าหน้าที่บัญชี",
+          "system": "ระบบบัญชี",
+          "inputs": [
+            "ช่วงวันที่ของเดือน"
+          ],
+          "outputs": [
+            "รายงานเงินสด"
+          ],
+          "check": "ยอดยกมาตรงกับยอดยกไปของเดือนก่อน",
+          "risk": "low",
+          "who_can_do": "ai_with_approval",
+          "who_can_do_confirmed": true,
+          "image": "P01-S02.png",
+          "pins": [
+            {
+              "n": 1,
+              "x": 0.62,
+              "y": 0.36,
+              "label": "ช่วงวันที่ 1 ถึงสิ้นเดือน",
+              "confirmed": true
+            }
+          ],
+          "status": "validated",
+          "source": "สัมภาษณ์ 2026-11-20"
+        },
+        {
+          "id": "P01.S03",
+          "title": "เทียบยอดคงเหลือปลายเดือน",
+          "detail": "ดูยอดคงเหลือใน statement เทียบกับยอดในรายงาน",
+          "why": "ถ้าตรงกันงานจบเร็ว ถ้าไม่ตรงต้องไล่หาก่อนปิดงวด",
+          "actor": "เจ้าหน้าที่บัญชี",
+          "check": "จดยอดทั้งสองไว้ในไฟล์ recon",
+          "risk": "medium",
+          "who_can_do": "ai_alone",
+          "who_can_do_confirmed": false,
+          "branches": [
+            {
+              "label": "ตรงกัน",
+              "goto": "P01.S05"
+            },
+            {
+              "label": "ไม่ตรง",
+              "goto": "P01.S04"
+            }
+          ],
+          "status": "employee_provided",
+          "branch_question": "ยอดสองฝั่งตรงกันไหม"
+        },
+        {
+          "id": "P01.S04",
+          "title": "ไล่หารายการที่ขาด",
+          "detail": "ดูเช็คที่ยังไม่ขึ้นเงินก่อน แล้วค่อยดูค่าธรรมเนียมธนาคารและรายการโอนข้ามเดือน",
+          "why": "สาเหตุที่พบบ่อยที่สุดคือเช็คจ่ายที่ผู้รับยังไม่นำไปขึ้นเงิน",
+          "actor": "เจ้าหน้าที่บัญชี",
+          "check": "ยอดหลังปรับปรุงต้องเท่ากัน",
+          "risk": "medium",
+          "who_can_do": "ai_with_approval",
+          "who_can_do_confirmed": true,
+          "branches": [
+            {
+              "label": "เจอแล้ว",
+              "goto": "P01.S05"
+            },
+            {
+              "label": "หาไม่เจอ",
+              "goto": "P01.S06"
+            }
+          ],
+          "status": "employee_provided",
+          "branch_question": "หาเจอไหมว่ารายการไหนขาด"
+        },
+        {
+          "id": "P01.S06",
+          "title": "แจ้งยอดต่างที่หาไม่เจอ",
+          "detail": "บันทึกยอดต่างในไฟล์ recon พร้อมสิ่งที่ตรวจไปแล้ว และแจ้งหัวหน้าบัญชี",
+          "why": "หัวหน้าต้องตัดสินว่าจะปิดงวดหรือรอ",
+          "actor": "เจ้าหน้าที่บัญชี",
+          "risk": "medium",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided",
+          "next": "P01.S05"
+        },
+        {
+          "id": "P01.S05",
+          "title": "บันทึกผลและส่งหัวหน้า",
+          "detail": "กรอกผลในไฟล์ recon ของเดือน แล้วส่งหัวหน้าบัญชีภายในวันที่ 3",
+          "why": "หัวหน้าใช้ไฟล์นี้ปิดงวดบัญชี",
+          "actor": "เจ้าหน้าที่บัญชี",
+          "outputs": [
+            "ไฟล์ recon ของเดือน"
+          ],
+          "check": "หัวหน้าตอบรับอีเมล",
+          "risk": "low",
+          "who_can_do": "ai_with_approval",
+          "who_can_do_confirmed": true,
+          "status": "validated"
+        }
+      ],
+      "rules": [
+        {
+          "id": "R-001",
+          "text": "ยอดต่างไม่เกิน 100 บาท บันทึกเป็นค่าธรรมเนียมได้เลยโดยไม่ต้องไล่หา",
+          "why": "ไม่คุ้มเวลา และส่วนใหญ่เป็นค่าธรรมเนียม",
+          "status": "ai_inferred",
+          "source": "สรุปจากคำพูดในสัมภาษณ์ ยังไม่ได้ยืนยัน"
+        },
+        {
+          "id": "R-002",
+          "text": "ใช้ statement ของธนาคารเป็นตัวตั้งเสมอ ห้ามแก้ยอดธนาคารให้ตรงกับระบบ",
+          "why": "ยอดธนาคารคือเงินจริง",
+          "status": "validated"
+        }
+      ],
+      "troubleshooting": [
+        {
+          "id": "T-001",
+          "symptom": "ยอดยกมาไม่ตรงกับเดือนก่อน",
+          "cause": "มีคนแก้รายการย้อนหลังในระบบ",
+          "fix": "ดูประวัติการแก้ไขในระบบ แล้วแจ้งหัวหน้า",
+          "status": "employee_provided"
+        }
+      ],
+      "scenarios": [
+        {
+          "id": "Q-001",
+          "situation": "ปลายเดือนยอดต่างกัน 5,000 บาท",
+          "question": "ควรเริ่มดูอะไรก่อน",
+          "options": [
+            "เช็คที่ยังไม่ขึ้นเงิน",
+            "โทรถามธนาคารทันที",
+            "แก้ยอดในระบบให้ตรง"
+          ],
+          "answer": 0,
+          "explanation": "สาเหตุที่พบบ่อยที่สุดคือเช็คที่ยังไม่ขึ้นเงิน และห้ามแก้ยอดให้ตรงเอง (R-002)",
+          "refs": [
+            "P01.S04",
+            "R-002"
+          ]
+        }
+      ],
+      "status": "employee_provided"
+    },
+    {
+      "id": "P02",
+      "slug": "vat-data",
+      "name": "เตรียมข้อมูลภาษีซื้อ-ขาย",
+      "summary": "รวบรวมใบกำกับภาษีซื้อและขายของเดือน ส่งให้สำนักงานบัญชียื่นภาษี",
+      "frequency": "ทุกเดือน",
+      "complete": false,
+      "coverage": {
+        "trigger": "done",
+        "steps": "done",
+        "inputs_outputs": "done",
+        "systems": "missing",
+        "people": "done",
+        "decisions": "missing",
+        "exceptions": "skipped",
+        "checks": "skipped",
+        "failures": "missing",
+        "deadlines": "done",
+        "risk": "missing",
+        "wish_known": "missing"
+      },
+      "steps": [
+        {
+          "id": "P02.S01",
+          "title": "รวบรวมใบกำกับภาษีซื้อ",
+          "detail": "รวมใบกำกับจากแฟ้มเอกสารและอีเมล",
+          "status": "employee_provided"
+        },
+        {
+          "id": "P02.S02",
+          "title": "ส่งให้สำนักงานบัญชี",
+          "detail": "ส่งภายในวันที่ 10 ของเดือนถัดไป",
+          "status": "employee_provided"
+        }
+      ],
+      "status": "employee_provided"
+    }
+  ],
+  "open_questions": [
+    {
+      "id": "OQ-001",
+      "question": "เกณฑ์ยอดต่างที่บันทึกเป็นค่าธรรมเนียมได้เลยคือเท่าไร (100 บาทถูกไหม)",
+      "who_to_ask": "หัวหน้าบัญชี",
+      "refs": [
+        "R-001"
+      ],
+      "origin": "inferred"
+    },
+    {
+      "id": "OQ-002",
+      "question": "ใบกำกับภาษีที่มาช้าเกินเดือน ต้องทำอย่างไร",
+      "who_to_ask": "สำนักงานบัญชี",
+      "refs": [
+        "P02"
+      ],
+      "origin": "skipped"
+    }
+  ],
+  "glossary": [
+    {
+      "term": "recon",
+      "meaning": "ไฟล์กระทบยอดธนาคารประจำเดือน"
+    },
+    {
+      "term": "statement",
+      "meaning": "รายการเดินบัญชีที่ธนาคารออกให้"
+    }
+  ],
+  "images": {
+    "P01-S01.png": {
+      "caption": "หน้าดาวน์โหลด statement (ภาพตัวอย่าง)",
+      "sensitive_checked": true
+    },
+    "P01-S02.png": {
+      "caption": "หน้ารายงานเงินสด (ภาพตัวอย่าง)",
+      "sensitive_checked": true
+    }
+  },
+  "change_log": [
+    {
+      "date": "2026-11-20",
+      "version": 1,
+      "change": "เริ่มสัมภาษณ์ รู้จักงาน 3 งาน",
+      "by": "giver"
+    },
+    {
+      "date": "2026-11-23",
+      "version": 5,
+      "change": "เก็บ P01 ครบ เริ่ม P02",
+      "by": "giver"
+    }
+  ],
+  "handover_message": "ส่งไฟล์ส่งต่องานบัญชีเงินสดให้นะครับ วิธีที่ง่ายที่สุด: แนบไฟล์ zip นี้ในแชต AI (ถ้าแนบ zip ไม่ได้ ให้แนบ PACK-FOR-AI.md) แล้วพิมพ์ว่า \"สอนงานจาก pack นี้\" AI จะเล่าภาพรวมกับเรื่องด่วนให้ก่อน แล้วส่งไฟล์ START-HERE.html ให้พร้อมพาทำทีละขั้น ถ้าไม่ใช้ AI เปิด START-HERE.html ในเบราว์เซอร์ได้เลย เรื่องที่ยังไม่มีคำตอบอยู่ใน open-questions.md (ไฟล์นี้เป็นตัวอย่างสมมติ)"
+}
