@@ -143,7 +143,7 @@ test('search shows pack text as text, not markup', { skip }, async () => {
   await page.click('#search-open');
   await page.fill('#search-q', '<b>');
   assert.match(await page.textContent('#search'), /<b>x<\/b>/);
-  assert.strictEqual(await page.$('#search [role=option] b'), null);
+  assert.strictEqual(!!(await page.$('#search [role=option] b')), false);
   await context.close();
 });
 
@@ -303,6 +303,80 @@ test('a view without its data falls back to the walk-through', { skip }, async (
   k.processes[4].troubleshooting = [];
   const { page, context } = await openPack(browser, k, { hash: '#/task/P05' });
   assert.strictEqual(await selectedTab(page), 'walk');
+  await context.close();
+});
+
+// ── Final review fixes ────────────────────────────────────────────────────
+
+test('timeline and decision views show needs-confirmation and safety warnings', { skip }, async () => {
+  const k = fixture();
+  Object.assign(k.processes[2].steps[0], { status: 'ai_inferred', safety: true });
+  k.processes[3].rules[1].status = 'ai_inferred';
+  k.processes[3].steps[3].safety = true;
+  let r = await openPack(browser, k, { hash: '#/task/P03' });
+  assert.ok(await r.page.$('.timeline .notice.warn'), 'timeline needs-confirmation');
+  assert.ok(await r.page.$('.timeline .notice.safe'), 'timeline safety');
+  await r.context.close();
+  r = await openPack(browser, k, { hash: '#/task/P04' });
+  assert.ok(await r.page.$('.finder .rules-box .notice.warn'), 'decision rule needs-confirmation');
+  await r.page.click('.finder .choice >> text=No');
+  assert.ok(await r.page.$('.finder .answer .notice.safe'), 'decision answer safety');
+  await r.context.close();
+});
+
+test('a decision task with rules but no branching steps shows the rules without an error', { skip }, async () => {
+  const k = fixture();
+  k.processes[3].steps.forEach((s) => { delete s.branches; delete s.branch_question; });
+  const { page, context } = await openPack(browser, k, { hash: '#/task/P04' });
+  assert.match(await page.textContent('.finder'), /Never discount more than 20%/);
+  assert.strictEqual(!!(await page.$('.finder .stuck')), false);
+  await context.close();
+});
+
+test('small grey text keeps 4.5:1 contrast', { skip }, async () => {
+  const { page, context } = await openPack(browser, fixture());
+  for (const sel of ['footer', '.navlist .grey', '.side-foot']) {
+    const c = await page.$eval(sel, (e) => getComputedStyle(e).color);
+    assert.ok(contrastWithWhite(c) >= 4.5, sel + ' ' + c);
+  }
+  await context.close();
+});
+
+test('an incomplete task links to the open questions page', { skip }, async () => {
+  const k = fixture();
+  k.processes[0].complete = false;
+  const { page, context } = await openPack(browser, k, { hash: '#/task/P01/overview' });
+  assert.ok(await page.$('.notice.open a[href="#/questions"]'));
+  await context.close();
+});
+
+test('malformed and tricky links fall back instead of breaking the page', { skip }, async () => {
+  for (const [hash, sel] of [['#/task/%E0', '.hero'], ['#/task/constructor', '.hero'], ['#/task/P01/walk/constructor', '.step-title']]) {
+    const { page, errors, context } = await openPack(browser, fixture(), { hash, images: IMAGES });
+    assert.ok(await page.$(sel), hash);
+    assert.deepStrictEqual(errors, [], hash);
+    await context.close();
+  }
+});
+
+test('pack values that match object property names do not break views', { skip }, async () => {
+  const k = fixture();
+  k.processes[2].steps[0].when = 'toString';
+  k.processes[0].steps[0].next = 'constructor';
+  k.processes[0].steps[0].image = 'constructor';
+  for (const hash of ['#/task/P03', '#/task/P01']) {
+    const { page, errors, external, context } = await openPack(browser, k, { hash });
+    assert.deepStrictEqual(errors, [], hash);
+    assert.deepStrictEqual(external, [], hash);
+    await context.close();
+  }
+});
+
+test('overview section labels are labels, not boxes', { skip }, async () => {
+  const k = fixture();
+  k.processes[0].people = [{ name_or_role: 'Cashier', involvement: 'takes payment' }];
+  const { page, context } = await openPack(browser, k, { hash: '#/task/P01/overview' });
+  assert.match(await page.textContent('.panel .glabel'), /People involved/);
   await context.close();
 });
 

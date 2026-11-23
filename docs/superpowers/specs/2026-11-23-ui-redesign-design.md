@@ -222,7 +222,7 @@ Same tokens and components. Single centred column (max 720px) with an orb header
 
 ## Diagrams
 
-`diagram/references/style-guide.md` and the bundled templates align their neutral tokens (`paper`, `ink`, `muted`, `rule`) with the new system so diagrams sit naturally on the page. Accent rules and the contrast contract are unchanged.
+The bundled diagram engine (`diagram/`) is not changed in this round (see Non-goals). Diagrams are shown inside a 24px-radius card on the new page.
 
 ## Other changes
 
