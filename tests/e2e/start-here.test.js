@@ -212,6 +212,100 @@ test('the screenshot opens full screen and Esc closes it', { skip }, async () =>
   await context.close();
 });
 
+// ── Task views (Task 5) ───────────────────────────────────────────────────
+
+const selectedTab = (page) => page.getAttribute('[role=tab][aria-selected=true]', 'data-tab');
+
+test('each view opens on its own main tab', { skip }, async () => {
+  for (const [id, tab] of [['P01', 'walk'], ['P02', 'checklist'], ['P03', 'timeline'], ['P04', 'decide'], ['P05', 'fix']]) {
+    const { page, context } = await openPack(browser, fixture(), { hash: '#/task/' + id, images: IMAGES });
+    assert.strictEqual(await selectedTab(page), tab, id);
+    await context.close();
+  }
+});
+
+test('the walk-through tab is available on every view', { skip }, async () => {
+  for (const id of ['P02', 'P03', 'P04', 'P05']) {
+    const { page, context } = await openPack(browser, fixture(), { hash: '#/task/' + id });
+    assert.ok(await page.$('[role=tab][data-tab=walk]'), id);
+    await context.close();
+  }
+});
+
+test('checklist puts safety first, keeps ticks after reload, and clears them', { skip }, async () => {
+  const { page, context } = await openPack(browser, fixture(), { hash: '#/task/P02' });
+  const titles = await page.$$eval('.checklist .ck-title', (e) => e.map((x) => x.textContent));
+  assert.strictEqual(titles[0], 'Check the oxygen tank pressure');
+  assert.ok(await page.$('.checklist .notice.safe'));
+  await page.check('.checklist input[data-step="P02.S01"]');
+  await page.reload();
+  await page.waitForSelector('.checklist');
+  assert.strictEqual(await page.isChecked('.checklist input[data-step="P02.S01"]'), true);
+  await page.click('#clear-ticks');
+  assert.strictEqual(await page.isChecked('.checklist input[data-step="P02.S01"]'), false);
+  await context.close();
+});
+
+test('timeline groups steps by when, with an Any time group last', { skip }, async () => {
+  const { page, context } = await openPack(browser, fixture(), { hash: '#/task/P03' });
+  const groups = await page.$$eval('.timeline .tl-when', (e) => e.map((x) => x.textContent));
+  assert.deepStrictEqual(groups, ['Day 1', 'By day 5', 'Any time']);
+  assert.strictEqual((await page.$$('.timeline .tl-group:first-child .tl-step')).length, 2);
+  await context.close();
+});
+
+test('decision finder walks the questions to a step', { skip }, async () => {
+  const { page, context } = await openPack(browser, fixture(), { hash: '#/task/P04' });
+  assert.match(await page.textContent('.finder'), /Never discount more than 20%/);
+  await page.click('.finder .choice >> text=Yes');
+  await page.click('.finder .choice >> text=Yes');
+  assert.match(await page.textContent('.finder .answer'), /Approve up to 10%/);
+  await context.close();
+});
+
+test('decision finder stops on a loop and shows the steps', { skip }, async () => {
+  const { page, errors, context } = await openPack(browser, fixture(), { hash: '#/task/P04' });
+  await page.click('.finder .choice >> text=Yes');
+  await page.click('.finder .choice >> text=Not sure');
+  assert.ok(await page.$('.finder .stuck'));
+  assert.ok((await page.$$('.finder .stuck a')).length >= 4);
+  assert.deepStrictEqual(errors, []);
+  await context.close();
+});
+
+test('troubleshoot filter narrows the symptoms', { skip }, async () => {
+  const { page, context } = await openPack(browser, fixture(), { hash: '#/task/P05' });
+  assert.strictEqual((await page.$$('.fixes .fixcard')).length, 3);
+  await page.fill('#fix-filter', 'paper');
+  assert.strictEqual(await page.$$eval('.fixes .fixcard', (c) => c.filter((x) => !x.hidden).length), 1);
+  await context.close();
+});
+
+test('home cards name the action of each view', { skip }, async () => {
+  const { page, context } = await openPack(browser, fixture());
+  const labels = await page.$$eval('.card .btn.pri', (b) => b.map((x) => x.textContent));
+  for (const l of ['Walk me through', 'Open checklist', 'See timeline', 'Find what to do', 'What’s wrong?']) {
+    assert.ok(labels.some((x) => x.includes(l)), l);
+  }
+  await context.close();
+});
+
+test('an old pack without views still opens the walk-through', { skip }, async () => {
+  const k = fixture();
+  k.processes.forEach((p) => { delete p.view; });
+  const { page, context } = await openPack(browser, k, { hash: '#/task/P02' });
+  assert.strictEqual(await selectedTab(page), 'walk');
+  await context.close();
+});
+
+test('a view without its data falls back to the walk-through', { skip }, async () => {
+  const k = fixture();
+  k.processes[4].troubleshooting = [];
+  const { page, context } = await openPack(browser, k, { hash: '#/task/P05' });
+  assert.strictEqual(await selectedTab(page), 'walk');
+  await context.close();
+});
+
 test('phone walk-through opens the step list from a button', { skip }, async () => {
   const { page, context } = await openPack(browser, fixture(), { hash: '#/task/P01', images: IMAGES, viewport: PHONE });
   assert.strictEqual(await page.isVisible('.rail'), false);
