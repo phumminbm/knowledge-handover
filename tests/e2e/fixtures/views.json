@@ -1,0 +1,369 @@
+{
+  "schema_version": "1.0",
+  "pack_id": "KP-TEST-0001",
+  "version": 3,
+  "saved_at": "2026-11-23",
+  "language": "en",
+  "accent": "#bf4520",
+  "title": "Front office · Test Clinic",
+  "confidentiality": "internal",
+  "giver": {
+    "name": "Sam",
+    "role_title": "Office lead",
+    "team": "Front office",
+    "organization": "Test Clinic"
+  },
+  "role": {
+    "summary": "Runs the front desk, closes the month and handles the printer."
+  },
+  "tasks": [
+    {
+      "id": "P01",
+      "name": "Issue an invoice",
+      "frequency": "daily",
+      "priority": 1
+    },
+    {
+      "id": "P02",
+      "name": "Open the clinic",
+      "frequency": "daily",
+      "priority": 2
+    },
+    {
+      "id": "P03",
+      "name": "Close the month",
+      "frequency": "monthly",
+      "priority": 3
+    },
+    {
+      "id": "P04",
+      "name": "Approve a discount",
+      "frequency": "weekly",
+      "priority": 4
+    },
+    {
+      "id": "P05",
+      "name": "Fix the printer",
+      "frequency": "when it breaks",
+      "priority": 5
+    },
+    {
+      "id": "P06",
+      "name": "Order supplies",
+      "frequency": "monthly",
+      "priority": 6
+    }
+  ],
+  "handover": {
+    "snapshot_date": "2026-11-23",
+    "expires": "2099-12-31",
+    "deadlines": [
+      {
+        "what": "Send November invoices",
+        "when": "2026-12-03",
+        "status": "employee_provided"
+      },
+      {
+        "what": "Renew the printer contract",
+        "when": "2026-12-20",
+        "status": "ai_inferred"
+      },
+      {
+        "what": "Year-end stock count",
+        "when": "2026-12-28",
+        "status": "employee_provided"
+      },
+      {
+        "what": "Tax filing",
+        "when": "2027-01-10",
+        "status": "employee_provided"
+      }
+    ],
+    "in_progress": [
+      {
+        "item": "Refund for patient 102",
+        "state": "waiting for bank",
+        "next_step": "call bank",
+        "status": "employee_provided"
+      }
+    ],
+    "waiting_on_us": [
+      {
+        "who": "Dr. Lee",
+        "what": "Room schedule for January",
+        "status": "employee_provided"
+      }
+    ],
+    "watch": [
+      {
+        "what": "Card reader",
+        "why": "drops connection on Mondays",
+        "status": "employee_provided"
+      }
+    ],
+    "access": [
+      {
+        "system": "Billing system",
+        "account_or_role": "admin",
+        "action": "transfer",
+        "status": "employee_provided"
+      }
+    ]
+  },
+  "processes": [
+    {
+      "id": "P01",
+      "name": "Issue an invoice",
+      "view": "steps",
+      "frequency": "daily",
+      "complete": true,
+      "steps": [
+        {
+          "id": "P01.S01",
+          "title": "Open the billing screen",
+          "detail": "Use the Billing menu.",
+          "why": "Invoices start here.",
+          "image": "P01-S01.png",
+          "pins": [
+            {
+              "n": 1,
+              "x": 0.3,
+              "y": 0.4,
+              "label": "Billing menu",
+              "confirmed": true
+            }
+          ],
+          "status": "validated"
+        },
+        {
+          "id": "P01.S02",
+          "title": "Is the patient insured?",
+          "branch_question": "Is the patient insured?",
+          "branches": [
+            {
+              "label": "Insured",
+              "goto": "P01.S03"
+            },
+            {
+              "label": "Not insured",
+              "goto": "P01.S04"
+            }
+          ],
+          "status": "employee_provided"
+        },
+        {
+          "id": "P01.S03",
+          "title": "Bill the insurer",
+          "next": "end",
+          "status": "ai_inferred"
+        },
+        {
+          "id": "P01.S04",
+          "title": "Take payment at the desk",
+          "status": "employee_provided"
+        }
+      ]
+    },
+    {
+      "id": "P02",
+      "name": "Open the clinic",
+      "view": "checklist",
+      "frequency": "daily",
+      "complete": true,
+      "steps": [
+        {
+          "id": "P02.S01",
+          "title": "Turn on the lights",
+          "status": "employee_provided"
+        },
+        {
+          "id": "P02.S02",
+          "title": "Check the oxygen tank pressure",
+          "safety": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P02.S03",
+          "title": "Unlock the front door",
+          "status": "employee_provided"
+        }
+      ]
+    },
+    {
+      "id": "P03",
+      "name": "Close the month",
+      "view": "timeline",
+      "frequency": "monthly",
+      "complete": true,
+      "steps": [
+        {
+          "id": "P03.S01",
+          "title": "Export the sales report",
+          "when": "Day 1",
+          "status": "employee_provided"
+        },
+        {
+          "id": "P03.S02",
+          "title": "Match bank deposits",
+          "when": "Day 1",
+          "status": "employee_provided"
+        },
+        {
+          "id": "P03.S03",
+          "title": "Send to the accountant",
+          "when": "By day 5",
+          "status": "employee_provided"
+        },
+        {
+          "id": "P03.S04",
+          "title": "File the paper copies",
+          "status": "employee_provided"
+        }
+      ]
+    },
+    {
+      "id": "P04",
+      "name": "Approve a discount",
+      "view": "decision",
+      "frequency": "weekly",
+      "complete": true,
+      "rules": [
+        {
+          "id": "P04.R01",
+          "text": "Never discount more than 20%",
+          "why": "Margin",
+          "status": "validated"
+        },
+        {
+          "id": "P04.R02",
+          "text": "Staff discounts need the manager",
+          "status": "employee_provided"
+        }
+      ],
+      "steps": [
+        {
+          "id": "P04.S01",
+          "title": "Check the amount",
+          "branch_question": "Is the bill over 50,000?",
+          "branches": [
+            {
+              "label": "Yes",
+              "goto": "P04.S02"
+            },
+            {
+              "label": "No",
+              "goto": "P04.S04"
+            }
+          ],
+          "status": "employee_provided"
+        },
+        {
+          "id": "P04.S02",
+          "title": "Check the customer",
+          "branch_question": "Is this a returning customer?",
+          "branches": [
+            {
+              "label": "Yes",
+              "goto": "P04.S03"
+            },
+            {
+              "label": "Not sure",
+              "goto": "P04.S01"
+            }
+          ],
+          "status": "employee_provided"
+        },
+        {
+          "id": "P04.S03",
+          "title": "Approve up to 10%",
+          "next": "end",
+          "status": "employee_provided"
+        },
+        {
+          "id": "P04.S04",
+          "title": "Approve up to 5%",
+          "status": "employee_provided"
+        }
+      ]
+    },
+    {
+      "id": "P05",
+      "name": "Fix the printer",
+      "view": "troubleshoot",
+      "frequency": "when it breaks",
+      "complete": true,
+      "troubleshooting": [
+        {
+          "id": "P05.T01",
+          "symptom": "Printer shows a paper jam",
+          "cause": "Paper loaded crooked",
+          "fix": "Open tray 2 and reload",
+          "status": "employee_provided"
+        },
+        {
+          "id": "P05.T02",
+          "symptom": "Receipts print blank",
+          "cause": "Thermal roll upside down",
+          "fix": "Flip the roll",
+          "status": "employee_provided"
+        },
+        {
+          "id": "P05.T03",
+          "symptom": "Card reader offline",
+          "cause": "Wi-Fi dropped",
+          "fix": "Restart the reader",
+          "status": "ai_inferred"
+        }
+      ],
+      "steps": [
+        {
+          "id": "P05.S01",
+          "title": "Restart everything",
+          "status": "employee_provided"
+        }
+      ]
+    }
+  ],
+  "open_questions": [
+    {
+      "id": "Q01",
+      "question": "Who signs the printer contract?",
+      "who_to_ask": "Clinic manager",
+      "refs": [
+        "P05"
+      ]
+    },
+    {
+      "id": "Q02",
+      "question": "Is the 20% cap still current?",
+      "who_to_ask": "Owner",
+      "refs": [
+        "P04.R01"
+      ]
+    }
+  ],
+  "glossary": [
+    {
+      "term": "Reconcile",
+      "meaning": "Match the bank statement to the books"
+    },
+    {
+      "term": "<b>x</b>",
+      "meaning": "a term that looks like markup"
+    }
+  ],
+  "change_log": [
+    {
+      "date": "2026-11-20",
+      "version": 1,
+      "change": "First capture",
+      "by": "Sam"
+    },
+    {
+      "date": "2026-11-23",
+      "version": 3,
+      "change": "Added printer fixes",
+      "by": "Sam"
+    }
+  ]
+}
