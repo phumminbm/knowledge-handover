@@ -6,6 +6,8 @@ All notable changes to this project are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-23
+
 ### Added
 - START-HERE.html is rebuilt as an app: a sidebar with every task and its progress, search across the whole Pack (`/` or Ctrl+K), a focus mode for walk-throughs with a step list and an action bar that stays on screen, full-screen images, and "continue where you left off".
 - Task views: each task can be shown as a step-by-step walk-through, a checklist, a timeline, a decision finder or a troubleshooting list. New optional fields `view`, `view_confirmed` and `steps[].when`; the skill proposes a view per task and the giver confirms it.
@@ -38,5 +40,6 @@ First public release.
 - The Pack Builder shows pasted values and file names as text.
 - Pack, process and image names are cleaned before they become file paths, so a save block cannot write outside the Pack folder or add `../` entries to the zip.
 
-[Unreleased]: https://github.com/phumminbm/knowledge-handover/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/phumminbm/knowledge-handover/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/phumminbm/knowledge-handover/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/phumminbm/knowledge-handover/releases/tag/v0.1.0
