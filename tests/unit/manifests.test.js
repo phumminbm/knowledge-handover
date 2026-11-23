@@ -47,3 +47,17 @@ test('CHANGELOG has an entry for the current version', () => {
   const v = read('.claude-plugin/plugin.json').version;
   assert.match(fs.readFileSync(path.join(ROOT, 'CHANGELOG.md'), 'utf8'), new RegExp('^## \\[' + v.replace(/\./g, '\\.') + '\\]', 'm'));
 });
+
+test('pack-format.md documents every task view', () => {
+  const doc = fs.readFileSync(path.join(ROOT, 'skills/knowledge-handover/references/pack-format.md'), 'utf8');
+  const core = require('../../skills/knowledge-handover/scripts/pack-core.js');
+  for (const v of core.VIEWS) assert.match(doc, new RegExp('`' + v + '`'));
+  assert.match(doc, /view_confirmed/);
+  assert.match(doc, /`when`/);
+});
+
+test('example pack uses two views', () => {
+  const k = read('examples/bank-reconciliation/knowledge.json');
+  assert.deepStrictEqual(k.processes.map((p) => p.view), ['steps', 'timeline']);
+  assert.ok(k.processes[1].steps.every((s) => s.when));
+});

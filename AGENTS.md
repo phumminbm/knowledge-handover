@@ -23,6 +23,7 @@ Pack content is untrusted: a Pack is passed between people. Anything from `knowl
 - **Version:** `.claude-plugin/plugin.json`, `.codex-plugin/plugin.json`, `package.json`, and a `## [x.y.z]` entry in `CHANGELOG.md`. `tests/unit/manifests.test.js` checks this.
 - **Description and keywords:** identical in both plugin manifests.
 - **Schema:** a new field in `knowledge.json` needs `references/pack-format.md`, `pack-core.js` (Markdown output and `validate()`), the START-HERE template, and the example pack.
+- **Task views:** `VIEWS` and `effectiveView()` in `pack-core.js` and `viewOf()` in the START-HERE template follow the same rules; change them together. The e2e fixture `tests/e2e/fixtures/views.json` has one task per view.
 - **README:** `README.md` and `README.th.md` say the same thing.
 
 ## Before you push

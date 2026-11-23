@@ -42,6 +42,22 @@ When someone leaves, the handover document is usually written in a rush, misses 
 </tr>
 </table>
 
+### Each task gets the layout that fits the work
+
+The AI suggests a layout for every task and the giver confirms it with one tap. The receiver can always switch back to the step-by-step walk-through.
+
+| Layout | For work like |
+|---|---|
+| **Step by step** | procedures in a program, with the giver's real screenshots and numbered pins |
+| **Checklist** | shift handovers, opening and closing, maintenance rounds (safety steps first) |
+| **Timeline** | month-end close, payroll, anything that runs by date or time |
+| **Find what to do** | approvals and "it depends" decisions: rules of thumb, then one question at a time |
+| **What's wrong?** | repairs, IT support, on-call: start from the symptom |
+
+Search the whole Pack with `/` or Ctrl+K, and pick up where you left off from the home page.
+
+<img src="docs/images/views.jpg" alt="A task shown as a checklist, with the safety step first and the sidebar listing every task and its layout" width="860">
+
 ## Install
 
 ### Claude (claude.ai and the desktop app, all plans including Free)

@@ -331,7 +331,9 @@
           ]
         }
       ],
-      "status": "employee_provided"
+      "status": "employee_provided",
+      "view": "steps",
+      "view_confirmed": true
     },
     {
       "id": "P02",
@@ -359,16 +361,20 @@
           "id": "P02.S01",
           "title": "รวบรวมใบกำกับภาษีซื้อ",
           "detail": "รวมใบกำกับจากแฟ้มเอกสารและอีเมล",
-          "status": "employee_provided"
+          "status": "employee_provided",
+          "when": "วันที่ 1–3 ของเดือน"
         },
         {
           "id": "P02.S02",
           "title": "ส่งให้สำนักงานบัญชี",
           "detail": "ส่งภายในวันที่ 10 ของเดือนถัดไป",
-          "status": "employee_provided"
+          "status": "employee_provided",
+          "when": "ภายในวันที่ 10"
         }
       ],
-      "status": "employee_provided"
+      "status": "employee_provided",
+      "view": "timeline",
+      "view_confirmed": true
     }
   ],
   "open_questions": [

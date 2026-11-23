@@ -63,6 +63,10 @@ Whenever the work has a shape, draw it and ask "Is this right?" (`diagram/RULES.
 
 As you go, fill each step's fields (`references/pack-format.md`): actor, system, inputs, outputs, check, risk, safety. Propose `who_can_do` for each step (human only / AI with human approval / AI alone) based on judgement, risk and access needed. Show the whole task's list and let the giver confirm it in one tap, changing only the exceptions; keep `who_can_do_confirmed` false until they do. For hands-on work, propose "human only" throughout and ask one question instead: could any part (an email, a report, a check of records) be drafted by AI?
 
+## Choosing the task's view
+
+When a task's steps are captured, propose how the receiver should see it (`view` in `references/pack-format.md`) with a one-line reason, for example "You run this every shift, so I'll show it as a checklist." Offer the other views as taps and record `view_confirmed`. Hands-on and clinical routines usually suit `checklist`; calendar-driven work `timeline` (then ask when each step happens and fill `when`); judgement work `decision`; reactive work `troubleshoot`; screen procedures `steps`.
+
 ## Practice scenarios
 
 For each important task, write 1–3 realistic scenarios with one clearly correct answer drawn from what the giver said (e.g. "The amounts differ by 5,000 — where do you look first?"). They become the receiver's quizzes and reusable test cases. Never invent an answer the giver didn't give.
