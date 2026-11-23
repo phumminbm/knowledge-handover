@@ -1,9 +1,11 @@
 name: Release
 
-# Push a tag like v0.1.0 to publish the GitHub Release and update GitHub Pages.
-# "Run workflow" (manual) builds and deploys Pages without making a release.
+# Push a tag like v0.1.0 to publish the GitHub Release.
+# Every push to main (and "Run workflow" on main) updates GitHub Pages. Pages deploys
+# only from main because the github-pages environment refuses deploys from tags.
 on:
   push:
+    branches: [main]
     tags: ["v*"]
   workflow_dispatch:
 
@@ -75,6 +77,7 @@ jobs:
             dist/pack-builder.html
 
   pages:
+    if: github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
     permissions:
