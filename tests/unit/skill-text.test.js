@@ -25,6 +25,20 @@ test('SKILL.md tells the AI to ask for real material on every task, not only at 
   assert.doesNotMatch(step4, /ask for real images where a picture helps/);
 });
 
+test('SKILL.md is purpose-neutral and makes handover capture conditional', () => {
+  const doc = read('SKILL.md');
+  assert.doesNotMatch(doc, /People leave\. Knowledge shouldn't\./);
+  const step3 = doc.slice(doc.indexOf('3. **'), doc.indexOf('4. **Go deep'));
+  assert.match(step3, /only when the work is changing hands/);
+  assert.doesNotMatch(doc, /train(ing)? (an )?AI/i);
+});
+
+test('description triggers cover non-leaving uses', () => {
+  const desc = read('SKILL.md').match(/^description: (.*)$/m)[1];
+  for (const w of [/new (hire|staff|starter)/i, /SOP/, /ทำคู่มือ/]) assert.match(desc, w);
+  assert.ok(desc.length <= 1024, 'description is ' + desc.length + ' characters');
+});
+
 test('images-and-safety covers files and links, not only pictures', () => {
   const doc = read('references/images-and-safety.md');
   assert.match(doc, /## Files, examples and links/);

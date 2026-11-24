@@ -4,9 +4,9 @@
 
 # knowledge-handover
 
-**People leave. Knowledge shouldn't.**
+**Your know-how, ready to pass on.**
 
-An AI skill that interviews someone about how they really do their job, then turns it into one **Knowledge Pack** that the next person can open in a browser or hand to any AI to be taught step by step.
+An AI skill that interviews someone about how they really do their job, then turns it into one **Knowledge Pack** that someone else can open in a browser or hand to any AI to be taught step by step.
 
 **English** · [ภาษาไทย](README.th.md)
 
@@ -22,7 +22,7 @@ An AI skill that interviews someone about how they really do their job, then tur
 
 ## Why
 
-When someone leaves, the handover document is usually written in a rush, misses the exceptions, and nobody knows which parts are still true. knowledge-handover lets the AI do the asking:
+Work manuals are usually written in a rush, miss the exceptions, and nobody knows which parts are still true. That holds for a new-hire guide, a stand-in's notes, a team SOP and a handover alike. knowledge-handover lets the AI do the asking:
 
 - **Easy for the giver:** start with one sentence, answer mostly by tapping, stop and continue any time.
 - **Easy for the receiver:** nothing to install. Open `START-HERE.html`, or attach the Pack to any AI chat and say *"teach me from this pack"*.
@@ -135,9 +135,11 @@ Copy `skills/knowledge-handover/` into your host's skills folder, for example `~
 
 Say something like this, in any language:
 
-> *"I'm leaving next month, help me hand over my work."*
+> *"Help me write a manual of my job for the new staff joining next month."*
 >
-> *"อีก 2 อาทิตย์จะลาออก ช่วยเก็บงานส่งต่อให้หน่อย"*
+> *"ช่วยทำคู่มืองานใบเสนอราคาให้ทีมหน่อย"*
+>
+> *"I'm leaving next month, help me hand over my work."*
 >
 > *"Write down how I do the month-end close, I have screenshots."*
 
@@ -152,7 +154,7 @@ The AI gets to know the work, asks you to send screenshots, the files you work i
 
 ### 3. The receiver learns
 
-Attach the zip (or just `PACK-FOR-AI.md`) to any AI chat and say *"teach me from this pack"*. The AI explains the work and what is urgent first, then walks through each task with the real images and explains why each step exists. Without an AI, open `START-HERE.html` in a browser. **[Open the example Pack](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html)** to see what a receiver gets.
+Attach the zip (or just `PACK-FOR-AI.md`) to any AI chat and say *"teach me from this pack"*. The AI explains the work first (and anything urgent, if it is a handover), then walks through each task with the real images and explains why each step exists. Without an AI, open `START-HERE.html` in a browser. **[Open the example Pack](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html)** to see what a receiver gets.
 
 ## What's in a Pack
 
@@ -166,6 +168,10 @@ knowledge-handover_KP-2569-0042_2026-11-30.zip
 ├── open-questions.md    what is still unanswered, and whom to ask
 └── knowledge.json       the source of everything; paste it back into a chat to update the Pack
 ```
+
+## Use your Pack with your own AI
+
+The Pack is structured data, not just a document: `knowledge.json` and `PACK-FOR-AI.md` hold every step, rule, check, status and "who can do this step" label. Whoever holds the Pack can use it to set up an AI assistant for parts of the work, as far as their own tools allow. If you do, use only items marked **Confirmed**, follow the "who can do this step" labels, and keep a person approving anything the AI sends or changes.
 
 ## Privacy and safety
 

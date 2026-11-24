@@ -58,7 +58,7 @@ accent           hex colour chosen by the giver (default "#bf4520")
 title            e.g. "งานบัญชีเจ้าหนี้ · ฝ่ายการเงิน"
 confidentiality  "public" | "internal" | "confidential" | "unset"
 ui_labels        optional object to translate page labels for languages other than th/en
-giver            { name, role_title, team, organization, contact_after_leaving }   all optional
+giver            { name, role_title, team, organization, contact_after_leaving }   all optional; contact_after_leaving = how to reach them later, when they are moving on
 stage            "discovery" | "interview" | "review" | "complete"
 role             { summary, context, stakeholders: [{ name, relationship }], status }
 tasks            task inventory from discovery:
