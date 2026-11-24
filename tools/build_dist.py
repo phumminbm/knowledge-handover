@@ -56,7 +56,7 @@ def build_prompt(pages_url):
         "# knowledge-handover — portable prompt",
         "",
         "Paste this whole file at the start of a chat (or into a Gem / Project / custom instructions) "
-        "when your AI has no skill support. Then say what you want, e.g. \"help me hand over my work\" "
+        "when your AI has no skill support. Then say what you want, e.g. \"help me write down how I do my job\" "
         "or paste a save block to continue.",
         "",
         "> **Note for the AI:** in this mode you cannot open bundled files or run scripts. Everything you "

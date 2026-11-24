@@ -79,7 +79,7 @@ h1,.h1{font-family:var(--head);font-weight:400;font-size:clamp(2rem,3vw + 1rem,3
 .bar i{display:block;height:100%;border-radius:4px;background:var(--accent);transition:width .25s}
 .cta{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.2rem}
 /* Tiles, lists, cards */
-.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem;list-style:none}
+.tiles{display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));gap:.6rem;list-style:none}
 .tile{background:var(--surface);border-radius:var(--r-md);padding:.9rem 1rem;display:flex;gap:.7rem;align-items:flex-start;font-size:.88rem}
 .tile b{display:block;font-weight:500}
 .tile div>span{display:block;font-size:.78rem;color:var(--muted)}
@@ -295,7 +295,7 @@ button.shot{display:block;width:100%;padding:0;cursor:zoom-in;text-align:left}
 
   // ── Text ───────────────────────────────────────────────────────────────
   var T = TH ? {
-    from: 'ส่งต่อจาก', saved: 'ข้อมูล ณ', conf: 'ความลับ', guide: 'เริ่มตรงนี้', g1: 'ดูเรื่องด่วน', g1s: 'สิ่งที่ต้องทำหรือตามต่อในเร็วๆ นี้',
+    from: 'จาก', saved: 'ข้อมูล ณ', conf: 'ความลับ', guide: 'เริ่มตรงนี้', g1: 'ดูเรื่องด่วน', g1s: 'สิ่งที่ต้องทำหรือตามต่อในเร็วๆ นี้',
     g2: 'เลือกงาน แล้วกด "พาทำ"', g2s: 'เรียนทีละขั้นด้วยภาพจริง ทำเสร็จแล้วกดไปต่อ', g3: 'ติดตรงไหน ให้ AI ช่วย', g3s: 'คัดลอกคำสั่งในกล่องด้านล่างไปวางในแชต AI',
     urgent: 'เรื่องด่วน', urgentSub: 'เรียงจากใกล้ที่สุด', none: 'ไม่มีเรื่องด่วนที่บันทึกไว้', all: 'ดูทั้งหมด', less: 'ย่อ',
     deadlines: 'กำหนดส่ง', inprog: 'งานที่ทำค้าง', waiting: 'คนที่รอเรา', watch: 'ต้องเฝ้าดู', access: 'บัญชีและสิทธิ์ (ไม่มีรหัสผ่าน)',
@@ -304,7 +304,7 @@ button.shot{display:block;width:100%;padding:0;cursor:zoom-in;text-align:left}
     tasks: 'งานของตำแหน่งนี้', tasksSub: 'เรียงตามความสำคัญ', steps: 'ขั้น', learned: 'เรียนแล้ว', walk: 'พาทำ', overview: 'ภาพรวม',
     notCaptured: 'ยังไม่ได้เก็บรายละเอียดงานนี้', incomplete: 'ยังเก็บไม่ครบ',
     aiTitle: 'ให้ AI ช่วยสอน', aiText: 'เปิดแชต AI ตัวไหนก็ได้ แนบไฟล์ PACK-FOR-AI.md (อยู่ในโฟลเดอร์เดียวกับหน้านี้) แล้ววางคำสั่งนี้',
-    aiPrompt: 'สอนงานจาก pack นี้ให้หน่อย เริ่มจากเรื่องด่วน แล้วพาทำทีละขั้น', copy: 'คัดลอกคำสั่ง', copied: 'คัดลอกแล้ว',
+    aiPrompt: 'สอนงานจาก pack นี้ให้หน่อย ถ้ามีเรื่องด่วนให้เริ่มจากเรื่องด่วน แล้วพาทำทีละขั้น', copy: 'คัดลอกคำสั่ง', copied: 'คัดลอกแล้ว',
     openQ: 'คำถามที่ยังไม่มีคำตอบ', ask: 'ถามใคร', glossary: 'คำศัพท์', changes: 'ประวัติการแก้ไข',
     home: '‹ หน้าแรก', freq: 'ความถี่', trigger: 'เริ่มเมื่อ', incNote: 'งานนี้ยังเก็บไม่ครบ เรื่องที่ยังไม่มีคำตอบอยู่ในหน้า',
     tRules: 'กฎและเหตุผล', tTrouble: 'ถ้าเจอปัญหา', tQuiz: 'ลองตอบ', step: 'ขั้น', of: 'จาก', next: 'ทำแล้ว ไปต่อ', back: 'ย้อน',
@@ -318,7 +318,7 @@ button.shot{display:block;width:100%;padding:0;cursor:zoom-in;text-align:left}
     sot: 'ข้อมูลหลัก', made: 'สร้างด้วย knowledge-handover', share: 'เก็บและส่งต่อไฟล์นี้ผ่านช่องทางที่องค์กรอนุญาตเท่านั้น', noStep: 'งานนี้ยังไม่มีขั้นตอน',
     action: { transfer: 'โอนสิทธิ์', revoke: 'ยกเลิกสิทธิ์', request: 'ขอสิทธิ์' }
   } : {
-    from: 'Handed over by', saved: 'As of', conf: 'Confidentiality', guide: 'Start here', g1: 'Check what is urgent', g1s: 'Things to do or follow up soon',
+    from: 'From', saved: 'As of', conf: 'Confidentiality', guide: 'Start here', g1: 'Check what is urgent', g1s: 'Things to do or follow up soon',
     g2: 'Pick a task, press "Walk me through"', g2s: 'Learn step by step with real images', g3: 'Stuck? Ask an AI', g3s: 'Copy the prompt in the box below into any AI chat',
     urgent: 'Urgent', urgentSub: 'soonest first', none: 'No urgent items recorded', all: 'See all', less: 'Show less',
     deadlines: 'Deadlines', inprog: 'Work in progress', waiting: 'People waiting on us', watch: 'Watch list', access: 'Accounts and access (no passwords)',
@@ -327,7 +327,7 @@ button.shot{display:block;width:100%;padding:0;cursor:zoom-in;text-align:left}
     tasks: 'Tasks in this role', tasksSub: 'by priority', steps: 'steps', learned: 'learned', walk: 'Walk me through', overview: 'Overview',
     notCaptured: 'Details for this task were not captured', incomplete: 'Not fully captured',
     aiTitle: 'Learn with an AI', aiText: 'Open any AI chat, attach PACK-FOR-AI.md (in the same folder as this page) and paste this prompt',
-    aiPrompt: 'Teach me from this pack. Start with the urgent items, then walk me through the tasks step by step.', copy: 'Copy prompt', copied: 'Copied',
+    aiPrompt: 'Teach me from this pack. Start with the urgent items if there are any, then walk me through the tasks step by step.', copy: 'Copy prompt', copied: 'Copied',
     openQ: 'Questions still unanswered', ask: 'Ask', glossary: 'Glossary', changes: 'Change history',
     home: '‹ Home', freq: 'Frequency', trigger: 'Starts when', incNote: 'This task is not fully captured. What is still unanswered is listed under',
     tRules: 'Rules and reasons', tTrouble: 'If something goes wrong', tQuiz: 'Practice', step: 'Step', of: 'of', next: 'Done, next', back: 'Back',
@@ -515,6 +515,8 @@ button.shot{display:block;width:100%;padding:0;cursor:zoom-in;text-align:left}
     rows.sort(function (a, b) { return (a.sort == null ? 9999 : a.sort) - (b.sort == null ? 9999 : b.sort); });
     return rows;
   }
+  // Same rule as hasHandover() in pack-core.js: urgent items exist only when the work is changing hands.
+  function hasHandover() { return urgentCount() > 0; }
   function urgentCount() { return urgentRows().length + (H.watch || []).length + (H.access || []).length; }
   function navLink(route, label, ic, current, extra) {
     return el('a', { href: route, 'data-route': route, 'aria-current': current === route ? 'page' : null }, [ic, el('span', { text: label })].concat(extra || []));
@@ -527,7 +529,7 @@ button.shot{display:block;width:100%;padding:0;cursor:zoom-in;text-align:left}
     var nav = el('div', { cls: 'navlist' });
     nav.appendChild(navLink('#/', T.navHome, icon('home'), current));
     var uc = urgentCount();
-    nav.appendChild(navLink('#/urgent', T.navUrgent, icon('urgent'), current, uc ? [el('span', { cls: 'cnt', text: String(uc) })] : null));
+    if (uc) nav.appendChild(navLink('#/urgent', T.navUrgent, icon('urgent'), current, [el('span', { cls: 'cnt', text: String(uc) })]));
     nav.appendChild(el('div', { cls: 'lbl', text: T.navTasks }));
     taskList().forEach(function (t) {
       var p = byId[t.id];
@@ -599,26 +601,33 @@ button.shot{display:block;width:100%;padding:0;cursor:zoom-in;text-align:left}
     var ft = firstTask();
     hero.appendChild(el('div', { cls: 'cta' }, [
       ft ? el('a', { cls: 'btn pri big', id: 'hero-go', href: resumeRoute() || '#/task/' + ft.id, text: (resumeRoute() ? T.cont : T.start) + ' ›' }) : null,
-      el('a', { cls: 'btn big', href: '#/urgent', text: T.seeUrgent })
+      hasHandover() ? el('a', { cls: 'btn big', href: '#/urgent', text: T.seeUrgent }) : null
     ]));
     app.appendChild(hero);
 
-    app.appendChild(el('section', { cls: 'sec', 'aria-label': T.guide }, [el('ol', { cls: 'tiles' }, [
-      el('li', { cls: 'tile' }, [el('span', { cls: 'num', text: '1' }), el('div', null, [el('b', { text: T.g1 }), el('span', { text: T.g1s })])]),
-      el('li', { cls: 'tile' }, [el('span', { cls: 'num', text: '2' }), el('div', null, [el('b', { text: T.g2 }), el('span', { text: T.g2s })])]),
-      el('li', { cls: 'tile' }, [el('span', { cls: 'num', text: '3' }), el('div', null, [el('b', { text: T.g3 }), el('span', { text: T.g3s })])])
-    ])]));
+    var tiles = (hasHandover() ? [[T.g1, T.g1s]] : []).concat([[T.g2, T.g2s], [T.g3, T.g3s]]);
+    app.appendChild(el('section', { cls: 'sec', 'aria-label': T.guide }, [el('ol', { cls: 'tiles', style: '--n:' + tiles.length }, tiles.map(function (t, i) {
+      return el('li', { cls: 'tile' }, [el('span', { cls: 'num', text: String(i + 1) }), el('div', null, [el('b', { text: t[0] }), el('span', { text: t[1] })])]);
+    }))]));
 
+    if (hasHandover()) homeUrgent();
+    homeTasks();
+  }
+  function homeUrgent() {
     var rows = urgentRows(), total = urgentCount();
     var us = el('section', { cls: 'sec' }, [el('div', { cls: 'sec-h' }, [el('h2', { text: T.urgent }), el('small', { text: T.urgentSub }),
       total > 3 ? el('a', { cls: 'more', href: '#/urgent', text: T.all + ' (' + total + ') ›' }) : null])]);
     var ex = expiredNotice(); if (ex) us.appendChild(ex);
     var box = el('div', { cls: 'group' });
-    if (!rows.length) box.appendChild(el('div', { cls: 'empty', text: T.none }));
-    rows.slice(0, 3).forEach(function (x) { box.appendChild(urgentRow(x)); });
+    // Dated items first; when there are fewer than three, fill with the watch list and accounts to transfer.
+    var shown = rows.concat((H.watch || []).map(function (d) { return { what: d.what, sub: d.why, item: d }; }),
+      (H.access || []).map(function (d) { return { what: d.system, sub: [d.account_or_role, d.action ? '→ ' + (T.action[d.action] || d.action) : ''].filter(Boolean).join(' '), item: d }; }));
+    if (!shown.length) box.appendChild(el('div', { cls: 'empty', text: T.none }));
+    shown.slice(0, 3).forEach(function (x) { box.appendChild(urgentRow(x)); });
     us.appendChild(box);
     app.appendChild(us);
-
+  }
+  function homeTasks() {
     var grid = el('div', { cls: 'cards' });
     taskList().forEach(function (t) {
       var p = byId[t.id];

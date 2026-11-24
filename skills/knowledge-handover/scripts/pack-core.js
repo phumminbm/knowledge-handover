@@ -170,7 +170,7 @@
         if ((s.pins || []).some(function (pin) { return !pin.confirmed; })) w.push(s.id + ': pin positions not yet confirmed.');
       });
     });
-    if (k.handover && k.handover.expires && k.handover.expires < today()) w.push('Handover status expired on ' + k.handover.expires + '.');
+    if (hasHandover(k) && k.handover.expires && k.handover.expires < today()) w.push('Handover status expired on ' + k.handover.expires + '.');
     return w;
   }
 
@@ -221,6 +221,12 @@
   }
 
   // ── Markdown renderers ──────────────────────────────────────────────────
+  // Pending work, deadlines and accounts exist only when the work is changing hands.
+  function hasHandover(k) {
+    var h = (k && k.handover) || {};
+    return ['in_progress', 'deadlines', 'waiting_on_us', 'watch', 'access'].some(function (key) { return !!(h[key] && h[key].length); });
+  }
+
   function mdHandover(k) {
     var h = k.handover || {};
     var o = '# Handover status\n\n';
@@ -367,12 +373,17 @@
     ].join('\n');
   }
 
-  var TEACH = [
+  function teach(k) {
+    return [
     '# How to use this pack (instructions for the AI)',
     '',
-    'You are teaching someone to take over the work described below. The person who did this work may no longer be available. Teach; do not just recite.',
+    hasHandover(k)
+      ? 'You are teaching someone to take over the work described below. The person who did this work may no longer be available. Teach; do not just recite.'
+      : 'You are teaching someone the work described below, from the know-how of the person who does it. Teach; do not just recite.',
     '',
-    '1. First reply: introduce before giving any file, in one short message in the learner\'s language. (a) Welcome them and say in two or three plain lines what this handover is (who handed it over, when), what the work is for, how many tasks there are and which matters most. (b) List up to three urgent items from "Handover status", soonest first, with "in N days"; if the status is past its "valid until" date, say it may be out of date. (c) Only then introduce START-HERE.html: the handover in one page, opened in any browser, urgent items at the top, and a "Walk me through" button on each task. If you have the file and can send files, send it; otherwise tell them it is in the zip they received. Skip this if they already have it open. If their first message is a specific question, answer it first, then give a shorter introduction.',
+    (hasHandover(k)
+      ? '1. First reply: introduce before giving any file, in one short message in the learner\'s language. (a) Welcome them and say in two or three plain lines what this handover is (who handed it over, when), what the work is for, how many tasks there are and which matters most. (b) List up to three urgent items from "Handover status", soonest first, with "in N days"; if the status is past its "valid until" date, say it may be out of date. (c) Only then introduce START-HERE.html: the handover in one page, opened in any browser, urgent items at the top, and a "Walk me through" button on each task. If you have the file and can send files, send it; otherwise tell them it is in the zip they received. Skip this if they already have it open. If their first message is a specific question, answer it first, then give a shorter introduction.'
+      : '1. First reply: introduce before giving any file, in one short message in the learner\'s language. (a) Welcome them and say in two or three plain lines what this pack covers (whose know-how it is, when it was written), what the work is for, how many tasks there are and which matters most. (b) Only then introduce START-HERE.html: the pack in one page, opened in any browser, with a button on each task to learn it. If you have the file and can send files, send it; otherwise tell them it is in the zip they received. Skip this if they already have it open. If their first message is a specific question, answer it first, then give a shorter introduction.'),
     '2. Ask the learner\'s level with one quick choice: new to this work / done similar work / just reviewing. Suggest where to start (usually the most urgent task). Adjust depth and pace.',
     '3. Choose how to explain from the shape of the content — do not wait to be asked: work passed between people → swimlane; yes/no choices → flowchart; statuses → state diagram; a calendar → timeline; a problem → symptom → cause → fix. If you cannot draw, use numbered steps.',
     '4. Main method: guided walkthrough. One step at a time: what to do, why it matters, how to check it worked. Wait for "done" before the next step; at a branch, ask which case applies. Mention the step\'s image file (visuals/…) and its pins; the learner can open START-HERE.html to see the images, or send you their own screenshot or photo to check they are in the right place.',
@@ -384,10 +395,11 @@
     'Status meanings: validated = confirmed; employee_provided / source_supported / ai_organized / unverified = not yet reviewed; ai_inferred / needs_update = needs confirmation; open_question = unresolved.',
     ''
   ].join('\n');
+  }
 
   function mdForAI(k) {
-    var parts = [TEACH, '---', '', '# ' + mdEsc(k.title || 'Knowledge pack') + ' (' + (k.pack_id || '') + ' · v' + (k.version || 1) + ' · ' + (k.saved_at || '') + ')', ''];
-    parts.push(mdHandover(k).replace(/^# /, '## '));
+    var parts = [teach(k), '---', '', '# ' + mdEsc(k.title || 'Knowledge pack') + ' (' + (k.pack_id || '') + ' · v' + (k.version || 1) + ' · ' + (k.saved_at || '') + ')', ''];
+    if (hasHandover(k)) parts.push(mdHandover(k).replace(/^# /, '## '));
     parts.push(mdProfile(k).replace(/^# /gm, '## '));
     (k.processes || []).forEach(function (p) {
       parts.push(mdWorkflow(k, p).replace(/^# /gm, '## ').replace(/^## (?!P\d)/gm, '### '));
@@ -406,8 +418,8 @@
       '',
       'Knowledge pack ' + (k.pack_id || '') + ', version ' + (k.version || 1) + ', saved ' + (k.saved_at || '') + '.',
       '',
-      '- **Easiest start:** attach this zip (or `PACK-FOR-AI.md`) to any AI chat and say "teach me from this pack". The AI explains the work and what is urgent first, then gives you `START-HERE.html`.',
-      '- **Without an AI:** open `START-HERE.html` in any web browser. Urgent items are at the top, then the work map and a step-by-step walkthrough for each task. It works offline and can be sent on its own.',
+      '- **Easiest start:** attach this zip (or `PACK-FOR-AI.md`) to any AI chat and say "teach me from this pack". The AI explains the work' + (hasHandover(k) ? ' and what is urgent' : '') + ' first, then gives you `START-HERE.html`.',
+      '- **Without an AI:** open `START-HERE.html` in any web browser. ' + (hasHandover(k) ? 'Urgent items are at the top, then the' : 'It shows the') + ' work map and a step-by-step walkthrough for each task. It works offline and can be sent on its own.',
       '- **Learn with an AI:** attach `PACK-FOR-AI.md` to any AI chat and ask it to teach you from the pack.',
       '- **Unanswered questions:** `open-questions.md`.',
       '- **Original images:** `visuals/` (unaltered).',
@@ -420,17 +432,19 @@
 
   function defaultMessage(k) {
     if (k.handover_message) return k.handover_message;
+    var urgent = hasHandover(k);
     if ((k.language || '') === 'th') {
-      return 'ส่งไฟล์ส่งต่องาน "' + (k.title || '') + '" ให้นะครับ/ค่ะ\n\n' +
-        '1) แนบไฟล์ zip นี้ในแชต AI ตัวไหนก็ได้ (ถ้าแนบ zip ไม่ได้ ให้แนบ PACK-FOR-AI.md) แล้วพิมพ์ว่า "สอนงานจาก pack นี้" AI จะเล่าภาพรวมและเรื่องด่วนให้ก่อน แล้วส่งไฟล์ START-HERE.html ให้พร้อมพาทำทีละขั้น\n' +
-        '2) ถ้าไม่ใช้ AI เปิด START-HERE.html ในเบราว์เซอร์ได้เลย เรื่องด่วนอยู่บนสุด\n' +
+      return 'ส่งคู่มืองาน "' + (k.title || '') + '" ให้นะครับ/ค่ะ\n\n' +
+        '1) แนบไฟล์ zip นี้ในแชต AI ตัวไหนก็ได้ (ถ้าแนบ zip ไม่ได้ ให้แนบ PACK-FOR-AI.md) แล้วพิมพ์ว่า "สอนงานจาก pack นี้" AI จะเล่าภาพรวม' + (urgent ? 'และเรื่องด่วน' : '') + 'ให้ก่อน แล้วส่งไฟล์ START-HERE.html ให้พร้อมพาทำทีละขั้น\n' +
+        '2) ถ้าไม่ใช้ AI เปิด START-HERE.html ในเบราว์เซอร์ได้เลย' + (urgent ? ' เรื่องด่วนอยู่บนสุด' : '') + '\n' +
         '3) เรื่องที่ยังไม่มีคำตอบอยู่ใน open-questions.md\n';
     }
-    return 'Here is the handover pack for "' + (k.title || '') + '".\n\n' +
-      '1) Attach this zip to any AI chat (or PACK-FOR-AI.md if the chat will not take a zip) and say "teach me from this pack". The AI will explain the work and what is urgent first, then give you START-HERE.html and walk you through it.\n' +
-      '2) No AI? Open START-HERE.html in your browser; urgent items are at the top.\n' +
+    return 'Here is the knowledge pack for "' + (k.title || '') + '".\n\n' +
+      '1) Attach this zip to any AI chat (or PACK-FOR-AI.md if the chat will not take a zip) and say "teach me from this pack". The AI will explain the work' + (urgent ? ' and what is urgent' : '') + ' first, then give you START-HERE.html and walk you through it.\n' +
+      '2) No AI? Open START-HERE.html in your browser' + (urgent ? '; urgent items are at the top' : '') + '.\n' +
       '3) Questions I couldn\'t answer are in open-questions.md.\n';
   }
+
 
   // ── START-HERE.html ─────────────────────────────────────────────────────
   function safeJson(o) {
@@ -543,7 +557,7 @@
     add('knowledge.json', JSON.stringify(k, null, 2) + '\n');
     add('README.md', readme(k));
     add('handover-message.txt', defaultMessage(k));
-    add('handover-status.md', mdHandover(k));
+    if (hasHandover(k)) add('handover-status.md', mdHandover(k));
     add('profile/role-and-context.md', mdProfile(k));
     (k.processes || []).forEach(function (p) {
       var dir = 'processes/' + folderFor(p) + '/';
@@ -564,7 +578,7 @@
   }
 
   return {
-    STATUSES: STATUSES, BADGE: BADGE, labels: labels, VIEWS: VIEWS, effectiveView: effectiveView,
+    STATUSES: STATUSES, BADGE: BADGE, labels: labels, VIEWS: VIEWS, effectiveView: effectiveView, hasHandover: hasHandover,
     parseSave: parseSave, mergePacks: mergePacks, validate: validate,
     build: build, zip: zip, base64: base64, crc32: crc32,
     autoMermaid: autoMermaid, mdForAI: mdForAI, renderStartHere: renderStartHere

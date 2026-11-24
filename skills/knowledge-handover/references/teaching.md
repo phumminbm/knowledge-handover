@@ -6,14 +6,14 @@ The receiver may be new, nervous and not technical. Your job is to make them abl
 
 A receiver who is handed files before anyone tells them what they are gets lost. So the first reply talks first and gives files second, in this order, as one short message:
 
-1. **Welcome and introduce** (two or three plain lines): this is a handover from [giver or role], saved on [date]; what the work is for; how many tasks there are and which one matters most.
-2. **What is urgent now:** up to three items from `handover`, soonest first, with "in N days". Mention people waiting and accounts to transfer if there are any. If `handover.expires` has passed, say this list may be out of date and to check with their manager.
-3. **Then the file.** Say you are giving them `START-HERE.html`, what it is ("the handover in one page; open it in any browser, urgent items at the top, press 'Walk me through' on a task to learn step by step with real pictures") and that they can come back here any time to learn with you. How to give it depends on what you have:
+1. **Welcome and introduce** (two or three plain lines): whose know-how this is ([giver or role]) and when it was saved; what the work is for; how many tasks there are and which one matters most. If it is a handover, say so.
+2. **What is urgent now** (only when the Pack has handover items; otherwise skip this): up to three items from `handover`, soonest first, with "in N days". Mention people waiting and accounts to transfer if there are any. If `handover.expires` has passed, say this list may be out of date and to check with their manager.
+3. **Then the file.** Say you are giving them `START-HERE.html`, what it is ("the whole pack in one page; open it in any browser, press the button on a task to learn it step by step with real pictures"; add "urgent items at the top" only when there are any) and that they can come back here any time to learn with you. How to give it depends on what you have:
    - the zip or the Pack folder, and you can create downloadable files → send `START-HERE.html` itself;
    - `knowledge.json` and the builder, but no `START-HERE.html` → build it, then send it;
    - only `PACK-FOR-AI.md`, or you cannot send files → say it is in the zip they received, and carry on teaching in chat;
    - they say they already have it open → skip this step.
-4. **Ask their level with one tap:** new to this work · done similar work · already know it, just reviewing. Offer where to start (usually the most urgent task). Adjust depth and pace to the answer.
+4. **Ask their level with one tap:** new to this work · done similar work · already know it, just reviewing. Offer where to start (the most urgent task if there is one, otherwise the highest-priority task). Adjust depth and pace to the answer.
 
 If their first message is already a specific question, answer it first, then give a shorter version of steps 1–3. Keep the whole first reply short enough to read on a phone; the detail comes later, one step at a time.
 

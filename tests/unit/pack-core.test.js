@@ -163,3 +163,36 @@ test('Markdown output names the view and step timing', () => {
   assert.match(ai, /\*\*View:\*\* timeline/);
   assert.match(ai, /Day 1/);
 });
+
+test('hasHandover is true only when a handover list has items', () => {
+  assert.strictEqual(core.hasHandover({}), false);
+  assert.strictEqual(core.hasHandover({ handover: { deadlines: [], expires: '2027-01-01' } }), false);
+  assert.strictEqual(core.hasHandover({ handover: { access: [{ system: 'CRM' }] } }), true);
+  assert.strictEqual(core.hasHandover({ handover: { watch: [{ what: 'x' }] } }), true);
+});
+
+test('a pack without handover data has no handover file and a neutral message', () => {
+  const r = core.build({ pack_id: 'KP-1', title: 'Quotes', language: 'en', handover: { deadlines: [] } }, {}, { template, fontsCss: '' });
+  const paths = r.files.map((f) => f.path);
+  assert.ok(!paths.some((p) => /handover-status\.md$/.test(p)));
+  const msg = r.files.find((f) => /handover-message\.txt$/.test(f.path)).data;
+  assert.doesNotMatch(msg, /handover|urgent/i);
+  const ai = r.files.find((f) => /PACK-FOR-AI\.md$/.test(f.path)).data;
+  assert.doesNotMatch(ai, /Handover status/);
+  const th = core.build({ pack_id: 'KP-1', title: 'ใบเสนอราคา', language: 'th' }, {}, { template, fontsCss: '' });
+  assert.doesNotMatch(th.files.find((f) => /handover-message\.txt$/.test(f.path)).data, /ส่งต่องาน|เรื่องด่วน/);
+});
+
+test('validate does not warn about an expired handover status when there is no handover data', () => {
+  const w = core.validate({ pack_id: 'KP-1', handover: { expires: '2000-01-01', deadlines: [] } }, []);
+  assert.deepStrictEqual(w.filter((x) => /expired/.test(x)), []);
+  const w2 = core.validate({ pack_id: 'KP-1', handover: { expires: '2000-01-01', access: [{ system: 'CRM' }] } }, []);
+  assert.ok(w2.some((x) => /expired/.test(x)));
+});
+
+test('a pack with handover data keeps the handover file and an AI-written message', () => {
+  const k = { pack_id: 'KP-1', title: 'x', handover: { access: [{ system: 'CRM' }] }, handover_message: 'Hi from Sam' };
+  const r = core.build(k, {}, { template, fontsCss: '' });
+  assert.ok(r.files.some((f) => /handover-status\.md$/.test(f.path)));
+  assert.strictEqual(r.files.find((f) => /handover-message\.txt$/.test(f.path)).data, 'Hi from Sam');
+});

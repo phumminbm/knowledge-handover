@@ -6,6 +6,14 @@ All notable changes to this project are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-11-24
+
+### Changed
+- The skill is no longer only for people leaving: it covers new-hire manuals, stand-ins for leave, team SOPs and personal know-how as well as handovers. New tagline "Your know-how, ready to pass on."
+- Pending work, deadlines and accounts to transfer are captured only when the work is changing hands. Packs without them have no urgent section, no `handover-status.md`, and neutral messages and teaching instructions.
+- "Handed over by" on the page is now "From".
+- The README explains that a Pack's structured data can be used by its holder to set up an AI assistant for parts of the work.
+
 ## [0.2.1] - 2026-11-24
 
 ### Changed
@@ -45,7 +53,8 @@ First public release.
 - The Pack Builder shows pasted values and file names as text.
 - Pack, process and image names are cleaned before they become file paths, so a save block cannot write outside the Pack folder or add `../` entries to the zip.
 
-[Unreleased]: https://github.com/phumminbm/knowledge-handover/compare/v0.2.1...HEAD
+[Unreleased]: https://github.com/phumminbm/knowledge-handover/compare/v0.2.2...HEAD
+[0.2.2]: https://github.com/phumminbm/knowledge-handover/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/phumminbm/knowledge-handover/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/phumminbm/knowledge-handover/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/phumminbm/knowledge-handover/releases/tag/v0.1.0

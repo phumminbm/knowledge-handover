@@ -1,7 +1,7 @@
 {
   "name": "knowledge-handover",
-  "description": "Interview someone about how they really do their job and turn it into a Knowledge Pack: one zip with a browser walkthrough, the giver's real screenshots or photos, urgent handover items and a file any AI can teach from. For anyone leaving, changing role or going on leave, and for the person taking over.",
-  "version": "0.2.1",
+  "description": "Interview someone about how they really do their work and turn it into a Knowledge Pack: one zip with a browser walkthrough, their real screenshots or photos, and a file any AI can teach from. For new-hire manuals, stand-ins, team SOPs, know-how only one person has, and handovers.",
+  "version": "0.2.2",
   "author": {
     "name": "phumminbm",
     "url": "https://github.com/phumminbm"
@@ -22,8 +22,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Knowledge Handover",
-    "shortDescription": "Hand over your work before you leave",
-    "longDescription": "People leave. Knowledge shouldn't.\n\nKnowledge Handover interviews the person who does the work, mostly through tappable choices, and captures how the work really happens and why: steps, exceptions, pending work, accounts to transfer and the giver's own screenshots or on-site photos.\n\nThe result is one Knowledge Pack: START-HERE.html opens in any browser with urgent items first and step-by-step walkthroughs; PACK-FOR-AI.md lets any AI teach the successor. Every item is marked Confirmed, Needs confirmation or Open question, so nobody mistakes a guess for a rule. No server and no account: packs are files you keep.",
+    "shortDescription": "Turn your know-how into a guide anyone can learn from",
+    "longDescription": "Your know-how, ready to pass on.\n\nKnowledge Handover interviews the person who does the work, mostly through tappable choices, and captures how the work really happens and why: steps, exceptions, the giver's own screenshots or on-site photos, and, when the work is changing hands, pending work and accounts to transfer.\n\nThe result is one Knowledge Pack for a new hire, a stand-in, a teammate or a successor: START-HERE.html opens in any browser with step-by-step walkthroughs, and PACK-FOR-AI.md lets any AI teach the receiver. Every item is marked Confirmed, Needs confirmation or Open question, so nobody mistakes a guess for a rule. No server and no account: packs are files you keep.",
     "developerName": "phumminbm",
     "category": "Productivity",
     "capabilities": [
@@ -35,9 +35,9 @@
     "privacyPolicyURL": "https://github.com/phumminbm/knowledge-handover/blob/main/PRIVACY.md",
     "termsOfServiceURL": "https://github.com/phumminbm/knowledge-handover/blob/main/LICENSE",
     "defaultPrompt": [
-      "I'm leaving next month. Help me hand over my work.",
-      "Teach me from this knowledge pack.",
-      "Here is my save block, let's continue the handover."
+      "Help me write a manual of my job for new staff.",
+      "Help me hand over my work before I leave.",
+      "Teach me from this knowledge pack."
     ],
     "brandColor": "#bf4520",
     "logo": "./.claude-plugin/icon.png",
