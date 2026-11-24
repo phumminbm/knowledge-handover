@@ -6,7 +6,7 @@
 
 **Your know-how, ready to pass on.**
 
-An AI skill that interviews someone about how they really do their job, then turns it into one **Knowledge Pack** that someone else can open in a browser or hand to any AI to be taught step by step.
+An AI skill that interviews someone about how they really do their job, then turns it into one **Knowledge Pack**: a page anyone can learn from in a browser, a file any AI can teach from, and the document your line of work files (SOP, work instruction, runbook or developer guide).
 
 **English** · [ภาษาไทย](README.th.md)
 
@@ -16,7 +16,7 @@ An AI skill that interviews someone about how they really do their job, then tur
 
 [How it works](#how-it-works) · [What you get](#what-you-get) · [Examples](#see-the-examples) · [Install](#install) · [Pack Builder](https://phumminbm.github.io/knowledge-handover/) · [Help](#if-something-goes-wrong)
 
-<img src="docs/images/walkthrough.jpg" alt="A step in START-HERE.html: the giver's real screenshot with numbered pins, why the step exists, and how to check it was done right" width="860">
+<img src="docs/images/overview.jpg" alt="Overview: 1. tell the AI in one sentence; 2. the AI interviews you, reads your screenshots and files, draws what it understood and marks its guesses; 3. you get one Knowledge Pack; it gives a page to learn from, a file any AI can teach from, and the document your field files" width="900">
 
 </div>
 
@@ -68,6 +68,8 @@ Attach the zip (or just `PACK-FOR-AI.md`) to any AI chat and say *"teach me from
 One interview gives you four things in one Pack: a page to learn from, diagrams, practice questions, and the document your line of work uses.
 
 ### A page to learn from, laid out to fit each task
+
+<img src="docs/images/walkthrough.jpg" alt="A step in START-HERE.html: the giver's real screenshot with numbered pins, why the step exists, and how to check it was done right" width="860">
 
 <table>
 <tr>
