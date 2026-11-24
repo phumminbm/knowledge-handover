@@ -389,6 +389,25 @@ test('the example pack shows its diagram on the overview tab', { skip }, async (
   await context.close();
 });
 
+test('a pack without handover data shows no urgent entry points', { skip }, async () => {
+  const k = fixture();
+  delete k.handover;
+  const { page, errors, context } = await openPack(browser, k);
+  assert.strictEqual((await page.$('nav.side [data-route="#/urgent"]')) !== null, false);
+  assert.strictEqual((await page.$('.hero a[href="#/urgent"]')) !== null, false);
+  assert.doesNotMatch(await page.textContent('#app'), /Check what is urgent|Urgent/);
+  assert.match(await page.textContent('.hero .top'), /^From:/);
+  assert.deepStrictEqual(errors, []);
+  await context.close();
+});
+
+test('a pack with handover data still shows urgent entry points', { skip }, async () => {
+  const { page, context } = await openPack(browser, fixture());
+  assert.strictEqual((await page.$('nav.side [data-route="#/urgent"]')) !== null, true);
+  assert.strictEqual((await page.$('.hero a[href="#/urgent"]')) !== null, true);
+  await context.close();
+});
+
 test('phone walk-through opens the step list from a button', { skip }, async () => {
   const { page, context } = await openPack(browser, fixture(), { hash: '#/task/P01', images: IMAGES, viewport: PHONE });
   assert.strictEqual(await page.isVisible('.rail'), false);
