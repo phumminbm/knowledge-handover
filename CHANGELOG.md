@@ -6,6 +6,11 @@ All notable changes to this project are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-11-24
+
+### Changed
+- The AI asks for the real thing as it goes: at the start of each task, and whenever the giver mentions a program, file, form or chat, it asks in the same reply for a screenshot, the file or template, a finished example or a link. It reads what arrives, drafts the steps from it and asks only about the gaps. Files and links are read and recorded, not shipped in the Pack; personal data and prices are covered first.
+
 ## [0.2.0] - 2026-11-23
 
 ### Added
@@ -40,6 +45,7 @@ First public release.
 - The Pack Builder shows pasted values and file names as text.
 - Pack, process and image names are cleaned before they become file paths, so a save block cannot write outside the Pack folder or add `../` entries to the zip.
 
-[Unreleased]: https://github.com/phumminbm/knowledge-handover/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/phumminbm/knowledge-handover/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/phumminbm/knowledge-handover/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/phumminbm/knowledge-handover/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/phumminbm/knowledge-handover/releases/tag/v0.1.0

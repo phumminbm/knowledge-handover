@@ -141,7 +141,7 @@ Say something like this, in any language:
 >
 > *"Write down how I do the month-end close, I have screenshots."*
 
-The AI gets to know the work, asks about what you'd forget to write down (exceptions, deadlines, who to call), draws what it understood for you to check, and ends every session with a **save block**. Keep the save block, and paste it into a new chat to continue.
+The AI gets to know the work, asks you to send screenshots, the files you work in, a finished example or a link whenever you mention one (and reads them, so it asks you less), asks about what you'd forget to write down (exceptions, deadlines, who to call), draws what it understood for you to check, and ends every session with a **save block**. Keep the save block, and paste it into a new chat to continue.
 
 ### 2. The Pack gets built
 

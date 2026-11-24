@@ -6,7 +6,7 @@ Aim for 5–10 minutes, mostly taps.
 
 ## 1. Look at what already exists
 
-Invite, never require: a job description, a month of calendar screenshots, a to-do list, a handover note, an old manual, photos of the workplace. Read whatever arrives before asking more. Calendars and to-do lists reveal recurring work fast. If nothing is available, move on without comment.
+Invite, never require: a job description, a month of calendar screenshots, a to-do list, a handover note, an old manual, the spreadsheets and templates they use, photos of the workplace. Read whatever arrives before asking more. Calendars and to-do lists reveal recurring work fast. If nothing is available, move on without comment.
 
 ## 2. One sentence about the work
 

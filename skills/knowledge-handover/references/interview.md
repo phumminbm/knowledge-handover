@@ -23,6 +23,17 @@ Track these per task in `processes[].coverage` as `done`, `skipped` or `missing`
 
 A task can be packed with topics missing. Mark it `complete: false`, move the gaps to `open_questions`, and tell the giver in one line.
 
+## Ask for the real thing
+
+Seeing the work beats hearing about it. The giver rarely thinks to send it, so ask every time; don't wait for them to offer.
+
+- **When a task starts**, ask in the same message as your first question: "If you have them, send screenshots of the screens you use, the file or template itself, a finished example, or a link to where it lives. I'll read them and ask you less."
+- **Whenever an answer names a program, file, form, chat, document or machine** ("I use Excel", "I send it on LINE", "the PO form"), ask for it in the same reply, as a tappable choice: send a screenshot or the file now / later / can't share. One short line; then carry on with your next question.
+- **Ask for a finished example** (a sent quotation, a completed form, a closed ticket) as well as the blank template: the finished one shows what "done right" looks like. Ask the giver to cover customer names, prices, ID numbers and personal details first, or to send the blank template instead (`references/images-and-safety.md`).
+- **Read what arrives before asking more.** From a spreadsheet note the sheets, columns, formulas and which cells are typed by hand; from a form, the required fields; from a screenshot, the buttons, fields and statuses. Turn what you see into draft steps marked `ai_inferred`, show them, and ask only about the gaps ("Column F looks like the discount — who decides it?").
+- **Links:** record where the thing lives (the system, folder or page) in the step's `system`, `inputs` or `outputs`. Never ask for passwords or access. If you can't open a link or a file type, say so plainly and ask for a screenshot instead.
+- **If they can't share,** carry on with words; never block the interview on a file.
+
 ## Useful questions people forget to ask
 
 Use, rephrase or ignore. Ask only what is relevant.
@@ -57,7 +68,7 @@ Don't silently pick one version. Keep both with their sources, ask the giver whi
 
 ## Show, don't make them write
 
-Whenever the work has a shape, draw it without being asked and check the content with "Is this right?" (`diagram/RULES.md` for choosing the picture). People correct a picture far more easily than they write prose. You choose the kind of picture; the giver only checks that what it says is true. On text-only hosts, show numbered steps and a short Mermaid block.
+Whenever the work has a shape, draw it without being asked (from the real screenshots and files when you have them) and check the content with "Is this right?" (`diagram/RULES.md` for choosing the picture). People correct a picture far more easily than they write prose. You choose the kind of picture; the giver only checks that what it says is true. On text-only hosts, show numbered steps and a short Mermaid block.
 
 ## Structured fields per step
 

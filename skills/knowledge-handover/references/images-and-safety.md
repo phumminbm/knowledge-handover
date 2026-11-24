@@ -4,9 +4,18 @@
 
 Ask when a picture would save the receiver from guessing: a screen with many fields, a form, a machine panel, a shelf location, the "right" result, a common mistake. Many jobs aren't screen-based, so "image" always means a screenshot **or** a photo taken on site.
 
-Ask for one image per step at most, and only where it helps. Fewer clear images beat many blurry ones (they also keep `START-HERE.html` small).
+Ask early and often: at the start of each task and whenever a step involves a screen, form, file or machine (`references/interview.md`, "Ask for the real thing"). The giver may send as many as help you understand the work; the Pack keeps the clearest one per step (that keeps `START-HERE.html` small).
 
 For each image record, where available: file name (`P03-S07.jpg`), the step it belongs to, what the giver points out, the action taken, the expected result, the mistake to avoid, and when it was captured (`images` in `knowledge.json`).
+
+## Files, examples and links
+
+Spreadsheets, documents, PDFs and finished examples are for you to read, not to ship: the Pack carries only images.
+- Read them and write what matters into the steps: sheet and column names, formulas, required fields, what "done" looks like. Mark what you inferred `ai_inferred` until the giver confirms it.
+- Record where the official copy lives (shared drive folder, system, page) in the step's `inputs`, `outputs` or `system`, so the receiver can find it.
+- If a picture of the file helps the receiver, ask for a screenshot of it, checked like any other image.
+- Prefer a blank template, or a finished example with customer names, prices and personal details covered.
+- A link is a pointer, not content: record it, never ask for the password, and if you cannot open it, ask for a screenshot.
 
 ## What you may and may not do with images
 
