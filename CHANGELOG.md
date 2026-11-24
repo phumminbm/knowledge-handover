@@ -6,6 +6,9 @@ All notable changes to this project are recorded here. The format follows
 
 ## [Unreleased]
 
+### Added
+- The READMEs show an illustrated interview (English and Thai): options to tap, asking for the real form, asking only about the gap, a diagram to check, and the save block.
+
 ### Fixed
 - A release created on the GitHub web page no longer gets its notes twice; the Release workflow writes notes only when the release has none.
 

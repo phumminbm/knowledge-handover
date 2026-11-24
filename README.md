@@ -176,6 +176,10 @@ Say something like this, in any language:
 
 The AI gets to know the work, asks you to send screenshots, the files you work in, a finished example or a link whenever you mention one (and reads them, so it asks you less), asks about what you'd forget to write down (exceptions, deadlines, who to call), draws what it understood for you to check, and ends every session with a **save block**. Keep the save block, and paste it into a new chat to continue.
 
+<img src="docs/images/interview.jpg" alt="An illustrated interview: the AI offers options to tap, asks for the approval form, reads it and asks only about the gap, draws a decision tree to check, and ends with a save block" width="520">
+
+<sub>An illustration of the flow, not a recorded chat; your AI's wording will differ.</sub>
+
 ### 2. The Pack gets built
 
 - If the AI can run code (Claude with code execution, Claude Code, Codex, Gemini CLI), it builds the zip for you.
