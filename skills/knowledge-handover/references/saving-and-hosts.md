@@ -47,12 +47,14 @@ If you can write files but not run Node, write `knowledge.json` and tell the use
 
 Give the giver:
 1. **The zip**, named `knowledge-handover_<pack_id>_<date>.zip`.
-2. **The handover message** (`handover_message` in the JSON, also written to `handover-message.txt`), in the giver's language. Keep it short, e.g.:
+2. **The message to send with it** (`handover_message` in the JSON, also written to `handover-message.txt`), in the giver's language. Keep it short, e.g.:
 
-   > I've put together a handover pack for [work]. The easiest way to start: attach this zip to any AI chat (if the chat won't take a zip, attach **PACK-FOR-AI.md**) and say "teach me from this pack". The AI will explain the work and what's urgent first, then give you **START-HERE.html** and walk you through it. No AI? Just open START-HERE.html in your browser; urgent items are at the top.
+   > I've put together a knowledge pack for [work]. The easiest way to start: attach this zip to any AI chat (if the chat won't take a zip, attach **PACK-FOR-AI.md**) and say "teach me from this pack". The AI will explain the work first, then give you **START-HERE.html** and walk you through it. No AI? Just open START-HERE.html in your browser.
+
+   Mention urgent items ("what's urgent first", "urgent items are at the top") only when the Pack has handover items.
 
    Lead with the AI route because a receiver who is told what they're looking at first is less likely to get lost; keep the browser route as the fallback.
 
-3. **Advice, in one or two lines:** share it as a link from the organisation's approved shared drive rather than an email attachment (size limits, access control), and send a copy to the manager or process owner so the knowledge isn't lost if no successor exists yet. Local-only copies can be lost when a device is replaced.
+3. **Advice, in one or two lines:** share it as a link from the organisation's approved shared drive rather than an email attachment (size limits, access control), and send a copy to the manager or process owner so the knowledge isn't lost if nobody has taken the work on yet. Local-only copies can be lost when a device is replaced.
 
 `START-HERE.html` and `PACK-FOR-AI.md` each work on their own, so a receiver on a phone can open just one file.

@@ -162,7 +162,7 @@ Attach the zip (or just `PACK-FOR-AI.md`) to any AI chat and say *"teach me from
 knowledge-handover_KP-2569-0042_2026-11-30.zip
 ├── START-HERE.html      urgent items, work map, step-by-step walkthroughs with real images, quizzes
 ├── PACK-FOR-AI.md       everything in one file, with teaching instructions for any AI
-├── handover-status.md   work in progress, deadlines, people waiting, accounts to transfer
+├── handover-status.md   only when handing over: work in progress, deadlines, accounts to transfer
 ├── processes/…          one folder per task: workflow, procedures, decisions, troubleshooting, scenarios
 ├── visuals/             original images, untouched
 ├── open-questions.md    what is still unanswered, and whom to ask

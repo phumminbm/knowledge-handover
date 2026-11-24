@@ -619,8 +619,11 @@ button.shot{display:block;width:100%;padding:0;cursor:zoom-in;text-align:left}
       total > 3 ? el('a', { cls: 'more', href: '#/urgent', text: T.all + ' (' + total + ') ›' }) : null])]);
     var ex = expiredNotice(); if (ex) us.appendChild(ex);
     var box = el('div', { cls: 'group' });
-    if (!rows.length) box.appendChild(el('div', { cls: 'empty', text: T.none }));
-    rows.slice(0, 3).forEach(function (x) { box.appendChild(urgentRow(x)); });
+    // Dated items first; when there are fewer than three, fill with the watch list and accounts to transfer.
+    var shown = rows.concat((H.watch || []).map(function (d) { return { what: d.what, sub: d.why, item: d }; }),
+      (H.access || []).map(function (d) { return { what: d.system, sub: [d.account_or_role, d.action ? '→ ' + (T.action[d.action] || d.action) : ''].filter(Boolean).join(' '), item: d }; }));
+    if (!shown.length) box.appendChild(el('div', { cls: 'empty', text: T.none }));
+    shown.slice(0, 3).forEach(function (x) { box.appendChild(urgentRow(x)); });
     us.appendChild(box);
     app.appendChild(us);
   }

@@ -39,6 +39,27 @@ test('description triggers cover non-leaving uses', () => {
   assert.ok(desc.length <= 1024, 'description is ' + desc.length + ' characters');
 });
 
+test('message and teaching instructions mention urgent items only for handovers', () => {
+  const hosts = read('references/saving-and-hosts.md');
+  assert.doesNotMatch(hosts, /I've put together a handover pack/);
+  assert.match(hosts, /only (when|if) the Pack has handover items/i);
+  const teach = read('references/teaching.md');
+  const first = teach.slice(teach.indexOf('## First reply'), teach.indexOf('\n## ', teach.indexOf('## First reply') + 5));
+  assert.doesNotMatch(first, /this is a handover from/);
+  assert.match(first, /only (when|if) the Pack has handover items/i);
+  const skill = read('SKILL.md');
+  assert.doesNotMatch(skill, /explain in plain words what this handover is/);
+  assert.match(skill, /see what is urgent right now \(when the work is changing hands/);
+  assert.match(skill, /`handover-status\.md` \(only when handing over\)/);
+  assert.match(read('references/pack-format.md'), /handover-status\.md +only when handing over/);
+});
+
+test('the Codex store description is purpose-neutral', () => {
+  const d = JSON.parse(fs.readFileSync(path.join(SKILL, '..', '..', '.codex-plugin', 'plugin.json'), 'utf8')).interface.longDescription;
+  assert.doesNotMatch(d, /teach the successor/);
+  assert.match(d, /when the work is changing hands/);
+});
+
 test('images-and-safety covers files and links, not only pictures', () => {
   const doc = read('references/images-and-safety.md');
   assert.match(doc, /## Files, examples and links/);

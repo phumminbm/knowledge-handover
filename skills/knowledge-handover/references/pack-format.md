@@ -160,7 +160,7 @@ A view needs its data: `checklist` and `timeline` need steps, `decision` needs b
 ├── START-HERE.html               self-contained page: urgent items, work map, walkthroughs, quizzes
 ├── PACK-FOR-AI.md                teaching instructions + the whole pack as text, for any AI
 ├── knowledge.json                the source of truth (also the latest save block)
-├── handover-status.md
+├── handover-status.md            only when handing over: pending work, deadlines, accounts
 ├── handover-message.txt
 ├── profile/role-and-context.md
 ├── processes/<id>-<slug>/

@@ -12,7 +12,7 @@ This file gives you the goal, the scope and the lines you must not cross. How yo
 ## What a good result looks like
 
 A receiver who has never met the giver can open the Pack and, without asking anyone:
-- see what is urgent right now (pending work, deadlines, people waiting, accounts to transfer);
+- see what is urgent right now (when the work is changing hands: pending work, deadlines, people waiting, accounts to transfer);
 - understand what the role does and which tasks matter most;
 - follow each task step by step with the giver's real images, and know *why* each step exists;
 - handle the common exceptions and failures;
@@ -74,11 +74,11 @@ All channels produce the same Pack from `knowledge.json` plus the image files.
 - **You can run code:** `node scripts/build_pack.js knowledge.json --images <folder> --out <folder>` writes the Pack folder and its zip. Then share the zip and the handover message.
 - **You cannot run code:** give the final save block and send the giver to the **Pack Builder** (the `pack-builder.html` file shipped with this skill, or its web link), where they paste the block, drop in their images and download the zip. Nothing leaves their machine.
 
-The Pack contains `START-HERE.html` (opens in any browser, fully self-contained, with the step-by-step walkthrough), `PACK-FOR-AI.md` (one file any AI can learn from), `handover-status.md`, `profile/`, `processes/<id>-<name>/`, `open-questions.md`, `change-log.md` and the original images. Details: `references/pack-format.md`.
+The Pack contains `START-HERE.html` (opens in any browser, fully self-contained, with the step-by-step walkthrough), `PACK-FOR-AI.md` (one file any AI can learn from), `handover-status.md` (only when handing over), `profile/`, `processes/<id>-<name>/`, `open-questions.md`, `change-log.md` and the original images. Details: `references/pack-format.md`.
 
 ## Receiver mode
 
-Teach; don't just retrieve. **Introduce before you hand over files:** in your first reply, welcome the receiver and explain in plain words what this handover is, what the work is for and what is urgent; only then give them `START-HERE.html` (send it if you can, otherwise say where it is) with one line on how to use it. A file dropped on someone before they know what it is confuses them. Then check the learner's level with one tap, then guide them through tasks step by step with the real images, explaining why each step exists. Choose the explanation format yourself from the shape of the content — never wait to be asked for "a flow". Cite the step or rule ID and its status; say clearly when something is unconfirmed, and draft the question to the right person when the Pack has no answer. Full approach: `references/teaching.md`.
+Teach; don't just retrieve. **Introduce before you hand over files:** in your first reply, welcome the receiver and explain in plain words whose know-how this is, what the work is for and, if it is a handover, what is urgent; only then give them `START-HERE.html` (send it if you can, otherwise say where it is) with one line on how to use it. A file dropped on someone before they know what it is confuses them. Then check the learner's level with one tap, then guide them through tasks step by step with the real images, explaining why each step exists. Choose the explanation format yourself from the shape of the content — never wait to be asked for "a flow". Cite the step or rule ID and its status; say clearly when something is unconfirmed, and draft the question to the right person when the Pack has no answer. Full approach: `references/teaching.md`.
 
 ## Update mode
 

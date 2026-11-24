@@ -401,6 +401,26 @@ test('a pack without handover data shows no urgent entry points', { skip }, asyn
   await context.close();
 });
 
+test('a handover object with only empty lists counts as no handover data', { skip }, async () => {
+  const k = fixture();
+  k.handover = { snapshot_date: '2026-11-23', expires: '2000-01-01', deadlines: [], in_progress: [], waiting_on_us: [], watch: [], access: [] };
+  const { page, context } = await openPack(browser, k);
+  assert.strictEqual((await page.$('nav.side [data-route="#/urgent"]')) !== null, false);
+  assert.strictEqual((await page.$('.notice.warn')) !== null, false);
+  await context.close();
+});
+
+test('a pack with only accounts to transfer lists them on home instead of "no urgent items"', { skip }, async () => {
+  const k = fixture();
+  k.handover = { access: [{ system: 'Billing system', account_or_role: 'admin', action: 'transfer', status: 'employee_provided' }] };
+  const { page, context } = await openPack(browser, k);
+  assert.strictEqual((await page.$('nav.side [data-route="#/urgent"]')) !== null, true);
+  const home = await page.textContent('#app');
+  assert.match(home, /Billing system/);
+  assert.doesNotMatch(home, /No urgent items recorded/);
+  await context.close();
+});
+
 test('a pack with handover data still shows urgent entry points', { skip }, async () => {
   const { page, context } = await openPack(browser, fixture());
   assert.strictEqual((await page.$('nav.side [data-route="#/urgent"]')) !== null, true);

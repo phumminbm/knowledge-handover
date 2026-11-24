@@ -170,7 +170,7 @@
         if ((s.pins || []).some(function (pin) { return !pin.confirmed; })) w.push(s.id + ': pin positions not yet confirmed.');
       });
     });
-    if (k.handover && k.handover.expires && k.handover.expires < today()) w.push('Handover status expired on ' + k.handover.expires + '.');
+    if (hasHandover(k) && k.handover.expires && k.handover.expires < today()) w.push('Handover status expired on ' + k.handover.expires + '.');
     return w;
   }
 
