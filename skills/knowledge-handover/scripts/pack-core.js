@@ -135,31 +135,53 @@
   // A Pack must never carry passwords, keys or tokens (hard line in SKILL.md). If one slips
   // in, the builder replaces it everywhere and tells the giver to change it.
   var REDACTED = '<REDACTED>';
+  // Each rule: [pattern, kind, group holding the secret (0 = whole match), check(value) -> true to redact].
+  // A value that looks like a placeholder, ID, path or port is never a secret.
+  function plausible(v) {
+    v = String(v).replace(/[.,;:)\]}'"]+$/, '');
+    if (v.length < 6) return false;
+    if (/^[<$%{[(]|^\*+$|^x{3,}$|^(your|my|the|change|example|placeholder)[-_]/i.test(v)) return false;
+    if (/^[\/~.]|^[A-Za-z]:\\/.test(v)) return false;
+    if (/^[A-Z]{1,5}-?\d{1,6}(?:[.-][A-Z]?\d+)*$/.test(v)) return false;
+    if (/^\d{1,5}$/.test(v)) return false;
+    return /[0-9]/.test(v) || /[^A-Za-z0-9]/.test(v) || v.length >= 12 || (/[a-z]/.test(v) && /[A-Z]/.test(v));
+  }
+  var KEY_NAMES = '(?:password|passwd|passphrase|pass|secret|token|api[_-]?key|access[_-]?key|secret[_-]?access[_-]?key|client[_-]?secret|private[_-]?key|auth[_-]?token)';
   var SECRET_PATTERNS = [
-    [/-----BEGIN [A-Z ]*PRIVATE KEY-----[\s\S]*?(?:-----END [A-Z ]*PRIVATE KEY-----|$)/g, 'private key'],
-    [/\b(?:gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{40,})/g, 'GitHub token'],
-    [/\b(?:AKIA|ASIA)[0-9A-Z]{16}\b/g, 'AWS key'],
-    [/\bxox[abposr]-[A-Za-z0-9-]{10,}/g, 'Slack token'],
-    [/\bsk-(?:ant-|proj-)?[A-Za-z0-9_-]{20,}/g, 'API key'],
-    [/\bAIza[0-9A-Za-z_-]{35}\b/g, 'Google API key'],
-    [/\beyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}/g, 'token'],
-    [/(\bBearer\s+)([A-Za-z0-9._~+\/=-]{20,})/gi, 'bearer token', 2],
-    [/(:\/\/[^\/\s:@<>]+:)([^\/\s@<>]+)(@)/g, 'password in a URL', 2],
-    [/(\b(?:password|passwd|pwd|pass|secret|token|api[_-]?key|access[_-]?key|client[_-]?secret)\b["']?\s*[:=]\s*["']?)([^\s"'<>,;]{6,})/gi, 'password or key', 2, true]
+    [/-----BEGIN [A-Z ]*PRIVATE KEY-----[\s\S]*?(?:-----END [A-Z ]*PRIVATE KEY-----|$)/g, 'private key', 0],
+    [/\b(?:gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{40,})/g, 'GitHub token', 0],
+    [/\bglpat-[A-Za-z0-9_-]{20,}/g, 'GitLab token', 0],
+    [/\bnpm_[A-Za-z0-9]{30,}/g, 'npm token', 0],
+    [/\b(?:AKIA|ASIA)[0-9A-Z]{16}\b/g, 'AWS key', 0],
+    [/\bxox[abposr]-[A-Za-z0-9-]{10,}/g, 'Slack token', 0],
+    [/\b[rs]k_(?:live|test)_[A-Za-z0-9]{16,}/g, 'Stripe key', 0],
+    [/\bsk-(?:ant-|proj-)?[A-Za-z0-9_-]{20,}/g, 'API key', 0],
+    [/\bAIza[0-9A-Za-z_-]{35}\b/g, 'Google API key', 0],
+    [/\beyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}/g, 'token', 0],
+    [/((?:AccountKey|SharedAccessKey|SharedAccessSignature)=)([^;\s"'<>]{12,})/g, 'Azure key', 2],
+    [/(\b(?:Bearer|Basic)\s+)([A-Za-z0-9._~+\/=-]{12,})/gi, 'authorization header', 2],
+    [/(:\/\/[^\/\s:@<>]+:)([^\/\s@<>]+)(?=@)/g, 'password in a URL', 2, plausible],
+    [/(\s-u\s+[^\s:'"]+:)([^\s@'"]+)/g, 'password on the command line', 2, plausible],
+    [/(\bmysql(?:dump|admin)?\b[^\n]*?\s-p)([^\s'"]{4,})/g, 'password on the command line', 2, function (v) { return !/^[<$]/.test(v); }],
+    [new RegExp('((?:^|[^A-Za-z0-9])(?:[A-Za-z0-9]+[_-])*' + KEY_NAMES + '["\']?\\s*[:=]\\s*["\']?)([^\\s"\'<>,;]+)', 'gi'), 'password or key', 2, plausible],
+    [/((?:รหัสผ่าน|รหัส\s?PIN|รหัส\s?OTP)\s*[:=：]?\s*)(\S{4,})/g, 'password', 2, function (v) { return !/^[<$]/.test(v); }],
+    [/(\b(?:PIN|OTP)\b(?:\s*code)?\s*[:=]?\s*)(\d{4,8})\b/g, 'PIN or one-time code', 2]
   ];
-  function scrub(text) {
+  function scrub(text, marker) {
     var kinds = [];
     SECRET_PATTERNS.forEach(function (sp) {
       text = text.replace(sp[0], function (m) {
         var g = arguments, val = sp[2] ? g[sp[2]] : m;
-        if (sp[3] && (!/[0-9]/.test(val) || !/[A-Za-z]/.test(val) || /^(\$|\*+$|x+$)/i.test(val))) return m;
+        if (sp[3] && !sp[3](val)) return m;
+        var trail = sp[2] ? (String(val).match(/[.,;:)\]}'"]+$/) || [''])[0] : '';
         if (kinds.indexOf(sp[1]) < 0) kinds.push(sp[1]);
-        return sp[2] ? g[1] + REDACTED + (sp[2] === 2 && typeof g[3] === 'string' && g[3] === '@' ? '@' : '') : REDACTED;
+        return sp[2] ? g[1] + marker + trail : marker;
       });
     });
     return { text: text, kinds: kinds };
   }
   // Replaces secret-looking values in place; returns warnings naming the item that held each.
+  // Inside a diagram the marker is escaped so the SVG stays valid.
   function redactSecrets(root) {
     var found = {}, order = [];
     var note = function (where, kinds) {
@@ -171,7 +193,7 @@
       Object.keys(o).forEach(function (key) {
         var v = o[key];
         if (typeof v === 'string') {
-          var r = scrub(v);
+          var r = scrub(v, key === 'diagram_svg' ? '&lt;REDACTED&gt;' : REDACTED);
           if (r.kinds.length) { o[key] = r.text; note(id, r.kinds); }
         } else if (v && typeof v === 'object') walk(v, id);
       });
@@ -193,8 +215,8 @@
     });
     (k.processes || []).forEach(function (p) {
       if (!p.id) w.push('A process has no id: "' + (p.name || '?') + '".');
-      if (p.view && VIEWS.indexOf(p.view) < 0) w.push(p.id + ': unknown view "' + p.view + '"; showing steps instead.');
       if (p.doc_type && DOCS && DOCS.DOC_TYPES.indexOf(p.doc_type) < 0) w.push(p.id + ': unknown doc_type "' + p.doc_type + '"; writing an SOP instead.');
+      if (p.view && VIEWS.indexOf(p.view) < 0) w.push(p.id + ': unknown view "' + p.view + '"; showing steps instead.');
       else if (p.view && effectiveView(p) !== p.view) w.push(p.id + ': view "' + p.view + '" needs ' + VIEW_MISSING[p.view] + '; showing steps instead.');
       if (p.diagram_svg && /<script|<foreignObject|\son[a-z]+\s*=|javascript:|@import|url\(\s*['"]?\s*(?!#)/i.test(p.diagram_svg)) {
         w.push(p.id + ': the diagram contains scripts, event handlers or outside links; START-HERE.html removes them, so check the diagram still reads correctly.');

@@ -91,3 +91,13 @@ test('the AI picks a document type per task, asks for the organisation template,
   for (const re of [/documents\/<id>-<slug>/, /work_instruction/, /runbook/, /dev_guide/, /`command`/, /`expected`/, /`spec`/, /`rollback`/, /`prerequisites`/, /`ppe`/, /`escalation`/, /doc_purpose/, /<REDACTED>/]) assert.match(fmt, re);
   assert.match(read('references/teaching.md'), /command/i);
 });
+
+test('reference text has no leftover editing artefacts and keeps its key rules', () => {
+  const fmt = read('references/pack-format.md');
+  assert.doesNotMatch(fmt, /^\\\d$/m, 'no stray regex backreference');
+  assert.match(fmt, /A view needs its data: .*falls back to `steps`.*give every step a `when`/);
+  assert.match(fmt, /`START-HERE\.html` embeds the images, so it can be sent alone/);
+  const skill = read('SKILL.md');
+  assert.doesNotMatch(skill, /flagged\.html`\)/);
+  assert.strictEqual((skill.match(/are left blank for the organisation/g) || []).length, 1);
+});

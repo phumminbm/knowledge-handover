@@ -36,7 +36,7 @@ All types share a header and the same procedure shapes: steps (with screenshots 
   - sections: purpose, scope, safety and PPE (placed first), tools and materials, before you start, responsibilities, procedure (spec and quality check on each step), rules, troubleshooting, records, open questions, sign-off table (done by / checked by / date, blank), revision history
 - **Runbook**:
   - header: owner (blank), status, described by, last updated, prepared from
-  - sections: when to use, before you start, escalation, steps (command, expected result, undo), rollback, risky steps, troubleshooting, rules, open questions, history
+  - sections: when to use, before you start, escalation, steps (command, expected result, undo), rollback, risky steps, troubleshooting, rules, definitions, open questions, history
 - **Developer guide**:
   - header: as the runbook
   - sections: overview, prerequisites, systems and repositories, steps (commands, expected), conventions (rules), common problems, definitions, open questions, history

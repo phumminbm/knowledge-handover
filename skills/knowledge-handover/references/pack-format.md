@@ -130,7 +130,7 @@ Each task has a `view`: how START-HERE.html lays it out. Pick it yourself from t
 | `decision` | approvals, eligibility checks, triage, "it depends" judgement | the rules of thumb, then the branch questions one by one |
 | `troubleshoot` | on-call, repairs, IT support, "something went wrong" | symptoms first, each with cause and fix |
 
-\1
+A view needs its data: `checklist` and `timeline` need steps, `decision` needs branching steps or rules, `troubleshoot` needs troubleshooting entries. Without it the page falls back to `steps` and the builder warns. For a `timeline`, give every step a `when`.
 ### Document types
 
 Each task also has a `doc_type`: the document its line of work uses. Pick it yourself, like the view, and tell the giver in one line ("This is server maintenance, so it becomes a work instruction with the PPE and torque values up front"). Change it only if they object.
@@ -205,4 +205,4 @@ For technical work, record `command` exactly as typed and `expected` as it appea
 └── README.md                     how to open and use the pack
 ```
 
-Only files with content are written. Every task gets `documents/<id>-<slug>.html` plus a `.docx` (SOP, work instruction) or `.md` (runbook, developer guide). Each has the sections of its type and the procedure in the shape of the task's view. Status stays "Draft" until the task is complete, every item is `validated`, every "who can do it" label and pin is confirmed, and no open question points at it. Unconfirmed items are flagged. Document number, owner, effective date, approver and sign-off are left blank.
+Only files with content are written. `START-HERE.html` embeds the images, so it can be sent alone; very large photo sets may make it heavy, so prefer a few clear images per task. Every task gets `documents/<id>-<slug>.html` plus a `.docx` (SOP, work instruction) or `.md` (runbook, developer guide). Each has the sections of its type and the procedure in the shape of the task's view. Status stays "Draft" until the task is complete, every item is `validated`, every "who can do it" label and pin is confirmed, and no open question points at it. Unconfirmed items are flagged. Document number, owner, effective date, approver and sign-off are left blank.

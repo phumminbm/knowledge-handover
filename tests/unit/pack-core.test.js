@@ -249,7 +249,7 @@ test('secret-looking values are replaced in every output, with a warning to chan
   for (const [name, secret] of Object.entries(SECRETS)) assert.ok(!all.includes(secret), name + ' leaked');
   assert.ok(!all.includes('MIIEowIBAAKCAQEA'), 'private key leaked');
   assert.match(all, /<REDACTED>/);
-  assert.match(all, /pg_restore|GITHUB_TOKEN=<REDACTED>/);
+  assert.match(all, /GITHUB_TOKEN=<REDACTED>/);
 });
 
 test('ordinary text and placeholders are not mistaken for secrets', () => {
@@ -258,4 +258,56 @@ test('ordinary text and placeholders are not mistaken for secrets', () => {
   const r = core.build(k, {}, { template, fontsCss: '' });
   assert.ok(!r.warnings.some((w) => /secret/.test(w)), r.warnings.join('\n'));
   assert.match(r.files.find((f) => f.path.endsWith('knowledge.json')).data, /ask the chief accountant\. Token: required\. Use <API_TOKEN>/);
+});
+
+test('redaction catches prefixed names, common token formats, CLI passwords and Thai labels', () => {
+  const LEAKS = {
+    prefixed: 'export DB_PASSWORD=Hunter2abc',
+    yaml: 'db_password: Hunter2abc',
+    aws: 'AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
+    stripeName: 'STRIPE_API_KEY=abcd1234efgh5678',
+    google: 'GOOGLE_CLIENT_SECRET=GOCSPX-abc123def456',
+    stripe: 'sk_' + 'live_51Habcdefghijklmnop1234',
+    stripeR: 'rk_' + 'live_51Habcdefghijklmnop1234',
+    azure: 'DefaultEndpointsProtocol=https;AccountName=x;AccountKey=abcdEFGH1234ijklMNOP5678qrst==;',
+    mysql: 'mysql -u root -pS3cretPass billing',
+    curl: 'curl -u admin:S3cretPass https://api.example.com',
+    basic: 'Authorization: Basic YWRtaW46UzNjcmV0UGFzcw==',
+    npm: 'npm_' + 'abcdefghijklmnopqrstuvwxyz0123456789',
+    gitlab: 'glpat-' + 'abcdefghijklmnopqrst',
+    longPass: 'password: correcthorsebatterystaple',
+    thai: 'รหัสผ่าน: Hunter2abc',
+    pin: 'PIN 4821 for the safe',
+    otp: 'OTP: 482913',
+  };
+  const secretOf = { prefixed: 'Hunter2abc', yaml: 'Hunter2abc', aws: 'wJalrXUtnFEMI', stripeName: 'abcd1234efgh5678', google: 'GOCSPX-abc123def456', stripe: 'live_51Habcdefghijklmnop1234', stripeR: 'live_51Habcdefghijklmnop1234', azure: 'abcdEFGH1234ijklMNOP5678qrst', mysql: 'S3cretPass', curl: 'S3cretPass', basic: 'YWRtaW46UzNjcmV0UGFzcw', npm: 'abcdefghijklmnopqrstuvwxyz0123456789', gitlab: 'abcdefghijklmnopqrst', longPass: 'correcthorsebatterystaple', thai: 'Hunter2abc', pin: '4821', otp: '482913' };
+  for (const [name, text] of Object.entries(LEAKS)) {
+    const k = { processes: [{ id: 'P01', name: 'x', steps: [{ id: 'P01.S01', title: 't', command: text }] }] };
+    const warn = core.redactSecrets(k);
+    assert.ok(warn.length, name + ' not caught');
+    assert.ok(!k.processes[0].steps[0].command.includes(secretOf[name]), name + ' leaked: ' + k.processes[0].steps[0].command);
+  }
+});
+
+test('redaction leaves IDs, paths, ports and ordinary words alone', () => {
+  for (const text of ['pass: P01.S03', 'token: TKT-2026-00123', 'secret: Q3-2026 plan', 'pwd: /home/user1/app', 'https://user:8080@host', 'the team password manager', 'Token: required.', 'token bucket of 20']) {
+    const k = { processes: [{ id: 'P01', steps: [{ id: 'P01.S01', detail: text }] }] };
+    assert.deepStrictEqual(core.redactSecrets(k), [], text);
+    assert.strictEqual(k.processes[0].steps[0].detail, text);
+  }
+});
+
+test('a redacted diagram stays valid SVG', () => {
+  const k = { processes: [{ id: 'P01', diagram_svg: '<svg xmlns="http://www.w3.org/2000/svg"><text>password=Hunter2abc</text></svg>' }] };
+  core.redactSecrets(k);
+  const svg = k.processes[0].diagram_svg;
+  assert.doesNotMatch(svg, /Hunter2abc/);
+  assert.doesNotMatch(svg, /<REDACTED>/);
+  execFileSync('python3', ['-c', 'import sys,xml.dom.minidom;xml.dom.minidom.parseString(sys.argv[1])', svg]);
+});
+
+test('an unknown doc_type does not hide a view warning', () => {
+  const w = core.validate({ pack_id: 'K', processes: [{ id: 'P01', doc_type: 'novel', view: 'timeline' }] });
+  assert.ok(w.some((x) => /unknown doc_type/.test(x)));
+  assert.ok(w.some((x) => /view "timeline" needs/.test(x)));
 });

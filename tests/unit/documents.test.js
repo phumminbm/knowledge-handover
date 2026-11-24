@@ -273,3 +273,52 @@ test('a task with nothing but a name still gets valid documents', () => {
 test('the Pack README points to the documents', () => {
   assert.match(text(file(build(example()), 'README.md')), /`documents\/`/);
 });
+
+test('commands, expected results and undo survive every view', () => {
+  for (const view of ['checklist', 'timeline', 'decision']) {
+    const k = fieldwork();
+    const p = k.processes[0];
+    p.view = view;
+    p.steps.forEach((s) => { s.when = 'Day 1'; });
+    p.steps[0].branches = [{ label: 'ok', goto: 'P01.S02' }];
+    const r = build(k);
+    for (const ext of ['md', 'html']) {
+      const t = text(doc(r, 'P01-restore-db', ext));
+      assert.match(t, /systemctl stop billing/, view + ' ' + ext + ' command');
+      assert.match(t, /Active: inactive \(dead\)/, view + ' ' + ext + ' expected');
+      assert.match(t, /systemctl start billing/, view + ' ' + ext + ' undo');
+    }
+  }
+});
+
+test('line breaks in names and text cannot restructure the Markdown', () => {
+  const k = fieldwork();
+  k.processes[0].name = 'Restore\n# Fake heading';
+  k.processes[0].summary = 'Line one\n===\n    indented\n- not a list\n1. not a list\nSee https://example.com and www.example.com';
+  k.processes[0].steps[0].title = 'Stop\n## Fake';
+  const md = text(doc(build(k), 'P01-restore-db', 'md'));
+  assert.doesNotMatch(md, /^# Fake heading/m);
+  assert.doesNotMatch(md, /^## Fake/m);
+  assert.doesNotMatch(md, /^===/m);
+  assert.doesNotMatch(md, /^ {4}indented/m);
+  assert.doesNotMatch(md, /^- not a list/m);
+  assert.doesNotMatch(md, /^1\. not a list/m);
+  assert.doesNotMatch(md, /https:\/\/example\.com/);
+  assert.doesNotMatch(md, /www\.example\.com/);
+});
+
+test('definitions list only glossary terms that appear in the task text', () => {
+  const k = fieldwork();
+  k.glossary = [{ term: 'Status', meaning: 'field name, never in the text' }, { term: 'ID', meaning: 'also a field name' }, { term: 'VPN', meaning: 'virtual private network' }];
+  const t = text(doc(build(k), 'P01-restore-db', 'html'));
+  assert.match(t, /virtual private network/);
+  assert.doesNotMatch(t, /field name, never in the text|also a field name/);
+});
+
+test('Word documents open in the current Word mode, not compatibility mode', () => {
+  const d = readDocx(doc(build(fieldwork()), 'P03-replace-disk', 'docx').data);
+  assert.ok(d.names.includes('word/settings.xml'));
+  assert.match(d.xml['word/settings.xml'], /compatibilityMode" w:uri="http:\/\/schemas\.microsoft\.com\/office\/word" w:val="15"/);
+  assert.match(d.xml['word/_rels/document.xml.rels'], /relationships\/settings" Target="settings\.xml"/);
+  assert.match(d.xml['[Content_Types].xml'], /\/word\/settings\.xml/);
+});

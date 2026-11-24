@@ -41,7 +41,7 @@
       ifGo: 'If {a}: go to step {b}', then: 'Then go to step {a}', endTask: 'End of task', missingStep: 'missing step',
       needs: 'Needs confirmation', proposed: 'proposed, not confirmed', safety: 'Safety', highRisk: 'High risk',
       symptom: 'What you see', cause: 'Likely cause', fix: 'What to do', item: 'Item', next: 'Next', none: 'None recorded',
-      inputs: 'Inputs', outputs: 'Outputs', actor: 'Who does it', system: 'System', pinUnconfirmed: 'position not confirmed', anyTime: 'Any time',
+      inputs: 'Inputs', outputs: 'Outputs', actor: 'Who does it', system: 'System', pinUnconfirmed: 'position not confirmed', anyTime: 'Any time', stepDetails: 'Step details',
       printHint: 'To save as PDF: press Ctrl+P (⌘P on a Mac) and choose "Save as PDF".',
       footer: 'Generated from knowledge pack {a}. This is a draft until every item is confirmed; items marked "Needs confirmation" are the AI\'s own conclusions or open points.',
       diagramNote: 'The flow diagram is in the print version of this document (the .html file) and in START-HERE.html.',
@@ -66,7 +66,7 @@
       ifGo: 'ถ้า {a}: ไปขั้นที่ {b}', then: 'จากนั้นไปขั้นที่ {a}', endTask: 'จบงาน', missingStep: 'ไม่พบขั้นนี้',
       needs: 'รอยืนยัน', proposed: 'เสนอไว้ ยังไม่ยืนยัน', safety: 'ความปลอดภัย', highRisk: 'ความเสี่ยงสูง',
       symptom: 'อาการที่เห็น', cause: 'สาเหตุที่พบบ่อย', fix: 'วิธีแก้', item: 'รายการ', next: 'ไปต่อ', none: 'ไม่มีบันทึก',
-      inputs: 'สิ่งที่ต้องใช้', outputs: 'สิ่งที่ได้', actor: 'ผู้ทำ', system: 'ระบบ', pinUnconfirmed: 'ตำแหน่งยังไม่ยืนยัน', anyTime: 'เมื่อใดก็ได้',
+      inputs: 'สิ่งที่ต้องใช้', outputs: 'สิ่งที่ได้', actor: 'ผู้ทำ', system: 'ระบบ', pinUnconfirmed: 'ตำแหน่งยังไม่ยืนยัน', anyTime: 'เมื่อใดก็ได้', stepDetails: 'รายละเอียดแต่ละขั้น',
       printHint: 'บันทึกเป็น PDF: กด Ctrl+P (Mac กด ⌘P) แล้วเลือก "บันทึกเป็น PDF"',
       footer: 'สร้างจาก knowledge pack {a} เอกสารนี้เป็นฉบับร่างจนกว่าทุกข้อจะยืนยัน ข้อที่มีป้าย "รอยืนยัน" คือข้อที่ AI สรุปเองหรือยังไม่มีคำตอบ',
       diagramNote: 'แผนภาพขั้นตอนอยู่ในฉบับพิมพ์ของเอกสารนี้ (ไฟล์ .html) และใน START-HERE.html',
@@ -190,7 +190,13 @@
         if (rows.length) B.push({ t: 'table', head: [W.role, W.involvement], rows: rows, widths: [35, 65] }); else none();
       },
       defs: function () {
-        var blob = JSON.stringify({ n: p.name, s: p.summary, t: p.trigger, steps: steps, rules: rules, trouble: trouble }).toLowerCase();
+        var vals = [];
+        (function collect(v) {
+          if (typeof v === 'string') vals.push(v);
+          else if (Array.isArray(v)) v.forEach(collect);
+          else if (v && typeof v === 'object') Object.keys(v).forEach(function (key) { if (key !== 'diagram_svg' && key !== 'status' && key !== 'id') collect(v[key]); });
+        })([p.name, p.summary, p.trigger, p.prerequisites, p.tools, p.ppe, p.rollback, p.escalation, p.people, p.systems, steps, rules, trouble]);
+        var blob = vals.join('\n').toLowerCase();
         var defs = (k.glossary || []).filter(function (g) { return g && g.term && blob.indexOf(String(g.term).toLowerCase()) >= 0; });
         if (!defs.length) return;
         head(W.defs);
@@ -255,6 +261,11 @@
         } else {
           steps.forEach(function (s) { B.push(stepBlock(s)); });
         }
+        if (view === 'checklist' || view === 'timeline' || view === 'decision') {
+          // The table keeps the shape of the work; commands, results, undo and screenshots follow it.
+          var detailed = steps.filter(function (s) { return s.command || s.expected || s.rollback || (s.image && (own(ctx.images, s.image) || own(ctx.imageUrls, s.image))); });
+          if (detailed.length) { B.push({ t: 'sub', text: W.stepDetails }); detailed.forEach(function (s) { B.push(stepBlock(s)); }); }
+        }
         if (!steps.length && !trouble.length && !(view === 'decision' && rules.length)) none();
       },
       rules: function (label) {
@@ -300,7 +311,7 @@
       S.procedure(W.procedure); S.rules(W.rules); S.trouble(W.trouble); S.records(); S.openQ(); S.signoff(); S.history();
     } else if (type === 'runbook') {
       S.whenToUse(W.whenToUse); S.before(W.before, true); S.escalation(); S.procedure(W.steps); S.rollback(); S.risk(W.risky);
-      S.trouble(W.trouble); S.rules(W.rules); S.openQ(); S.history();
+      S.trouble(W.trouble); S.rules(W.rules); S.defs(); S.openQ(); S.history();
     } else if (type === 'dev_guide') {
       S.whenToUse(W.overview); S.before(W.prereq, true); S.systems(W.repos, false, true); S.procedure(W.steps);
       S.rules(W.conventions); S.trouble(W.common); S.defs(); S.openQ(); S.history();
@@ -332,6 +343,7 @@
       if (b.t === 'title') return '<header><div class="kicker">' + esc(b.kicker) + '</div><h1>' + esc(b.text) + '</h1></header>';
       if (b.t === 'meta') return '<table class="meta">' + b.rows.map(function (r) { return '<tr><th>' + esc(r[0]) + '</th><td' + (r[2] ? ' class="blank"' : '') + '>' + (r[2] ? '<span>' + esc(W.fill) + '</span>' : esc(r[1])) + '</td></tr>'; }).join('') + '</table>';
       if (b.t === 'h') return '<h2>' + esc(b.text) + '</h2>';
+      if (b.t === 'sub') return '<h3 class="sub">' + esc(b.text) + '</h3>';
       if (b.t === 'p') return '<p' + (b.muted ? ' class="muted"' : '') + '>' + br(b.text) + '</p>';
       if (b.t === 'note') return '<footer>' + esc(b.text) + '</footer>';
       if (b.t === 'list') return '<ul>' + b.items.map(function (x) { return '<li>' + br(x) + '</li>'; }).join('') + '</ul>';
@@ -375,6 +387,7 @@
     'h2{font-size:18px;margin:28px 0 10px;padding-bottom:4px;border-bottom:1px solid var(--hair);break-after:avoid}',
     'h3{font-size:15px;margin:0 0 6px;display:flex;flex-wrap:wrap;align-items:center;gap:6px}',
     'h3 small{margin-left:auto;color:var(--muted);font-weight:400;font-size:11px}',
+    'h3.sub{margin:18px 0 8px;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}',
     '.n{display:inline-flex;width:24px;height:24px;border-radius:50%;background:var(--ink);color:#fff;font-size:12px;align-items:center;justify-content:center}',
     'p{margin:0 0 8px}.muted{color:var(--muted)}',
     'ul{margin:0 0 8px;padding-left:20px}',
@@ -406,11 +419,18 @@
   ].join('\n');
 
   // ── Markdown (runbooks, developer guides) ──────────────────────────────
-  function md(s) { return str(s).replace(/[\\`*_\[\]<>|]/g, '\\$&'); }
-  function mdLines(s) { return md(s).replace(/\r?\n/g, '  \n'); }
+  // Text never becomes markup: inline characters are escaped, links are not auto-detected, and
+  // each line is kept from starting a heading, list, quote, code block or setext underline.
+  function mdLine(line) {
+    return line.replace(/^\s+/, '').replace(/[\\`*_\[\]<>|&]/g, '\\$&')
+      .replace(/(https?|ftp):\/\//gi, '$1:\\/\\/').replace(/\bwww\./gi, 'www\\.')
+      .replace(/^([#=+\-~>])/, '\\$1').replace(/^(\d+)([.)])/, '$1\\$2');
+  }
+  function md(s) { return str(s).split(/\r?\n/).map(mdLine).join(' ').trim(); }
+  function mdLines(s) { return str(s).split(/\r?\n/).map(mdLine).filter(function (l, i, a) { return l || (i && a[i - 1]); }).join('  \n'); }
   function mdCell(c, W) {
     var o = typeof c === 'object' && c ? c : { text: c };
-    var t = md(o.text).replace(/\r?\n/g, '<br>');
+    var t = str(o.text).split(/\r?\n/).map(mdLine).join('<br>');
     if (o.strong) t = '**' + t + '**';
     if (o.tag) t = '**' + md(o.tag) + '** ' + t;
     if (o.flag) t += ' **' + md(W.needs) + '**';
@@ -428,10 +448,11 @@
     m.blocks.forEach(function (b) {
       if (b.t === 'title') out.push('# ' + md(b.kicker) + ': ' + md(b.text));
       else if (b.t === 'meta') out.push(b.rows.map(function (r) { return '- **' + md(r[0]) + ':** ' + (r[2] ? '_' + md(W.fill) + '_' : md(r[1])); }).join('\n'));
-      else if (b.t === 'h') out.push('## ' + md(b.text));
+      else if (b.t === 'h') out.push('## ' + md(b.text).replace(/^(\d+)\\\./, '$1.'));
+      else if (b.t === 'sub') out.push('**' + md(b.text) + '**');
       else if (b.t === 'p') out.push(b.muted ? '_' + mdLines(b.text) + '_' : mdLines(b.text));
       else if (b.t === 'note') out.push('---\n\n_' + mdLines(b.text) + '_');
-      else if (b.t === 'list') out.push(b.items.map(function (x) { return '- ' + md(x).replace(/\r?\n/g, ' '); }).join('\n'));
+      else if (b.t === 'list') out.push(b.items.map(function (x) { return '- ' + md(x); }).join('\n'));
       else if (b.t === 'diagram') out.push('_' + md(b.note) + '_');
       else if (b.t === 'table') {
         out.push('| ' + b.head.map(function (h) { return mdCell(h, W); }).join(' | ') + ' |\n|' + b.head.map(function () { return '---'; }).join('|') + '|\n' +
@@ -445,7 +466,7 @@
           s.push(safe ? '![' + md(b.image) + '](../visuals/' + b.image + ')' : md(b.image));
           if (b.pins.length) s.push(b.pins.map(function (q) { return md(q.n) + '. ' + md(q.label) + (q.confirmed ? '' : ' _(' + md(W.pinUnconfirmed) + ')_'); }).join('  \n'));
         }
-        if (b.fields.length) s.push(b.fields.map(function (f) { return '- **' + md(f[0]) + ':** ' + md(f[1]).replace(/\r?\n/g, '; '); }).join('\n'));
+        if (b.fields.length) s.push(b.fields.map(function (f) { return '- **' + md(f[0]) + ':** ' + str(f[1]).split(/\r?\n/).map(mdLine).join('; '); }).join('\n'));
         out.push(s.join('\n\n'));
       }
     });
@@ -531,6 +552,7 @@
       if (b.t === 'title') { body.push(para(run(b.kicker, { b: true, color: 'BF4520', sz: 18 }), 'Kicker'), para(run(b.text), 'Title')); return; }
       if (b.t === 'meta') { body.push(dtable(null, b.rows.map(function (r) { return [{ text: r[0], strong: true }, r[2] ? '' : r[1]]; }), [30, 70], W)); return; }
       if (b.t === 'h') { body.push(para(run(b.text), 'Heading1')); return; }
+      if (b.t === 'sub') { body.push(para(run(b.text, { b: true, color: '5F5F5C' }), null, '<w:keepNext/><w:spacing w:before="240"/>')); return; }
       if (b.t === 'p') { body.push(para(run(b.text, { color: b.muted ? '5F5F5C' : null }))); return; }
       if (b.t === 'note') { body.push(para(run(b.text, { i: true, color: '5F5F5C', sz: 18 }), null, '<w:spacing w:before="360"/>')); return; }
       if (b.t === 'list') { b.items.forEach(function (it) { body.push(para(run('•  ' + it), 'ListBullet')); }); return; }
@@ -575,6 +597,7 @@
         Object.keys(exts).map(function (e) { return '<Default Extension="' + e + '" ContentType="image/' + e + '"/>'; }).join('') +
         '<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>' +
         '<Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>' +
+        '<Override PartName="/word/settings.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml"/>' +
         '<Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/></Types>' },
       { path: '_rels/.rels', data: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
         '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>' +
@@ -583,8 +606,11 @@
         '<dc:title>' + title + '</dc:title><dc:subject>' + x(str(k.pack_id) + ' · ' + str(p.id)) + '</dc:subject></cp:coreProperties>' },
       { path: 'word/document.xml', data: doc },
       { path: 'word/styles.xml', data: styles },
+      { path: 'word/settings.xml', data: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<w:settings xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:compat>' +
+        '<w:compatSetting w:name="compatibilityMode" w:uri="http://schemas.microsoft.com/office/word" w:val="15"/></w:compat></w:settings>' },
       { path: 'word/_rels/document.xml.rels', data: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
-        '<Relationship Id="rIdStyles" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>' + rels.join('') + '</Relationships>' }
+        '<Relationship Id="rIdStyles" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>' +
+        '<Relationship Id="rIdSettings" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings" Target="settings.xml"/>' + rels.join('') + '</Relationships>' }
     ].concat(media);
   }
 
