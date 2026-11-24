@@ -14,7 +14,7 @@ Skill สำหรับ AI ที่สัมภาษณ์คนทำงา�
 [![Release](https://img.shields.io/github/v/release/phumminbm/knowledge-handover?style=flat-square&color=bf4520)](https://github.com/phumminbm/knowledge-handover/releases/latest)
 [![License: MIT](https://img.shields.io/badge/license-MIT-555555?style=flat-square)](LICENSE)
 
-[ติดตั้ง](#ติดตั้ง) · [ใช้งานอย่างไร](#ใช้งานอย่างไร) · [ดูตัวอย่าง Pack](#ดูตัวอย่างให้ครบทุกมุม) · [Pack Builder](https://phumminbm.github.io/knowledge-handover/) · [แก้ปัญหา](#ถ้าใช้แล้วติดปัญหา)
+[ใช้งานอย่างไร](#ใช้งานอย่างไร) · [จะได้อะไร](#สิ่งที่คุณจะได้) · [ตัวอย่าง](#ดูตัวอย่าง) · [ติดตั้ง](#ติดตั้ง) · [Pack Builder](https://phumminbm.github.io/knowledge-handover/) · [แก้ปัญหา](#ถ้าใช้แล้วติดปัญหา)
 
 <img src="docs/images/walkthrough.jpg" alt="ขั้นตอนหนึ่งใน START-HERE.html: ภาพหน้าจอจริงของผู้ส่งงานพร้อมหมุดตัวเลข เหตุผลของขั้นตอน และวิธีเช็กว่าทำถูก" width="860">
 
@@ -32,6 +32,43 @@ Skill สำหรับ AI ที่สัมภาษณ์คนทำงา�
 - **ซื่อตรงกับข้อมูล:** ทุกข้อมีสถานะ **ยืนยันแล้ว**, **ยังไม่ได้ตรวจ**, **รอยืนยัน** หรือ **ยังไม่มีคำตอบ** จะได้ไม่มีใครเข้าใจผิดว่าสิ่งที่ AI เดาเป็นกฎจริง
 - **ข้อมูลอยู่กับคุณ:** ไม่มีเซิร์ฟเวอร์ ไม่ต้องสมัครบัญชี ไม่มีการติดตามการใช้งาน ดูรายละเอียดที่ [PRIVACY.md](PRIVACY.md)
 
+## ใช้งานอย่างไร
+
+### 1. ผู้ส่งงานเล่า
+
+พิมพ์ประมาณนี้ จะใช้ภาษาอะไรก็ได้
+
+> *"ช่วยทำคู่มืองานใบเสนอราคาให้ทีมหน่อย"*
+>
+> *"ช่วยทำคู่มือออกใบกำกับภาษีในโปรแกรมให้คนใหม่ ฉันมีรูปหน้าจอ"*
+>
+> *"อีก 2 อาทิตย์จะลาออก ช่วยเก็บงานส่งต่อให้หน่อย"*
+>
+> *"I'm leaving next month, help me hand over my work."*
+
+AI จะทำความรู้จักงานของคุณ ขอภาพหน้าจอ ไฟล์ที่ใช้ทำงาน ตัวอย่างงานที่ทำเสร็จ หรือลิงก์ ทุกครั้งที่คุณพูดถึง (แล้วอ่านเอง จะได้ถามคุณน้อยลง) ถามเรื่องที่มักลืมเขียน (กรณีพิเศษ กำหนดส่ง ต้องติดต่อใคร) วาดภาพสิ่งที่เข้าใจให้คุณตรวจ และให้ **save block** ทุกครั้งที่จบรอบ เก็บ save block ไว้ แล้ววางในแชตใหม่เมื่ออยากทำต่อ
+
+<img src="docs/images/interview-th.jpg" alt="ภาพจำลองการสัมภาษณ์: AI ให้แตะเลือก ขอแบบฟอร์มอนุมัติ อ่านแล้วถามเฉพาะส่วนที่ขาด วาดผังตัดสินใจให้ตรวจ และจบด้วย save block" width="520">
+
+<sub>ภาพจำลองให้เห็นลำดับการคุย ไม่ใช่แชตจริง คำพูดของ AI จริงจะต่างไปบ้าง</sub>
+
+### 2. สร้าง Pack
+
+- ถ้า AI รันโค้ดได้ (Claude ที่เปิด Code execution, Claude Code, Codex, Gemini CLI) AI จะสร้างไฟล์ zip ให้เอง
+- ถ้ารันโค้ดไม่ได้ ให้เปิด **[Pack Builder](https://phumminbm.github.io/knowledge-handover/)** วาง save block ล่าสุด ลากรูปใส่ แล้วดาวน์โหลด zip ทุกอย่างทำงานในเบราว์เซอร์ของคุณ ไม่มีการอัปโหลดข้อมูลไปไหน
+
+<img src="docs/images/pack-builder.jpg" alt="Pack Builder: วาง save block ใส่รูป แล้วกดสร้าง" width="720">
+
+### 3. ผู้รับงานเรียน
+
+แนบไฟล์ zip (หรือแค่ `PACK-FOR-AI.md`) ในแชต AI ตัวไหนก็ได้ แล้วพิมพ์ว่า *"สอนงานจาก pack นี้"* AI จะเล่าภาพรวมของงานก่อน (ถ้าเป็นการส่งต่องาน จะเล่าเรื่องด่วนด้วย) แล้วพาทำทีละงานด้วยภาพจริง พร้อมอธิบายว่าแต่ละขั้นทำไปเพื่ออะไร ถ้าไม่ใช้ AI ก็เปิด `START-HERE.html` ในเบราว์เซอร์ได้เลย **[เปิดดูตัวอย่าง Pack](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html)** เพื่อดูว่าผู้รับงานจะได้อะไร
+
+## สิ่งที่คุณจะได้
+
+สัมภาษณ์ครั้งเดียว ได้ 4 อย่างใน Pack เดียว: หน้าเว็บสำหรับเรียนงาน ไดอะแกรม แบบฝึกหัด และเอกสารแบบที่สายงานคุณใช้
+
+### หน้าเว็บสำหรับเรียนงาน จัดหน้าตาให้เหมาะกับแต่ละงาน
+
 <table>
 <tr>
 <td width="62%"><img src="docs/images/start-here.jpg" alt="หน้าแรกของ START-HERE.html: เริ่มตรงไหน เรื่องด่วนพร้อมวันกำหนด และงานทั้งหมดของตำแหน่ง"></td>
@@ -42,8 +79,6 @@ Skill สำหรับ AI ที่สัมภาษณ์คนทำงา�
 <td>เปิดบนมือถือได้ ไม่ต้องต่อเน็ต</td>
 </tr>
 </table>
-
-### แต่ละงานได้หน้าตาที่เหมาะกับลักษณะงาน
 
 AI จะเลือกรูปแบบหน้าและวาดไดอะแกรมให้ทุกงานเอง แล้วบอกผู้ส่งงานว่าเลือกอะไร ผู้ส่งงานไม่ต้องเลือกเอง ถ้าอยากได้แบบอื่นค่อยบอก ผู้รับงานกดกลับไปดูแบบพาทำทีละขั้นได้เสมอ
 
@@ -59,28 +94,6 @@ AI จะเลือกรูปแบบหน้าและวาดได�
 
 <img src="docs/images/views.jpg" alt="งานที่แสดงเป็นเช็กลิสต์ ขั้นความปลอดภัยขึ้นก่อน และเมนูข้างแสดงทุกงานพร้อมรูปแบบ" width="860">
 
-## ดูตัวอย่างให้ครบทุกมุม
-
-มี Pack ตัวอย่างสมมติ 2 ชุด (เป็นภาษาอังกฤษ): งานบัญชีเงินสดและธนาคาร (6 งาน ครบทั้ง 5 รูปแบบหน้า และแต่ละงานมีไดอะแกรมคนละแบบ) และงาน platform engineering (Runbook ที่มีคำสั่งจริง, Developer guide, Work Instruction ที่มี PPE และค่าแรงขัน, และ Runbook สำหรับแก้ปัญหา) ไม่ต้องติดตั้งอะไร เปิดในเบราว์เซอร์ได้เลย
-
-| อยากดูอะไร | เปิดที่นี่ |
-|---|---|
-| หน้าที่ผู้รับงานจะได้ | [START-HERE.html](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html) |
-| **ทีละขั้น** พร้อมภาพหน้าจอจริงและหมุดตัวเลข | [Month-end bank reconciliation](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P01/walk/P01.S01) |
-| **ไทม์ไลน์** | [Prepare the monthly VAT data](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P02) |
-| **เช็กลิสต์** ขั้นความปลอดภัยขึ้นก่อน | [Count petty cash and close the safe](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P03) |
-| **หาว่าต้องทำอะไร** | [Approve a supplier payment](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P04) |
-| **เจออาการอะไร** | [When online banking goes wrong](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P05) |
-| แบบฝึกหัด | [Approve a supplier payment › Practice](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P04/quiz) |
-| เรื่องที่ Pack ยังไม่มีคำตอบ | [Open questions](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/questions) |
-| SOP (Word) | [หน้าพร้อมพิมพ์](https://phumminbm.github.io/knowledge-handover/example/documents/P04-supplier-payment-approval.html) · [ไฟล์ Word](https://phumminbm.github.io/knowledge-handover/example/documents/P04-supplier-payment-approval.docx) |
-| ตัวอย่างสายวิศวกรรม/IT | [START-HERE.html](https://phumminbm.github.io/knowledge-handover/example-it/START-HERE.html) |
-| Runbook ที่มีคำสั่ง | [หน้าพร้อมพิมพ์](https://phumminbm.github.io/knowledge-handover/example-it/documents/P01-restore-database.html) · [Markdown](https://phumminbm.github.io/knowledge-handover/example-it/documents/P01-restore-database.md) |
-| Developer guide | [หน้าพร้อมพิมพ์](https://phumminbm.github.io/knowledge-handover/example-it/documents/P02-local-setup.html) · [Markdown](https://phumminbm.github.io/knowledge-handover/example-it/documents/P02-local-setup.md) |
-| Work Instruction ที่มี PPE และสเปก | [หน้าพร้อมพิมพ์](https://phumminbm.github.io/knowledge-handover/example-it/documents/P03-replace-disk.html) · [ไฟล์ Word](https://phumminbm.github.io/knowledge-handover/example-it/documents/P03-replace-disk.docx) |
-| ไฟล์ทั้งหมดใน Pack: เอกสารรายงาน, `PACK-FOR-AI.md`, `knowledge.json` | [example-pack.zip](https://phumminbm.github.io/knowledge-handover/example/example-pack.zip) |
-| ข้อมูลต้นฉบับที่ AI เขียน | [`examples/bank-reconciliation/knowledge.json`](examples/bank-reconciliation/knowledge.json) |
-
 ### AI วาดไดอะแกรมให้เข้ากับลักษณะงาน
 
 งานที่มีทางเลือกใช่/ไม่ใช่ได้ผังขั้นตอน งานตามปฏิทินได้ไทม์ไลน์ งานที่ส่งต่อกันหลายคนได้ผังแบ่งช่องตามคน (swimlane) งานอนุมัติได้ผังตัดสินใจ งานแก้ปัญหาได้ตาราง อาการ → สาเหตุ → วิธีแก้ และงานที่มีสถานะได้ผังสถานะ ส่วนไหนที่ AI สรุปเองจะวาดเป็นเส้นประจนกว่าจะมีคนยืนยัน
@@ -94,6 +107,65 @@ AI จะเลือกรูปแบบหน้าและวาดได�
 <img src="docs/images/practice.jpg" alt="แบบฝึกหัดเรื่องอนุมัติจ่ายเงินผู้ขาย พร้อมเฉลยและรหัสกฎ" width="860">
 
 ถ้าใช้กับ AI ผู้รับงานแนบไฟล์ zip (หรือ `PACK-FOR-AI.md`) แล้วพิมพ์ว่า *"สอนงานจาก pack นี้"* ส่วนบนของ `PACK-FOR-AI.md` บอก AI ว่าต้องสอนอย่างไร: เล่าภาพรวมของงาน ถามระดับของผู้เรียน พาทำทีละขั้นแล้วรอให้ตอบว่า "เสร็จแล้ว" ถามว่าเป็นกรณีไหนเมื่อถึงทางเลือก อ้างรหัสของแต่ละข้อ เตือนทุกครั้งที่ใช้ข้อที่ยังไม่ได้ยืนยัน ใช้แบบฝึกหัด และบอกตรง ๆ เมื่อ Pack ไม่มีคำตอบ
+
+### เอกสารแบบที่แต่ละสายงานใช้
+
+ทุกงานใน Pack ถูกเขียนเป็นเอกสารแบบที่สายงานนั้นใช้ด้วย AI เลือกประเภทให้ตามลักษณะงานแล้วบอกคุณ ถ้าอยากได้แบบอื่นบอกได้
+
+| ประเภท | สำหรับ | ได้อะไร |
+|---|---|---|
+| **SOP** | งานออฟฟิศ งานบริการ งานธุรการ งานดูแล | ไฟล์ Word + หน้าพร้อมพิมพ์ (PDF) |
+| **Work Instruction** | วิศวกรรม ซ่อมบำรุง การผลิต ห้องแล็บ | ไฟล์ Word + หน้าพร้อมพิมพ์: ความปลอดภัยและ PPE มาก่อน เครื่องมือ ค่าสเปกและค่าเผื่อ จุดตรวจคุณภาพ ช่องลงนาม |
+| **Runbook** | IT operations, DevOps, on-call | Markdown สำหรับ repo หรือ wiki + หน้าพร้อมพิมพ์: คำสั่งที่ใช้จริง ผลที่ควรเห็น วิธีย้อนกลับ การส่งต่อปัญหา rollback |
+| **Developer guide** | พัฒนาซอฟต์แวร์ | Markdown + หน้าพร้อมพิมพ์: สิ่งที่ต้องมีก่อน คำสั่งติดตั้ง ข้อตกลงของทีม ปัญหาที่พบบ่อย |
+
+ทุกแบบมีขั้นตอนตามลักษณะงาน (ทีละขั้นพร้อมภาพหน้าจอ เช็กลิสต์ ไทม์ไลน์ ตารางตัดสินใจ หรือตารางอาการ) และในฉบับพิมพ์มีไดอะแกรมด้วย ช่องเลขที่เอกสาร เจ้าของ วันที่มีผล ผู้อนุมัติ และช่องลงนาม เว้นว่างไว้ให้องค์กรกรอกเอง สถานะเป็น "ฉบับร่าง" จนกว่าทุกอย่างจะยืนยันแล้ว และข้อที่ AI สรุปเองมีป้ายบอกชัด ข้อมูลลับไม่หลุดเข้าไป: อะไรที่ดูเหมือนรหัสผ่าน คีย์ หรือ token จะถูกแทนด้วย `<REDACTED>` ในทุกไฟล์ และระบบจะบอกให้คุณเปลี่ยนรหัสนั้น ถ้าองค์กรมีแม่แบบของตัวเอง ส่งให้ AI ระหว่างสัมภาษณ์ได้ AI ที่แก้เอกสารได้จะกรอกแม่แบบนั้นให้ด้วย
+
+<img src="docs/images/documents.jpg" alt="เอกสาร 4 แบบจากตัวอย่าง: SOP และ Work Instruction เป็นไฟล์ Word และ Runbook กับ Developer guide เป็นหน้าพร้อมพิมพ์ที่มีคำสั่ง" width="860">
+
+### ไฟล์ทั้งหมดใน Pack
+
+```text
+knowledge-handover_KP-2569-0042_2026-11-30.zip
+├── START-HERE.html      เรื่องด่วน แผนผังงาน วิธีทำทีละขั้นพร้อมภาพจริง แบบทดสอบ
+├── PACK-FOR-AI.md       ทุกอย่างในไฟล์เดียว พร้อมวิธีสอนสำหรับ AI ตัวไหนก็ได้
+├── handover-status.md   เฉพาะตอนส่งต่องาน: งานค้าง กำหนดส่ง บัญชีที่ต้องโอนสิทธิ์
+├── processes/…          แยกโฟลเดอร์ละงาน: ขั้นตอน กฎ การแก้ปัญหา สถานการณ์ตัวอย่าง
+├── documents/           ทุกงานเป็น SOP, Work Instruction, Runbook หรือ Developer guide (.docx หรือ .md และหน้าพร้อมพิมพ์)
+├── visuals/             ภาพต้นฉบับ ไม่มีการแก้ไข
+├── open-questions.md    เรื่องที่ยังไม่มีคำตอบ และควรถามใคร
+└── knowledge.json       ข้อมูลต้นทางทั้งหมด วางกลับเข้าแชตเพื่ออัปเดต Pack ได้
+```
+
+## ดูตัวอย่าง
+
+มี Pack ตัวอย่างสมมติ 2 ชุด เป็นภาษาอังกฤษ ไม่ต้องติดตั้งอะไร เปิดในเบราว์เซอร์ได้เลย
+
+### งานบัญชีเงินสดและธนาคาร (6 งาน ครบ 5 รูปแบบหน้า ไดอะแกรม 6 แบบ)
+
+| อยากดูอะไร | เปิดที่นี่ |
+|---|---|
+| หน้าที่ผู้รับงานจะได้ | [START-HERE.html](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html) |
+| **ทีละขั้น** พร้อมภาพหน้าจอจริงและหมุดตัวเลข | [Month-end bank reconciliation](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P01/walk/P01.S01) |
+| **ไทม์ไลน์** | [Prepare the monthly VAT data](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P02) |
+| **เช็กลิสต์** ขั้นความปลอดภัยขึ้นก่อน | [Count petty cash and close the safe](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P03) |
+| **หาว่าต้องทำอะไร** | [Approve a supplier payment](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P04) |
+| **เจออาการอะไร** | [When online banking goes wrong](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P05) |
+| แบบฝึกหัด | [Approve a supplier payment › Practice](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P04/quiz) |
+| เรื่องที่ Pack ยังไม่มีคำตอบ | [Open questions](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/questions) |
+| เอกสาร SOP | [หน้าพร้อมพิมพ์](https://phumminbm.github.io/knowledge-handover/example/documents/P04-supplier-payment-approval.html) · [ไฟล์ Word](https://phumminbm.github.io/knowledge-handover/example/documents/P04-supplier-payment-approval.docx) |
+| ไฟล์ทั้งหมดใน Pack | [example-pack.zip](https://phumminbm.github.io/knowledge-handover/example/example-pack.zip) · [`knowledge.json` ที่ AI เขียน](examples/bank-reconciliation/knowledge.json) |
+
+### งาน platform engineering (Runbook, Developer guide, Work Instruction)
+
+| อยากดูอะไร | เปิดที่นี่ |
+|---|---|
+| หน้าที่ผู้รับงานจะได้ | [START-HERE.html](https://phumminbm.github.io/knowledge-handover/example-it/START-HERE.html) |
+| Runbook ที่มีคำสั่งจริง ผลที่ควรเห็น และวิธีย้อนกลับ | [หน้าพร้อมพิมพ์](https://phumminbm.github.io/knowledge-handover/example-it/documents/P01-restore-database.html) · [Markdown](https://phumminbm.github.io/knowledge-handover/example-it/documents/P01-restore-database.md) |
+| Developer guide | [หน้าพร้อมพิมพ์](https://phumminbm.github.io/knowledge-handover/example-it/documents/P02-local-setup.html) · [Markdown](https://phumminbm.github.io/knowledge-handover/example-it/documents/P02-local-setup.md) |
+| Work Instruction ที่มี PPE เครื่องมือ และค่าแรงขัน | [หน้าพร้อมพิมพ์](https://phumminbm.github.io/knowledge-handover/example-it/documents/P03-replace-disk.html) · [ไฟล์ Word](https://phumminbm.github.io/knowledge-handover/example-it/documents/P03-replace-disk.docx) |
+| Runbook สำหรับแก้ปัญหา | [START-HERE › What's wrong?](https://phumminbm.github.io/knowledge-handover/example-it/START-HERE.html#/task/P04) · [Markdown](https://phumminbm.github.io/knowledge-handover/example-it/documents/P04-backup-failures.md) |
+| ไฟล์ทั้งหมดใน Pack | [example-pack.zip](https://phumminbm.github.io/knowledge-handover/example-it/example-pack.zip) · [`knowledge.json` ที่ AI เขียน](examples/it-operations/knowledge.json) |
 
 ## ติดตั้ง
 
@@ -165,66 +237,6 @@ gemini skills install https://github.com/phumminbm/knowledge-handover --path ski
 คัดลอกโฟลเดอร์ `skills/knowledge-handover/` ไปไว้ในโฟลเดอร์ skills ของโปรแกรม เช่น `~/.claude/skills/knowledge-handover/`
 
 </details>
-
-## ใช้งานอย่างไร
-
-### 1. ผู้ส่งงานเล่า
-
-พิมพ์ประมาณนี้ จะใช้ภาษาอะไรก็ได้
-
-> *"ช่วยทำคู่มืองานใบเสนอราคาให้ทีมหน่อย"*
->
-> *"ช่วยทำคู่มือออกใบกำกับภาษีในโปรแกรมให้คนใหม่ ฉันมีรูปหน้าจอ"*
->
-> *"อีก 2 อาทิตย์จะลาออก ช่วยเก็บงานส่งต่อให้หน่อย"*
->
-> *"I'm leaving next month, help me hand over my work."*
-
-AI จะทำความรู้จักงานของคุณ ขอภาพหน้าจอ ไฟล์ที่ใช้ทำงาน ตัวอย่างงานที่ทำเสร็จ หรือลิงก์ ทุกครั้งที่คุณพูดถึง (แล้วอ่านเอง จะได้ถามคุณน้อยลง) ถามเรื่องที่มักลืมเขียน (กรณีพิเศษ กำหนดส่ง ต้องติดต่อใคร) วาดภาพสิ่งที่เข้าใจให้คุณตรวจ และให้ **save block** ทุกครั้งที่จบรอบ เก็บ save block ไว้ แล้ววางในแชตใหม่เมื่ออยากทำต่อ
-
-<img src="docs/images/interview-th.jpg" alt="ภาพจำลองการสัมภาษณ์: AI ให้แตะเลือก ขอแบบฟอร์มอนุมัติ อ่านแล้วถามเฉพาะส่วนที่ขาด วาดผังตัดสินใจให้ตรวจ และจบด้วย save block" width="520">
-
-<sub>ภาพจำลองให้เห็นลำดับการคุย ไม่ใช่แชตจริง คำพูดของ AI จริงจะต่างไปบ้าง</sub>
-
-### 2. สร้าง Pack
-
-- ถ้า AI รันโค้ดได้ (Claude ที่เปิด Code execution, Claude Code, Codex, Gemini CLI) AI จะสร้างไฟล์ zip ให้เอง
-- ถ้ารันโค้ดไม่ได้ ให้เปิด **[Pack Builder](https://phumminbm.github.io/knowledge-handover/)** วาง save block ล่าสุด ลากรูปใส่ แล้วดาวน์โหลด zip ทุกอย่างทำงานในเบราว์เซอร์ของคุณ ไม่มีการอัปโหลดข้อมูลไปไหน
-
-<img src="docs/images/pack-builder.jpg" alt="Pack Builder: วาง save block ใส่รูป แล้วกดสร้าง" width="720">
-
-### 3. ผู้รับงานเรียน
-
-แนบไฟล์ zip (หรือแค่ `PACK-FOR-AI.md`) ในแชต AI ตัวไหนก็ได้ แล้วพิมพ์ว่า *"สอนงานจาก pack นี้"* AI จะเล่าภาพรวมของงานก่อน (ถ้าเป็นการส่งต่องาน จะเล่าเรื่องด่วนด้วย) แล้วพาทำทีละงานด้วยภาพจริง พร้อมอธิบายว่าแต่ละขั้นทำไปเพื่ออะไร ถ้าไม่ใช้ AI ก็เปิด `START-HERE.html` ในเบราว์เซอร์ได้เลย **[เปิดดูตัวอย่าง Pack](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html)** เพื่อดูว่าผู้รับงานจะได้อะไร
-
-## ใน Pack มีอะไรบ้าง
-
-```text
-knowledge-handover_KP-2569-0042_2026-11-30.zip
-├── START-HERE.html      เรื่องด่วน แผนผังงาน วิธีทำทีละขั้นพร้อมภาพจริง แบบทดสอบ
-├── PACK-FOR-AI.md       ทุกอย่างในไฟล์เดียว พร้อมวิธีสอนสำหรับ AI ตัวไหนก็ได้
-├── handover-status.md   เฉพาะตอนส่งต่องาน: งานค้าง กำหนดส่ง บัญชีที่ต้องโอนสิทธิ์
-├── processes/…          แยกโฟลเดอร์ละงาน: ขั้นตอน กฎ การแก้ปัญหา สถานการณ์ตัวอย่าง
-├── visuals/             ภาพต้นฉบับ ไม่มีการแก้ไข
-├── documents/           ทุกงานเป็น SOP, Work Instruction, Runbook หรือ Developer guide (.docx หรือ .md และหน้าพร้อมพิมพ์)
-├── open-questions.md    เรื่องที่ยังไม่มีคำตอบ และควรถามใคร
-└── knowledge.json       ข้อมูลต้นทางทั้งหมด วางกลับเข้าแชตเพื่ออัปเดต Pack ได้
-```
-
-## เอกสารแบบที่แต่ละสายงานใช้
-
-ทุกงานใน Pack ถูกเขียนเป็นเอกสารแบบที่สายงานนั้นใช้ด้วย AI เลือกประเภทให้ตามลักษณะงานแล้วบอกคุณ ถ้าอยากได้แบบอื่นบอกได้
-
-| ประเภท | สำหรับ | ได้อะไร |
-|---|---|---|
-| **SOP** | งานออฟฟิศ งานบริการ งานธุรการ งานดูแล | ไฟล์ Word + หน้าพร้อมพิมพ์ (PDF) |
-| **Work Instruction** | วิศวกรรม ซ่อมบำรุง การผลิต ห้องแล็บ | ไฟล์ Word + หน้าพร้อมพิมพ์: ความปลอดภัยและ PPE มาก่อน เครื่องมือ ค่าสเปกและค่าเผื่อ จุดตรวจคุณภาพ ช่องลงนาม |
-| **Runbook** | IT operations, DevOps, on-call | Markdown สำหรับ repo หรือ wiki + หน้าพร้อมพิมพ์: คำสั่งที่ใช้จริง ผลที่ควรเห็น วิธีย้อนกลับ การส่งต่อปัญหา rollback |
-| **Developer guide** | พัฒนาซอฟต์แวร์ | Markdown + หน้าพร้อมพิมพ์: สิ่งที่ต้องมีก่อน คำสั่งติดตั้ง ข้อตกลงของทีม ปัญหาที่พบบ่อย |
-
-ทุกแบบมีขั้นตอนตามลักษณะงาน (ทีละขั้นพร้อมภาพหน้าจอ เช็กลิสต์ ไทม์ไลน์ ตารางตัดสินใจ หรือตารางอาการ) และในฉบับพิมพ์มีไดอะแกรมด้วย ช่องเลขที่เอกสาร เจ้าของ วันที่มีผล ผู้อนุมัติ และช่องลงนาม เว้นว่างไว้ให้องค์กรกรอกเอง สถานะเป็น "ฉบับร่าง" จนกว่าทุกอย่างจะยืนยันแล้ว และข้อที่ AI สรุปเองมีป้ายบอกชัด ข้อมูลลับไม่หลุดเข้าไป: อะไรที่ดูเหมือนรหัสผ่าน คีย์ หรือ token จะถูกแทนด้วย `<REDACTED>` ในทุกไฟล์ และระบบจะบอกให้คุณเปลี่ยนรหัสนั้น ถ้าองค์กรมีแม่แบบของตัวเอง ส่งให้ AI ระหว่างสัมภาษณ์ได้ AI ที่แก้เอกสารได้จะกรอกแม่แบบนั้นให้ด้วย
-
-<img src="docs/images/documents.jpg" alt="เอกสาร 4 แบบจากตัวอย่าง: SOP และ Work Instruction เป็นไฟล์ Word และ Runbook กับ Developer guide เป็นหน้าพร้อมพิมพ์ที่มีคำสั่ง" width="860">
 
 ## ใช้ Pack กับ AI ของคุณเอง
 
