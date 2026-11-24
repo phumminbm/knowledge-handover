@@ -6,7 +6,11 @@ All notable changes to this project are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-24
+
 ### Added
+- SOP documents: every task in a Pack is also written to `sop/` as a standard operating procedure, as a Word file (`.docx`) and as a print-ready page to save as PDF (`.html`). The layout covers purpose, scope, responsibilities, definitions, systems, the procedure in the shape of the task's view (with screenshots and pins, and in the print version the diagram), rules, troubleshooting, safety and risk, records, open questions and revision history. Document number, effective date and approver are left blank. Status stays "Draft" until every item is confirmed. Unconfirmed items are flagged. English and Thai labels.
+- The AI asks whether the organisation has its own SOP template and, when it can edit documents, fills that too.
 - The READMEs show an illustrated interview (English and Thai): options to tap, asking for the real form, asking only about the gap, a diagram to check, and the save block.
 
 ### Fixed
@@ -74,7 +78,8 @@ First public release.
 - The Pack Builder shows pasted values and file names as text.
 - Pack, process and image names are cleaned before they become file paths, so a save block cannot write outside the Pack folder or add `../` entries to the zip.
 
-[Unreleased]: https://github.com/phumminbm/knowledge-handover/compare/v0.2.4...HEAD
+[Unreleased]: https://github.com/phumminbm/knowledge-handover/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/phumminbm/knowledge-handover/compare/v0.2.4...v0.3.0
 [0.2.4]: https://github.com/phumminbm/knowledge-handover/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/phumminbm/knowledge-handover/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/phumminbm/knowledge-handover/compare/v0.2.1...v0.2.2

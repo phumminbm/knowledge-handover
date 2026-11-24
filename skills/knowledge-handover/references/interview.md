@@ -33,6 +33,7 @@ Seeing the work beats hearing about it. The giver rarely thinks to send it, so a
 - **Read what arrives before asking more.** From a spreadsheet note the sheets, columns, formulas and which cells are typed by hand; from a form, the required fields; from a screenshot, the buttons, fields and statuses. Turn what you see into draft steps marked `ai_inferred`, show them, and ask only about the gaps ("Column F looks like the discount — who decides it?").
 - **Links:** record where the thing lives (the system, folder or page) in the step's `system`, `inputs` or `outputs`. Never ask for passwords or access. If you can't open a link or a file type, say so plainly and ask for a screenshot instead.
 - **If they can't share,** carry on with words; never block the interview on a file.
+- **If the work is going into SOPs**, ask once whether the organisation has an SOP template or a document-numbering rule, and ask for the template. The Pack always includes SOPs in a standard layout; a template lets you also fill the organisation's own.
 
 ## Useful questions people forget to ask
 

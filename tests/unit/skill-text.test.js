@@ -73,3 +73,15 @@ test('diagrams show unconfirmed parts as dashed, with a legend', () => {
   assert.match(section, /ai_inferred/);
   assert.match(section, /legend/);
 });
+
+test('the AI asks for the organisation SOP template and knows the Pack includes SOPs', () => {
+  const interview = read('references/interview.md');
+  const section = interview.slice(interview.indexOf('## Ask for the real thing'), interview.indexOf('\n## ', interview.indexOf('## Ask for the real thing') + 5));
+  assert.match(section, /SOP template/);
+  const skill = read('SKILL.md');
+  const step6 = skill.slice(skill.indexOf('6. **Build and share'), skill.indexOf('The giver can stop'));
+  assert.match(step6, /sop\//);
+  assert.match(step6, /\.docx/);
+  assert.match(step6, /never (fill|invent|guess)[^.]*(document number|approver)/i);
+  assert.match(read('references/pack-format.md'), /sop\/<id>-<slug>\.docx/);
+});

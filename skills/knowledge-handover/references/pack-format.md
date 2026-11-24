@@ -57,7 +57,8 @@ language         content language code, e.g. "th", "en"
 accent           hex colour chosen by the giver (default "#bf4520")
 title            e.g. "งานบัญชีเจ้าหนี้ · ฝ่ายการเงิน"
 confidentiality  "public" | "internal" | "confidential" | "unset"
-ui_labels        optional object to translate page labels for languages other than th/en
+ui_labels        optional object to translate page labels for languages other than th/en;
+                 SOP labels use the same object with a `sop_` prefix (e.g. "sop_purpose")
 giver            { name, role_title, team, organization, contact_after_leaving }   all optional; contact_after_leaving = how to reach them later, when they are moving on
 stage            "discovery" | "interview" | "review" | "complete"
 role             { summary, context, stakeholders: [{ name, relationship }], status }
@@ -169,6 +170,9 @@ A view needs its data: `checklist` and `timeline` need steps, `decision` needs b
 │   ├── decisions.md              rules, decisions, exceptions
 │   ├── troubleshooting.md
 │   └── scenarios.md
+├── sop/
+│   ├── <id>-<slug>.docx          the task as a standard operating procedure, to edit or file
+│   └── <id>-<slug>.html          the same SOP, print-ready (Ctrl+P / ⌘P → Save as PDF)
 ├── visuals/                      original images, untouched
 ├── open-questions.md
 ├── glossary.md
@@ -177,4 +181,4 @@ A view needs its data: `checklist` and `timeline` need steps, `decision` needs b
 └── README.md                     how to open and use the pack
 ```
 
-Only files with content are written. `START-HERE.html` embeds the images, so it can be sent alone; very large photo sets may make it heavy, so prefer a few clear images per task.
+Only files with content are written. Every task gets `sop/<id>-<slug>.docx` and `sop/<id>-<slug>.html`: a standard operating procedure (purpose, scope, responsibilities, procedure shaped by the task's view, rules, safety, records, open questions, revision history). Its status stays "Draft" until every item is `validated`; unconfirmed items are flagged; document number, effective date and approver are left blank. `START-HERE.html` embeds the images, so it can be sent alone; very large photo sets may make it heavy, so prefer a few clear images per task.

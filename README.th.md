@@ -27,6 +27,7 @@ Skill สำหรับ AI ที่สัมภาษณ์คนทำงา�
 - **ง่ายสำหรับผู้ส่งงาน:** เริ่มด้วยประโยคเดียว ตอบด้วยการกดเลือกเป็นส่วนใหญ่ หยุดแล้วกลับมาทำต่อเมื่อไหร่ก็ได้
 - **ง่ายสำหรับผู้รับงาน:** ไม่ต้องติดตั้งอะไร เปิด `START-HERE.html` ได้เลย หรือแนบ Pack ในแชต AI แล้วพิมพ์ว่า *"สอนงานจาก pack นี้"*
 - **ใช้ได้กับทุกงาน:** งานออฟฟิศ งานหน้างาน งานดูแลผู้ป่วย ใช้ได้ทั้งภาพหน้าจอและภาพถ่ายหน้างาน
+- **พร้อมเข้าแฟ้ม:** ทุกงานมีเอกสาร SOP ให้ด้วย ทั้งไฟล์ Word และหน้าที่พิมพ์หรือบันทึกเป็น PDF ได้
 - **ใช้ได้กับทุก AI:** Claude, ChatGPT, Codex, Gemini, Cursor, Copilot รวมถึงแชตแพ็กเกจฟรี
 - **ซื่อตรงกับข้อมูล:** ทุกข้อมีสถานะ **ยืนยันแล้ว**, **ยังไม่ได้ตรวจ**, **รอยืนยัน** หรือ **ยังไม่มีคำตอบ** จะได้ไม่มีใครเข้าใจผิดว่าสิ่งที่ AI เดาเป็นกฎจริง
 - **ข้อมูลอยู่กับคุณ:** ไม่มีเซิร์ฟเวอร์ ไม่ต้องสมัครบัญชี ไม่มีการติดตามการใช้งาน ดูรายละเอียดที่ [PRIVACY.md](PRIVACY.md)
@@ -72,7 +73,8 @@ Pack ตัวอย่างเป็นงานบัญชีเงินส
 | **เจออาการอะไร** | [When online banking goes wrong](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P05) |
 | แบบฝึกหัด | [Approve a supplier payment › Practice](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P04/quiz) |
 | เรื่องที่ Pack ยังไม่มีคำตอบ | [Open questions](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/questions) |
-| ไฟล์ทั้งหมดใน Pack: เอกสารรายงาน, `PACK-FOR-AI.md`, `knowledge.json` | [example-pack.zip](https://phumminbm.github.io/knowledge-handover/example/example-pack.zip) |
+| เอกสาร SOP | [หน้าพร้อมพิมพ์](https://phumminbm.github.io/knowledge-handover/example/sop/P04-supplier-payment-approval.html) · [ไฟล์ Word](https://phumminbm.github.io/knowledge-handover/example/sop/P04-supplier-payment-approval.docx) |
+| ไฟล์ทั้งหมดใน Pack: SOP และเอกสารรายงาน, `PACK-FOR-AI.md`, `knowledge.json` | [example-pack.zip](https://phumminbm.github.io/knowledge-handover/example/example-pack.zip) |
 | ข้อมูลต้นฉบับที่ AI เขียน | [`examples/bank-reconciliation/knowledge.json`](examples/bank-reconciliation/knowledge.json) |
 
 ### AI วาดไดอะแกรมให้เข้ากับลักษณะงาน
@@ -200,9 +202,16 @@ knowledge-handover_KP-2569-0042_2026-11-30.zip
 ├── handover-status.md   เฉพาะตอนส่งต่องาน: งานค้าง กำหนดส่ง บัญชีที่ต้องโอนสิทธิ์
 ├── processes/…          แยกโฟลเดอร์ละงาน: ขั้นตอน กฎ การแก้ปัญหา สถานการณ์ตัวอย่าง
 ├── visuals/             ภาพต้นฉบับ ไม่มีการแก้ไข
+├── sop/                 ทุกงานเป็นเอกสาร SOP: ไฟล์ Word (.docx) และหน้าพร้อมพิมพ์ (บันทึกเป็น PDF ได้)
 ├── open-questions.md    เรื่องที่ยังไม่มีคำตอบ และควรถามใคร
 └── knowledge.json       ข้อมูลต้นทางทั้งหมด วางกลับเข้าแชตเพื่ออัปเดต Pack ได้
 ```
+
+## เอกสาร SOP พร้อมเข้าแฟ้ม
+
+ทุกงานใน Pack ถูกเขียนเป็นเอกสาร SOP ด้วย มีวัตถุประสงค์ ขอบเขต ผู้รับผิดชอบ ขั้นตอนตามลักษณะงาน กฎ ความปลอดภัย บันทึกที่ได้ คำถามที่ยังค้าง และประวัติการแก้ไข ได้ทั้งไฟล์ Word ไว้แก้และเก็บเข้าระบบ และหน้าพร้อมพิมพ์ไว้บันทึกเป็น PDF ช่องเลขที่เอกสาร วันที่มีผล และผู้อนุมัติ เว้นว่างไว้ให้องค์กรกรอกเอง สถานะเป็น "ฉบับร่าง" จนกว่าทุกข้อจะยืนยันแล้ว และข้อที่ยังไม่ยืนยันมีป้ายบอกชัด ถ้าองค์กรมีแม่แบบ SOP ของตัวเอง ส่งให้ AI ระหว่างสัมภาษณ์ได้ AI ที่แก้เอกสารได้จะกรอกแม่แบบนั้นให้ด้วย
+
+<img src="docs/images/sop.jpg" alt="SOP เรื่องอนุมัติจ่ายเงินผู้ขายจากตัวอย่าง เป็นไฟล์ Word และหน้าพร้อมพิมพ์พร้อมผังตัดสินใจ" width="860">
 
 ## ใช้ Pack กับ AI ของคุณเอง
 

@@ -1,6 +1,6 @@
 {
   "name": "knowledge-handover",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "private": true,
   "description": "Development scripts for the knowledge-handover skill. The skill itself has no dependencies.",
   "license": "MIT",

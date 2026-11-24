@@ -5,9 +5,9 @@
  * No dependencies.
  */
 (function (root, factory) {
-  if (typeof module === 'object' && module.exports) module.exports = factory();
-  else root.KHCore = factory();
-})(typeof self !== 'undefined' ? self : this, function () {
+  if (typeof module === 'object' && module.exports) module.exports = factory(require('./sop.js'));
+  else root.KHCore = factory(root.KHSop);
+})(typeof self !== 'undefined' ? self : this, function (SOP) {
   'use strict';
 
   // ── Statuses ────────────────────────────────────────────────────────────
@@ -421,6 +421,7 @@
       '- **Easiest start:** attach this zip (or `PACK-FOR-AI.md`) to any AI chat and say "teach me from this pack". The AI explains the work' + (hasHandover(k) ? ' and what is urgent' : '') + ' first, then gives you `START-HERE.html`.',
       '- **Without an AI:** open `START-HERE.html` in any web browser. ' + (hasHandover(k) ? 'Urgent items are at the top, then the' : 'It shows the') + ' work map and a step-by-step walkthrough for each task. It works offline and can be sent on its own.',
       '- **Learn with an AI:** attach `PACK-FOR-AI.md` to any AI chat and ask it to teach you from the pack.',
+      '- **SOP documents:** `sop/` has every task as a Word file (`.docx`) and as a print-ready page (`.html`; press Ctrl+P and choose Save as PDF). Document number, effective date and approver are left blank to fill in.',
       '- **Unanswered questions:** `open-questions.md`.',
       '- **Original images:** `visuals/` (unaltered).',
       '- **Keeping it current:** `knowledge.json` is the source of everything here. Paste it into a chat that has the knowledge-handover skill, or into the Pack Builder, to update and rebuild the pack.',
@@ -566,6 +567,12 @@
       add(dir + 'decisions.md', mdRules(k, p));
       add(dir + 'troubleshooting.md', mdTrouble(k, p));
       add(dir + 'scenarios.md', mdScenarios(k, p));
+      if (SOP) {
+        // The SOP page gets the same display images as START-HERE; the Word file gets the originals.
+        var ctx = { view: effectiveView(p), labels: labels(k), images: images, imageUrls: urls, b64: function (s) { return base64(enc.encode(s)); } };
+        add('sop/' + folderFor(p) + '.html', SOP.sopHtml(k, p, ctx));
+        add('sop/' + folderFor(p) + '.docx', zip(SOP.sopDocxParts(k, p, ctx)));
+      }
     });
     add('open-questions.md', mdOpen(k));
     add('glossary.md', mdGlossary(k));

@@ -27,6 +27,7 @@ Work manuals are usually written in a rush, miss the exceptions, and nobody know
 - **Easy for the giver:** start with one sentence, answer mostly by tapping, stop and continue any time.
 - **Easy for the receiver:** nothing to install. Open `START-HERE.html`, or attach the Pack to any AI chat and say *"teach me from this pack"*.
 - **Any job:** office work, on-site work, care work. Screenshots or on-site photos.
+- **Ready to file:** every task also comes as an SOP, in Word and as a page to print or save as PDF.
 - **Any AI:** Claude, ChatGPT, Codex, Gemini, Cursor, Copilot, and plain chats on free plans.
 - **Honest:** every item is marked **Confirmed**, **Not yet reviewed**, **Needs confirmation** or **Open question**, so nobody mistakes a guess for a rule.
 - **Your data stays with you:** no server, no account, no tracking. See [PRIVACY.md](PRIVACY.md).
@@ -72,7 +73,8 @@ The example Pack is a fictional cash-and-bank accounting job with six tasks that
 | **What's wrong?** | [When online banking goes wrong](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P05) |
 | Practice questions | [Approve a supplier payment › Practice](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P04/quiz) |
 | Questions the Pack can't answer yet | [Open questions](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/questions) |
-| Every file in the Pack: documents per task, `PACK-FOR-AI.md`, `knowledge.json` | [example-pack.zip](https://phumminbm.github.io/knowledge-handover/example/example-pack.zip) |
+| An SOP document | [print-ready page](https://phumminbm.github.io/knowledge-handover/example/sop/P04-supplier-payment-approval.html) · [Word file](https://phumminbm.github.io/knowledge-handover/example/sop/P04-supplier-payment-approval.docx) |
+| Every file in the Pack: SOPs and documents per task, `PACK-FOR-AI.md`, `knowledge.json` | [example-pack.zip](https://phumminbm.github.io/knowledge-handover/example/example-pack.zip) |
 | The source the AI wrote | [`examples/bank-reconciliation/knowledge.json`](examples/bank-reconciliation/knowledge.json) |
 
 ### The AI draws the diagram that fits the work
@@ -200,9 +202,16 @@ knowledge-handover_KP-2569-0042_2026-11-30.zip
 ├── handover-status.md   only when handing over: work in progress, deadlines, accounts to transfer
 ├── processes/…          one folder per task: workflow, procedures, decisions, troubleshooting, scenarios
 ├── visuals/             original images, untouched
+├── sop/                 every task as an SOP: Word (.docx) and a print-ready page (save as PDF)
 ├── open-questions.md    what is still unanswered, and whom to ask
 └── knowledge.json       the source of everything; paste it back into a chat to update the Pack
 ```
+
+## SOP documents, ready to file
+
+Every task in a Pack is also written as a standard operating procedure: purpose, scope, responsibilities, the procedure in the shape of the task, rules, safety, records, open questions and revision history. You get a Word file to edit and file, and a print-ready page to save as PDF. Document number, effective date and approver are left blank for your organisation to fill in. The status stays "Draft" until every item is confirmed, and anything not yet confirmed is flagged. If your organisation has its own SOP template, send it during the interview and an AI that can edit documents fills that in too.
+
+<img src="docs/images/sop.jpg" alt="The supplier-payment SOP from the example as a Word document and as a print-ready page with its decision tree" width="860">
 
 ## Use your Pack with your own AI
 

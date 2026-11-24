@@ -32,11 +32,12 @@ def read(p):
 
 def build_pack_builder():
     tpl = read(SKILL / "assets" / "pack-builder.template.html")
-    core = read(SKILL / "scripts" / "pack-core.js")
+    # sop.js defines KHSop, which pack-core.js picks up in the browser; it must come first.
+    core = read(SKILL / "scripts" / "sop.js") + "\n" + read(SKILL / "scripts" / "pack-core.js")
     start = read(SKILL / "assets" / "start-here.template.html")
     fonts = read(SKILL / "assets" / "fonts" / "poppins-prompt.css")
     if "</script" in core.lower():
-        raise SystemExit("pack-core.js must not contain a closing script tag")
+        raise SystemExit("sop.js and pack-core.js must not contain a closing script tag")
     start_js = json.dumps(start).replace("</", "<\\/")
     out = (tpl.replace("/*__FONTS__*/", fonts, 1)
               .replace("/*__CORE__*/", core, 1)
