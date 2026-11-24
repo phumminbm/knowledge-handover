@@ -1,0 +1,32 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="sq"><rect width="512" height="512" rx="116"/></clipPath>
+    <radialGradient id="o1" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffd2bd"/><stop offset="0.45" stop-color="#f08a59" stop-opacity="0.85"/><stop offset="1" stop-color="#bf4520" stop-opacity="0"/></radialGradient>
+    <radialGradient id="o2" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#e7dcff" stop-opacity="0.9"/><stop offset="1" stop-color="#e7dcff" stop-opacity="0"/></radialGradient>
+    <radialGradient id="o3" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#dbeafc" stop-opacity="0.75"/><stop offset="1" stop-color="#dbeafc" stop-opacity="0"/></radialGradient>
+    <filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="28"/></filter>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#000" flood-opacity="0.45"/></filter>
+  </defs>
+  <g clip-path="url(#sq)">
+    <rect width="512" height="512" fill="#0b0b0b"/>
+    <g filter="url(#blur)">
+      <circle cx="430" cy="70" r="230" fill="url(#o1)"/>
+      <circle cx="250" cy="-10" r="170" fill="url(#o2)"/>
+      <circle cx="520" cy="300" r="160" fill="url(#o3)"/>
+    </g>
+  </g>
+  <rect x="132" y="118" width="248" height="290" rx="34" fill="#ffffff" fill-opacity="0.28" transform="rotate(9 256 263) translate(40 -26)"/>
+  <g filter="url(#shadow)" transform="translate(-14 12)">
+    <rect x="132" y="118" width="248" height="290" rx="34" fill="#ffffff"/>
+  </g>
+  <g transform="translate(-14 12)">
+  <circle cx="190" cy="186" r="22" fill="#bf4520"/>
+  <text x="190" y="194" fill="#ffffff" font-family="Poppins, Arial, sans-serif" font-weight="600" font-size="24" text-anchor="middle">1</text>
+  <rect x="228" y="175" width="112" height="22" rx="11" fill="#0b0b0b"/>
+  <circle cx="190" cy="262" r="22" fill="none" stroke="#0b0b0b" stroke-width="6"/>
+  <rect x="228" y="251" width="92" height="22" rx="11" fill="#d9d9d6"/>
+  <circle cx="190" cy="338" r="22" fill="none" stroke="#0b0b0b" stroke-width="6"/>
+  <rect x="228" y="327" width="72" height="22" rx="11" fill="#d9d9d6"/>
+
+  </g>
+</svg>
