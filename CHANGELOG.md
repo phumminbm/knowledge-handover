@@ -6,6 +6,9 @@ All notable changes to this project are recorded here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+- A release created on the GitHub web page no longer gets its notes twice; the Release workflow writes notes only when the release has none.
+
 ## [0.2.4] - 2026-11-24
 
 ### Changed
