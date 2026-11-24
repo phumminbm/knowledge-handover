@@ -6,6 +6,11 @@ All notable changes to this project are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.2.3] - 2026-11-24
+
+### Changed
+- New icon: a step-by-step manual card being passed on, on the same dark, softly lit background as the pages. Its source is `docs/images/icon.svg`.
+
 ## [0.2.2] - 2026-11-24
 
 ### Changed
@@ -53,7 +58,8 @@ First public release.
 - The Pack Builder shows pasted values and file names as text.
 - Pack, process and image names are cleaned before they become file paths, so a save block cannot write outside the Pack folder or add `../` entries to the zip.
 
-[Unreleased]: https://github.com/phumminbm/knowledge-handover/compare/v0.2.2...HEAD
+[Unreleased]: https://github.com/phumminbm/knowledge-handover/compare/v0.2.3...HEAD
+[0.2.3]: https://github.com/phumminbm/knowledge-handover/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/phumminbm/knowledge-handover/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/phumminbm/knowledge-handover/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/phumminbm/knowledge-handover/compare/v0.1.0...v0.2.0
