@@ -15,7 +15,7 @@ test.after(async () => { if (browser) await browser.close(); });
 
 const URL_ = pathToFileURL(path.join(SKILL, 'assets', 'pack-builder.html')).href;
 const IMGS = ['P01-S01.png', 'P01-S02.png'].map((n) => path.join(ROOT, 'examples', 'bank-reconciliation', 'images', n));
-const BLOCK = 'KNOWLEDGE-HANDOVER SAVE · KP-2569-0001 · v5\n```json\n' + JSON.stringify(example()) + '\n```';
+const BLOCK = 'KNOWLEDGE-HANDOVER SAVE · KP-2026-0001 · v6\n```json\n' + JSON.stringify(example()) + '\n```';
 
 async function open(viewport = { width: 1280, height: 900 }) {
   const context = await browser.newContext({ viewport, acceptDownloads: true });
@@ -61,7 +61,7 @@ test('switching language keeps the pasted pack', { skip }, async () => {
   await paste(page);
   await page.click('.lang [data-l="th"]');
   assert.strictEqual(await page.inputValue('#save'), BLOCK);
-  assert.match(await page.textContent('#sum'), /KP-2569-0001/);
+  assert.match(await page.textContent('#sum'), /KP-2026-0001/);
   assert.strictEqual(await page.getAttribute('html', 'lang'), 'th');
   await context.close();
 });

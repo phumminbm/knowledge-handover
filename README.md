@@ -14,7 +14,7 @@ An AI skill that interviews someone about how they really do their job, then tur
 [![Release](https://img.shields.io/github/v/release/phumminbm/knowledge-handover?style=flat-square&color=bf4520)](https://github.com/phumminbm/knowledge-handover/releases/latest)
 [![License: MIT](https://img.shields.io/badge/license-MIT-555555?style=flat-square)](LICENSE)
 
-[Install](#install) · [How it works](#how-it-works) · [See an example](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html) · [Pack Builder](https://phumminbm.github.io/knowledge-handover/) · [Help](#if-something-goes-wrong)
+[Install](#install) · [How it works](#how-it-works) · [See the example](#see-the-example-from-every-angle) · [Pack Builder](https://phumminbm.github.io/knowledge-handover/) · [Help](#if-something-goes-wrong)
 
 <img src="docs/images/walkthrough.jpg" alt="A step in START-HERE.html: the giver's real screenshot with numbered pins, why the step exists, and how to check it was done right" width="860">
 
@@ -57,6 +57,37 @@ The AI picks a layout for every task and draws its diagram on its own, then tell
 Search the whole Pack with `/` or Ctrl+K, and pick up where you left off from the home page.
 
 <img src="docs/images/views.jpg" alt="A task shown as a checklist, with the safety step first and the sidebar listing every task and its layout" width="860">
+
+## See the example from every angle
+
+The example Pack is a fictional cash-and-bank accounting job with six tasks that cover all five layouts, each with a different kind of diagram. Nothing to install: it opens in your browser.
+
+| What you want to see | Open it |
+|---|---|
+| The page a receiver gets | [START-HERE.html](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html) |
+| **Step by step** with the giver's screenshots and numbered pins | [Month-end bank reconciliation](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P01/walk/P01.S01) |
+| **Timeline** | [Prepare the monthly VAT data](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P02) |
+| **Checklist**, safety step first | [Count petty cash and close the safe](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P03) |
+| **Find what to do** | [Approve a supplier payment](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P04) |
+| **What's wrong?** | [When online banking goes wrong](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P05) |
+| Practice questions | [Approve a supplier payment › Practice](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P04/quiz) |
+| Questions the Pack can't answer yet | [Open questions](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/questions) |
+| Every file in the Pack: documents per task, `PACK-FOR-AI.md`, `knowledge.json` | [example-pack.zip](https://phumminbm.github.io/knowledge-handover/example/example-pack.zip) |
+| The source the AI wrote | [`examples/bank-reconciliation/knowledge.json`](examples/bank-reconciliation/knowledge.json) |
+
+### The AI draws the diagram that fits the work
+
+Yes/no choices become a flowchart, a calendar a timeline, work passed between people a swimlane, approvals a decision tree, problems a symptom → cause → fix table, and statuses a state diagram. Anything the AI worked out on its own is drawn dashed until someone confirms it.
+
+<img src="docs/images/diagrams.jpg" alt="Six diagrams from the example: flowchart, timeline, swimlane, decision tree, symptom-cause-fix table and state diagram" width="860">
+
+### Practice, on the page or with an AI
+
+Every task can end with practice questions built from real situations. Each answer explains why.
+
+<img src="docs/images/practice.jpg" alt="Practice questions for approving a supplier payment, with the correct answer explained and its rule ID" width="860">
+
+With an AI, the receiver attaches the zip (or `PACK-FOR-AI.md`) and says *"teach me from this pack"*. The top of `PACK-FOR-AI.md` tells the AI how to teach: introduce the work, ask the learner's level, walk one step at a time and wait for "done", ask which case applies at each choice, quote the item IDs, flag anything not yet confirmed, use the practice questions, and say so when the Pack has no answer.
 
 ## Install
 
