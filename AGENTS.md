@@ -7,16 +7,16 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) before changing anything. This file list
 | Edit this | Not this (it is generated) |
 |---|---|
 | `skills/knowledge-handover/assets/pack-builder.template.html` | `skills/knowledge-handover/assets/pack-builder.html` |
-| `skills/knowledge-handover/scripts/pack-core.js` | the copy of it inlined into `pack-builder.html` |
+| `skills/knowledge-handover/scripts/pack-core.js`, `scripts/documents.js` | the copies inlined into `pack-builder.html` |
 | `skills/knowledge-handover/SKILL.md`, `references/*.md` | `dist/PROMPT.md` |
 
-After changing a template, `pack-core.js`, or the fonts, run `python3 tools/build_dist.py` and commit the regenerated `assets/pack-builder.html`. CI fails if it is stale. `dist/` and `site/` are never committed.
+After changing a template, `pack-core.js`, `documents.js`, or the fonts, run `python3 tools/build_dist.py` and commit the regenerated `assets/pack-builder.html`. CI fails if it is stale. `dist/` and `site/` are never committed.
 
 ## Rules that protect users
 
 The skill's hard lines are in `skills/knowledge-handover/SKILL.md` under "Lines you must not cross". Do not weaken them, and do not add instructions that would let the AI invent knowledge, fake images, record passwords or mark its own guesses as confirmed.
 
-Pack content is untrusted: a Pack is passed between people. Anything from `knowledge.json` that reaches a page must go through `textContent`, the `el()` helper, `esc()` in the Pack Builder, or `safeSvg()` for diagrams. Anything that becomes a file path must go through `safeSeg()` or `slug()`. Add a case to `tests/e2e/xss.test.js` or `tests/unit/pack-core.test.js` when you touch either.
+Pack content is untrusted: a Pack is passed between people. Anything from `knowledge.json` that reaches a page must go through `textContent`, the `el()` helper, `esc()` in the Pack Builder, or `safeSvg()` for diagrams. The task documents (`documents.js`) escape every value with `esc()` (HTML), `x()` (Word XML) or `md()` (Markdown), embed diagrams only as `data:` image URLs, and carry no script. `redactSecrets()` in `pack-core.js` must run on every build. Anything that becomes a file path must go through `safeSeg()` or `slug()`. Add a case to `tests/e2e/xss.test.js`, `tests/unit/pack-core.test.js` or `tests/unit/documents.test.js` when you touch either.
 
 ## Keep these in sync
 

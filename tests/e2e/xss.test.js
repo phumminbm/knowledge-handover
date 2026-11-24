@@ -95,3 +95,71 @@ test('Pack Builder does not run markup from a pasted save block', { skip: !chrom
   assert.match(await page.textContent('#sum'), /<img src=x/, 'pack id is shown as text');
   assert.deepStrictEqual(external, []);
 });
+
+test('document pages run no code from a hostile pack and still print', { skip: !chromium && 'playwright not installed' }, async (t) => {
+  const template = fs.readFileSync(path.join(SKILL, 'assets', 'start-here.template.html'), 'utf8');
+  const browser = await chromium.launch();
+  t.after(() => browser.close());
+  const TYPES = ['sop', 'work_instruction', 'runbook', 'dev_guide'];
+  let i = 0;
+  for (const [name, svg] of Object.entries(PAYLOADS)) {
+    const k = example();
+    const p = k.processes[0];
+    p.doc_type = TYPES[i++ % TYPES.length];
+    p.diagram_svg = svg;
+    p.name = '<img src=x onerror=window.__pwned=1>' + name;
+    p.steps[0].detail = '<script>window.__pwned=1</script>';
+    p.steps[0].command = '</code></pre><img src=x onerror=window.__pwned=1>';
+    p.steps[0].pins[0].label = '<img src=x onerror=window.__pwned=1>';
+    p.steps[0].pins[0].x = '1;background:url(https://example.invalid/x)';
+    p.steps[0].image = '"><img src=x onerror=window.__pwned=1>';
+    k.accent = 'red;}body{background:url(https://example.invalid/y)}';
+    k.ui_labels = { doc_purpose: '<img src=x onerror=window.__pwned=1>', doc_ifGo: '<script>window.__pwned=1</script>{a}{b}' };
+    const r = core.build(k, { '"><img src=x onerror=window.__pwned=1>': new Uint8Array([0x89, 0x50, 0x4e, 0x47]) }, { template, fontsCss: '' });
+    const html = r.files.find((f) => /\/documents\/P01-[^/]+\.html$/.test(f.path));
+    const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'kh-doc-')), 'doc.html');
+    fs.writeFileSync(file, html.data);
+    const { page, external } = await openPage(browser);
+    await page.goto(pathToFileURL(file).href);
+    if (await page.$('#lnk')) await page.click('#lnk').catch(() => {});
+    await page.waitForTimeout(100);
+    assert.strictEqual(await page.evaluate(() => window.__pwned), undefined, name + ' / ' + p.doc_type);
+    assert.deepStrictEqual(external, [], name + ' / ' + p.doc_type);
+    await page.close();
+  }
+  const r = core.build(example(), {}, { template, fontsCss: '' });
+  const html = r.files.find((f) => /\/documents\/P04-[^/]+\.html$/.test(f.path));
+  const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'kh-doc-')), 'doc.html');
+  fs.writeFileSync(file, html.data);
+  const { page, external } = await openPage(browser);
+  const errors = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
+  await page.goto(pathToFileURL(file).href);
+  assert.ok(await page.isVisible('img[alt="Flow diagram"]'), 'diagram shown');
+  const pdf = await page.pdf({ format: 'A4' });
+  assert.ok((pdf.toString('latin1').match(/\/Type\s*\/Page[^s]/g) || []).length >= 2, 'prints to several pages');
+  assert.deepStrictEqual(errors, []);
+  assert.deepStrictEqual(external, []);
+  await page.close();
+});
+
+test('START-HERE.html shows hostile commands and setup fields as text', { skip: !chromium && 'playwright not installed' }, async (t) => {
+  const template = fs.readFileSync(path.join(SKILL, 'assets', 'start-here.template.html'), 'utf8');
+  const browser = await chromium.launch();
+  t.after(() => browser.close());
+  const k = example();
+  const bad = '<img src=x onerror=window.__pwned=1>';
+  Object.assign(k.processes[0].steps[0], { command: bad, spec: bad, expected: bad, rollback: bad });
+  Object.assign(k.processes[0], { prerequisites: [bad], tools: [bad], ppe: [bad], rollback: bad, escalation: bad });
+  const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'kh-xss-')), 'START-HERE.html');
+  fs.writeFileSync(file, core.renderStartHere(k, {}, template, ''));
+  const { page, external } = await openPage(browser);
+  for (const hash of ['#/task/P01/walk/P01.S01', '#/task/P01/overview']) {
+    await page.goto(pathToFileURL(file).href + hash);
+    await page.waitForTimeout(150);
+    assert.ok((await page.textContent('#app')).includes(bad), hash);
+  }
+  assert.strictEqual(await page.evaluate(() => window.__pwned), undefined);
+  assert.deepStrictEqual(external, []);
+});

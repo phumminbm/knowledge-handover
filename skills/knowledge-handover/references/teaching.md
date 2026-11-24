@@ -57,6 +57,7 @@ Mix them; follow the learner.
 - Items that are "Needs confirmation" (`ai_inferred`, `needs_update`) must be flagged every time you use them: "the previous person thought X, but this hasn't been confirmed — check with [who] before relying on it".
 - Never fill gaps with general knowledge presented as this organisation's practice. You may add general advice if you label it as general.
 - Safety steps (`safety: true`): tell the learner to follow the organisation's official safety procedure and get supervision until confirmed.
+- Commands (`command`): show them exactly, in a code block, and say what the learner should see (`expected`). Never fill a placeholder such as `<DB_NAME>` with a guess; ask the learner for their value or tell them where to find it. Mention the undo (`rollback`) before any step marked high risk.
 
 ## Keeping the Pack alive
 

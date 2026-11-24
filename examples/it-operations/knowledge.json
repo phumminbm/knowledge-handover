@@ -1,0 +1,682 @@
+{
+  "schema_version": "1.0",
+  "pack_id": "KP-2026-0002",
+  "version": 3,
+  "saved_at": "2026-11-24",
+  "language": "en",
+  "accent": "#bf4520",
+  "title": "Platform engineering (example)",
+  "confidentiality": "internal",
+  "giver": {
+    "role_title": "Platform engineer",
+    "team": "Platform",
+    "organization": "Example Co. (fictional)"
+  },
+  "stage": "review",
+  "role": {
+    "summary": "Keeps the billing service running: backups and restores, the storage server, and onboarding new developers.",
+    "context": "A team of three; one person is on call each week.",
+    "stakeholders": [
+      {
+        "name": "Head of platform",
+        "relationship": "Owns the platform and approves changes"
+      },
+      {
+        "name": "Developers",
+        "relationship": "Build on the billing service"
+      }
+    ],
+    "status": "employee_provided"
+  },
+  "tasks": [
+    {
+      "id": "P01",
+      "name": "Restore the billing database from backup",
+      "frequency": "When it happens",
+      "priority": 1,
+      "why_priority": "The worst day; must be right first time",
+      "captured": "complete"
+    },
+    {
+      "id": "P02",
+      "name": "Set up the billing service on your laptop",
+      "frequency": "Once per laptop",
+      "priority": 2,
+      "why_priority": "Every new developer needs it in week one",
+      "captured": "complete"
+    },
+    {
+      "id": "P03",
+      "name": "Replace a failed disk in the storage server",
+      "frequency": "A few times a year",
+      "priority": 3,
+      "captured": "complete"
+    },
+    {
+      "id": "P04",
+      "name": "When the nightly backup job fails",
+      "frequency": "A few times a month",
+      "priority": 4,
+      "captured": "partial"
+    }
+  ],
+  "processes": [
+    {
+      "id": "P01",
+      "slug": "restore-database",
+      "name": "Restore the billing database from backup",
+      "doc_type": "runbook",
+      "view": "steps",
+      "view_confirmed": true,
+      "summary": "Bring the billing database back from last night's backup without touching the live database.",
+      "trigger": "The billing database is lost or corrupted",
+      "frequency": "When it happens (practised every quarter)",
+      "complete": true,
+      "prerequisites": [
+        "VPN connected",
+        "SSH access to billing-db-01",
+        "Read access to the backup bucket"
+      ],
+      "rollback": "Set DB_NAME back to billing, restart the service, and keep billing_restore until the incident is closed.",
+      "escalation": "Call the on-call DBA after 30 minutes or at the first data mismatch. Tell the head of platform if customers are affected.",
+      "coverage": {
+        "trigger": "done",
+        "steps": "done",
+        "inputs_outputs": "done",
+        "systems": "done",
+        "people": "done",
+        "decisions": "done",
+        "exceptions": "done",
+        "checks": "done",
+        "failures": "done",
+        "deadlines": "done",
+        "risk": "done",
+        "wish_known": "done"
+      },
+      "people": [
+        {
+          "name_or_role": "On-call DBA",
+          "involvement": "Takes over if the restore fails"
+        },
+        {
+          "name_or_role": "Head of platform",
+          "involvement": "Told when customers are affected"
+        }
+      ],
+      "systems": [
+        {
+          "name": "billing-db-01",
+          "purpose": "PostgreSQL server",
+          "source_of_truth": true
+        },
+        {
+          "name": "Backup bucket",
+          "purpose": "Nightly dumps, kept 14 days"
+        }
+      ],
+      "steps": [
+        {
+          "id": "P01.S01",
+          "title": "Open an incident and tell the team",
+          "detail": "Post in the incidents channel: what broke, when, and that you are restoring.",
+          "why": "Others stop changing data and know who is in charge.",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "validated"
+        },
+        {
+          "id": "P01.S02",
+          "title": "Stop the billing service",
+          "command": "sudo systemctl stop billing",
+          "expected": "systemctl status billing shows \"inactive (dead)\"",
+          "rollback": "sudo systemctl start billing",
+          "why": "Nothing writes to the database while you restore.",
+          "who_can_do": "ai_with_approval",
+          "who_can_do_confirmed": true,
+          "status": "validated"
+        },
+        {
+          "id": "P01.S03",
+          "title": "Find the latest good backup",
+          "command": "aws s3 ls s3://<BACKUP_BUCKET>/billing/ | sort | tail -n 3",
+          "expected": "Three dated .dump files; the newest is from last night",
+          "who_can_do": "ai_alone",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P01.S04",
+          "title": "Restore into a new database",
+          "command": "createdb billing_restore\npg_restore --no-owner -d billing_restore <BACKUP_FILE>.dump",
+          "expected": "It finishes with no \"ERROR\" lines",
+          "rollback": "dropdb billing_restore",
+          "risk": "high",
+          "why": "Restoring over the live database destroys the evidence and cannot be undone.",
+          "who_can_do": "ai_with_approval",
+          "who_can_do_confirmed": true,
+          "status": "validated"
+        },
+        {
+          "id": "P01.S05",
+          "title": "Check the restored data",
+          "command": "psql -d billing_restore -c \"select max(created_at) from invoices;\"",
+          "expected": "A time from last night",
+          "branch_question": "Does the newest invoice look right?",
+          "branches": [
+            {
+              "label": "Yes",
+              "goto": "P01.S06"
+            },
+            {
+              "label": "No",
+              "goto": "P01.S08"
+            }
+          ],
+          "who_can_do": "ai_with_approval",
+          "who_can_do_confirmed": false,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P01.S06",
+          "title": "Switch the app to the restored database",
+          "command": "sudoedit /etc/billing/env   # set DB_NAME=billing_restore",
+          "expected": "The file shows DB_NAME=billing_restore",
+          "rollback": "Set DB_NAME back to billing",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P01.S07",
+          "title": "Start the service and watch the logs",
+          "command": "sudo systemctl start billing && journalctl -u billing -f",
+          "expected": "\"Listening on :8080\" and no errors for 5 minutes",
+          "check": "Open the billing page and find last night's newest invoice",
+          "who_can_do": "ai_with_approval",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided",
+          "next": "end"
+        },
+        {
+          "id": "P01.S08",
+          "title": "Stop and escalate",
+          "detail": "Leave the service stopped, keep billing_restore, and call the on-call DBA with what you saw.",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        }
+      ],
+      "rules": [
+        {
+          "id": "R-001",
+          "text": "Never restore over the live database; always restore into a new one first.",
+          "why": "The live copy is the evidence and the fallback.",
+          "status": "validated"
+        },
+        {
+          "id": "R-002",
+          "text": "Keep the broken database for 7 days for investigation.",
+          "why": "Summarised from \"we keep it for a week or so\".",
+          "status": "ai_inferred",
+          "source": "AI summary; not confirmed yet"
+        }
+      ],
+      "scenarios": [
+        {
+          "id": "Q-001",
+          "situation": "The restore finished, but the newest invoice is from three days ago.",
+          "question": "What do you do?",
+          "options": [
+            "Switch the app over anyway",
+            "Stop, keep the restored copy and call the on-call DBA",
+            "Restore the same file again"
+          ],
+          "answer": 1,
+          "explanation": "Step 5: if the data does not look right, stop and escalate; never switch to a copy you cannot trust.",
+          "refs": [
+            "P01.S05",
+            "P01.S08"
+          ]
+        }
+      ],
+      "status": "employee_provided",
+      "diagram_svg": "<svg viewBox=\"0 0 620 490\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-labelledby=\"p01-flow-title p01-flow-desc\" style=\"min-width:620px\"><title id=\"p01-flow-title\">Restore the billing database</title><desc id=\"p01-flow-desc\">Flowchart: stop the service, find the latest backup, restore into a new database, check the newest invoice; if it looks right switch the app over and start it, otherwise stop and escalate to the on-call DBA.</desc><defs><marker id=\"p01-flow-arrow\" markerWidth=\"8\" markerHeight=\"6\" refX=\"7\" refY=\"3\" orient=\"auto\"><polygon points=\"0 0, 8 3, 0 6\" fill=\"#5f5f5c\"/></marker><marker id=\"p01-flow-arrow-accent\" markerWidth=\"8\" markerHeight=\"6\" refX=\"7\" refY=\"3\" orient=\"auto\"><polygon points=\"0 0, 8 3, 0 6\" fill=\"#bf4520\"/></marker></defs><rect width=\"100%\" height=\"100%\" fill=\"#ffffff\"/><path d=\"M260,72 V100\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p01-flow-arrow)\"/><path d=\"M260,148 V176\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p01-flow-arrow)\"/><path d=\"M260,224 V252\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p01-flow-arrow)\"/><path d=\"M260,344 V380\" fill=\"none\" stroke=\"#bf4520\" stroke-width=\"1.4\" marker-end=\"url(#p01-flow-arrow-accent)\"/><path d=\"M360,298 H432\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p01-flow-arrow)\"/><rect x=\"262\" y=\"353\" width=\"40\" height=\"16\" rx=\"3\" fill=\"#ffffff\"/><text x=\"282\" y=\"365\" fill=\"#bf4520\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Yes</text><rect x=\"376\" y=\"279\" width=\"40\" height=\"16\" rx=\"3\" fill=\"#ffffff\"/><text x=\"396\" y=\"291\" fill=\"#5f5f5c\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">No</text><rect x=\"160\" y=\"24\" width=\"200\" height=\"48\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"260\" y=\"44\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Stop the service</text><text x=\"260\" y=\"60\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">systemctl stop</text><rect x=\"160\" y=\"100\" width=\"200\" height=\"48\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"260\" y=\"128\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Find the latest backup</text><rect x=\"160\" y=\"176\" width=\"200\" height=\"48\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"260\" y=\"204\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Restore into a NEW database</text><polygon points=\"260,252 360,298 260,344 160,298\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"260\" y=\"294\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Newest invoice</text><text x=\"260\" y=\"310\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">looks right?</text><rect x=\"160\" y=\"380\" width=\"200\" height=\"56\" rx=\"6\" fill=\"rgba(191,69,32,0.08)\" stroke=\"#bf4520\" stroke-width=\"1\"/><text x=\"260\" y=\"404\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Switch the app over</text><text x=\"260\" y=\"420\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">and start it</text><rect x=\"434\" y=\"274\" width=\"170\" height=\"48\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"519\" y=\"294\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Stop and escalate</text><text x=\"519\" y=\"310\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">on-call DBA</text><text x=\"24\" y=\"470\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"start\">The live database is never overwritten (R-001).</text></svg>"
+    },
+    {
+      "id": "P02",
+      "slug": "local-setup",
+      "name": "Set up the billing service on your laptop",
+      "doc_type": "dev_guide",
+      "view": "steps",
+      "view_confirmed": true,
+      "summary": "Get the billing service running locally with its tests passing, ready for your first change.",
+      "trigger": "Your first day, or a new laptop",
+      "frequency": "Once per laptop",
+      "complete": true,
+      "prerequisites": [
+        "Node.js 20",
+        "Docker Desktop",
+        "Access to the billing repository"
+      ],
+      "coverage": {
+        "trigger": "done",
+        "steps": "done",
+        "inputs_outputs": "done",
+        "systems": "done",
+        "people": "done",
+        "decisions": "done",
+        "exceptions": "done",
+        "checks": "done",
+        "failures": "done",
+        "deadlines": "skipped",
+        "risk": "skipped",
+        "wish_known": "done"
+      },
+      "systems": [
+        {
+          "name": "billing repository (GitHub)",
+          "purpose": "Source code and issues",
+          "source_of_truth": true
+        },
+        {
+          "name": "Local Postgres in Docker",
+          "purpose": "Development database"
+        }
+      ],
+      "steps": [
+        {
+          "id": "P02.S01",
+          "title": "Clone the repository",
+          "command": "git clone git@github.com:<ORG>/billing.git\ncd billing",
+          "expected": "A billing folder with package.json inside",
+          "who_can_do": "ai_alone",
+          "who_can_do_confirmed": true,
+          "status": "validated"
+        },
+        {
+          "id": "P02.S02",
+          "title": "Install dependencies",
+          "command": "npm ci",
+          "expected": "\"added … packages\" and no errors",
+          "who_can_do": "ai_alone",
+          "who_can_do_confirmed": true,
+          "status": "validated"
+        },
+        {
+          "id": "P02.S03",
+          "title": "Start the local database",
+          "command": "docker compose up -d db",
+          "expected": "docker compose ps shows db as \"healthy\"",
+          "who_can_do": "ai_alone",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P02.S04",
+          "title": "Create your .env file",
+          "command": "cp .env.example .env",
+          "detail": "Fill in the values from the team password manager. Never commit .env.",
+          "why": ".env holds keys for the test payment provider.",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "validated"
+        },
+        {
+          "id": "P02.S05",
+          "title": "Run the tests",
+          "command": "npm test",
+          "expected": "All tests pass",
+          "who_can_do": "ai_alone",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P02.S06",
+          "title": "Start the service",
+          "command": "npm run dev",
+          "expected": "http://localhost:3000/health returns {\"ok\":true}",
+          "who_can_do": "ai_alone",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        }
+      ],
+      "rules": [
+        {
+          "id": "R-003",
+          "text": "One branch per change, and a pull request reviewed by one other developer before merging.",
+          "why": "Every change gets a second pair of eyes.",
+          "status": "validated"
+        },
+        {
+          "id": "R-004",
+          "text": "Run npm test before you push.",
+          "why": "CI takes 15 minutes; failing locally is faster.",
+          "status": "validated"
+        },
+        {
+          "id": "R-005",
+          "text": "Never commit .env or real customer data.",
+          "why": "The repository is shared with contractors.",
+          "status": "validated"
+        }
+      ],
+      "troubleshooting": [
+        {
+          "id": "T-001",
+          "symptom": "Port 3000 is already in use",
+          "cause": "Another dev server is running",
+          "fix": "Stop it, or run PORT=3001 npm run dev",
+          "status": "employee_provided"
+        },
+        {
+          "id": "T-002",
+          "symptom": "ECONNREFUSED 127.0.0.1:5432",
+          "cause": "The database container is not running",
+          "fix": "docker compose up -d db",
+          "status": "employee_provided"
+        },
+        {
+          "id": "T-003",
+          "symptom": "Tests fail on a fresh clone",
+          "cause": "Migrations have not run",
+          "fix": "npm run db:migrate",
+          "status": "ai_inferred"
+        }
+      ],
+      "scenarios": [
+        {
+          "id": "Q-002",
+          "situation": "Your change works, and you want to show a colleague quickly.",
+          "question": "How do you get it into main?",
+          "options": [
+            "Push straight to main",
+            "Open a pull request and get one review",
+            "Commit your .env so they can run it"
+          ],
+          "answer": 1,
+          "explanation": "R-003 and R-005: every change goes through a reviewed pull request, and .env is never committed.",
+          "refs": [
+            "R-003",
+            "R-005"
+          ]
+        }
+      ],
+      "status": "employee_provided",
+      "diagram_svg": "<svg viewBox=\"0 0 760 150\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-labelledby=\"p02-flow-title p02-flow-desc\" style=\"min-width:760px\"><title id=\"p02-flow-title\">Set up the billing service locally</title><desc id=\"p02-flow-desc\">Six steps from left to right: clone the repository, install dependencies, start the local database, create the .env file, run the tests, start the service.</desc><defs><marker id=\"p02-flow-arrow\" markerWidth=\"8\" markerHeight=\"6\" refX=\"7\" refY=\"3\" orient=\"auto\"><polygon points=\"0 0, 8 3, 0 6\" fill=\"#5f5f5c\"/></marker><marker id=\"p02-flow-arrow-accent\" markerWidth=\"8\" markerHeight=\"6\" refX=\"7\" refY=\"3\" orient=\"auto\"><polygon points=\"0 0, 8 3, 0 6\" fill=\"#bf4520\"/></marker></defs><rect width=\"100%\" height=\"100%\" fill=\"#ffffff\"/><rect x=\"20\" y=\"44\" width=\"108\" height=\"52\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"74\" y=\"66\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Clone</text><text x=\"74\" y=\"82\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">git clone</text><path d=\"M128,70 H140\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p02-flow-arrow)\"/><rect x=\"142\" y=\"44\" width=\"108\" height=\"52\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"196\" y=\"66\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Install</text><text x=\"196\" y=\"82\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">npm ci</text><path d=\"M250,70 H262\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p02-flow-arrow)\"/><rect x=\"264\" y=\"44\" width=\"108\" height=\"52\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"318\" y=\"66\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Start the DB</text><text x=\"318\" y=\"82\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">docker compose</text><path d=\"M372,70 H384\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p02-flow-arrow)\"/><rect x=\"386\" y=\"44\" width=\"108\" height=\"52\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"440\" y=\"66\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Create .env</text><text x=\"440\" y=\"82\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">from .env.example</text><path d=\"M494,70 H506\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p02-flow-arrow)\"/><rect x=\"508\" y=\"44\" width=\"108\" height=\"52\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"562\" y=\"66\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Run tests</text><text x=\"562\" y=\"82\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">npm test</text><path d=\"M616,70 H628\" fill=\"none\" stroke=\"#bf4520\" stroke-width=\"1.4\" marker-end=\"url(#p02-flow-arrow-accent)\"/><rect x=\"630\" y=\"44\" width=\"108\" height=\"52\" rx=\"6\" fill=\"rgba(191,69,32,0.08)\" stroke=\"#bf4520\" stroke-width=\"1\"/><text x=\"684\" y=\"66\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Start</text><text x=\"684\" y=\"82\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">npm run dev</text><text x=\"20\" y=\"130\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"start\">Never commit .env; values come from the team password manager.</text></svg>"
+    },
+    {
+      "id": "P03",
+      "slug": "replace-disk",
+      "name": "Replace a failed disk in the storage server",
+      "doc_type": "work_instruction",
+      "view": "checklist",
+      "view_confirmed": true,
+      "summary": "Swap a failed disk in the storage server and check the RAID rebuild starts.",
+      "trigger": "The RAID controller reports a failed disk",
+      "frequency": "A few times a year",
+      "complete": true,
+      "ppe": [
+        "ESD wrist strap, clipped to the rack",
+        "Safety glasses when the chassis is open"
+      ],
+      "tools": [
+        "Torx T10 screwdriver",
+        "Torque screwdriver set to 0.6 N·m",
+        "Replacement disk, same model and size",
+        "Anti-static bag for the failed disk"
+      ],
+      "prerequisites": [
+        "Change ticket approved",
+        "The controller shows the disk as \"Failed\"",
+        "Recent backup confirmed (see P04)"
+      ],
+      "coverage": {
+        "trigger": "done",
+        "steps": "done",
+        "inputs_outputs": "done",
+        "systems": "done",
+        "people": "done",
+        "decisions": "done",
+        "exceptions": "done",
+        "checks": "done",
+        "failures": "done",
+        "deadlines": "skipped",
+        "risk": "done",
+        "wish_known": "done"
+      },
+      "people": [
+        {
+          "name_or_role": "Platform engineer on site",
+          "involvement": "Does the swap"
+        },
+        {
+          "name_or_role": "Second engineer (remote)",
+          "involvement": "Watches the controller and confirms the slot"
+        }
+      ],
+      "steps": [
+        {
+          "id": "P03.S01",
+          "title": "Put on the ESD strap and clip it to the rack",
+          "safety": true,
+          "why": "Static can kill the new disk or the backplane.",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "validated",
+          "validated_by": "Head of platform"
+        },
+        {
+          "id": "P03.S02",
+          "title": "Confirm the failed slot",
+          "detail": "Match the amber LED on the front with the slot number the controller reports.",
+          "check": "The second engineer reads the same slot number back to you",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "validated"
+        },
+        {
+          "id": "P03.S03",
+          "title": "Pull the caddy and swap the disk",
+          "spec": "Caddy screws 0.6 ± 0.1 N·m",
+          "check": "The new disk sits flat in the caddy",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P03.S04",
+          "title": "Insert the caddy until it clicks",
+          "check": "The slot LED blinks green within 30 seconds",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P03.S05",
+          "title": "Check the rebuild has started",
+          "check": "The controller shows \"Rebuilding\" for the slot",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P03.S06",
+          "title": "Bag and label the failed disk",
+          "detail": "Write the date and slot on the bag; it goes to secure destruction, never the bin.",
+          "outputs": [
+            "Labelled failed disk for destruction",
+            "Updated change ticket"
+          ],
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        }
+      ],
+      "rules": [
+        {
+          "id": "R-006",
+          "text": "Never pull a disk whose LED is green.",
+          "why": "Pulling a healthy disk during a degraded state loses the array.",
+          "status": "validated"
+        }
+      ],
+      "scenarios": [
+        {
+          "id": "Q-003",
+          "situation": "Two slots show amber, but the controller reports only slot 3 as failed.",
+          "question": "Which disk do you pull?",
+          "options": [
+            "Both amber ones",
+            "Slot 3 only, after the second engineer confirms it",
+            "None; reboot the server first"
+          ],
+          "answer": 1,
+          "explanation": "Step 2: the slot is confirmed by two people against the controller before anything is pulled.",
+          "refs": [
+            "P03.S02",
+            "R-006"
+          ]
+        }
+      ],
+      "status": "employee_provided",
+      "diagram_svg": "<svg viewBox=\"0 0 760 148\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-labelledby=\"p03-seq-title p03-seq-desc\" style=\"min-width:760px\"><title id=\"p03-seq-title\">Replace a failed disk</title><desc id=\"p03-seq-desc\">Sequence: put on the ESD strap, confirm the failed slot by its amber LED, swap the disk and tighten the caddy screws to 0.6 newton metres, insert until it clicks, check the rebuild has started.</desc><defs><marker id=\"p03-seq-arrow\" markerWidth=\"8\" markerHeight=\"6\" refX=\"7\" refY=\"3\" orient=\"auto\"><polygon points=\"0 0, 8 3, 0 6\" fill=\"#5f5f5c\"/></marker><marker id=\"p03-seq-arrow-accent\" markerWidth=\"8\" markerHeight=\"6\" refX=\"7\" refY=\"3\" orient=\"auto\"><polygon points=\"0 0, 8 3, 0 6\" fill=\"#bf4520\"/></marker></defs><rect width=\"100%\" height=\"100%\" fill=\"#ffffff\"/><rect x=\"20\" y=\"44\" width=\"128\" height=\"52\" rx=\"6\" fill=\"rgba(191,69,32,0.08)\" stroke=\"#bf4520\" stroke-width=\"1\"/><text x=\"84\" y=\"66\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">ESD strap on</text><text x=\"84\" y=\"82\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Safety</text><path d=\"M148,70 H164\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p03-seq-arrow)\"/><rect x=\"166\" y=\"44\" width=\"128\" height=\"52\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"230\" y=\"66\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Confirm the slot</text><text x=\"230\" y=\"82\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Amber LED = failed</text><path d=\"M294,70 H310\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p03-seq-arrow)\"/><rect x=\"312\" y=\"44\" width=\"128\" height=\"52\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"376\" y=\"66\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Swap the disk</text><text x=\"376\" y=\"82\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">0.6 ± 0.1 N·m</text><path d=\"M440,70 H456\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p03-seq-arrow)\"/><rect x=\"458\" y=\"44\" width=\"128\" height=\"52\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"522\" y=\"74\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Insert to click</text><path d=\"M586,70 H602\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p03-seq-arrow)\"/><rect x=\"604\" y=\"44\" width=\"128\" height=\"52\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"668\" y=\"66\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Rebuild started?</text><text x=\"668\" y=\"82\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">RAID controller</text><text x=\"20\" y=\"128\" fill=\"#bf4520\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"start\">Never pull a disk whose LED is green (R-004).</text></svg>"
+    },
+    {
+      "id": "P04",
+      "slug": "backup-failures",
+      "name": "When the nightly backup job fails",
+      "doc_type": "runbook",
+      "view": "troubleshoot",
+      "view_confirmed": true,
+      "summary": "What to do when the backup alert fires, by what the job log says.",
+      "trigger": "The \"backup failed\" alert in the morning",
+      "frequency": "A few times a month",
+      "complete": false,
+      "prerequisites": [
+        "SSH access to billing-db-01"
+      ],
+      "escalation": "If the backup has failed two nights in a row, tell the head of platform before 10:00.",
+      "coverage": {
+        "trigger": "done",
+        "steps": "done",
+        "inputs_outputs": "done",
+        "systems": "done",
+        "people": "done",
+        "decisions": "done",
+        "exceptions": "done",
+        "checks": "done",
+        "failures": "done",
+        "deadlines": "done",
+        "risk": "done",
+        "wish_known": "missing"
+      },
+      "steps": [
+        {
+          "id": "P04.S01",
+          "title": "Read the job log",
+          "command": "journalctl -u backup.service --since yesterday",
+          "expected": "The last lines say why the job stopped",
+          "who_can_do": "ai_alone",
+          "who_can_do_confirmed": true,
+          "status": "validated"
+        }
+      ],
+      "troubleshooting": [
+        {
+          "id": "T-004",
+          "symptom": "Job log: \"No space left on device\"",
+          "cause": "The backup volume is full",
+          "fix": "Delete dumps older than 14 days, then re-run: sudo systemctl start backup.service",
+          "status": "validated"
+        },
+        {
+          "id": "T-005",
+          "symptom": "Job log: \"connection refused\"",
+          "cause": "The database restarted during the backup window",
+          "fix": "Re-run the job after 02:30",
+          "status": "employee_provided"
+        },
+        {
+          "id": "T-006",
+          "symptom": "The job did not run at all",
+          "cause": "The timer was disabled by a server update",
+          "fix": "sudo systemctl enable --now backup.timer, then run the job once",
+          "status": "validated"
+        },
+        {
+          "id": "T-007",
+          "symptom": "Upload to the bucket fails",
+          "cause": "The bucket credentials were rotated",
+          "fix": "Ask the head of platform to update the secret; never paste keys into the job file",
+          "status": "ai_inferred"
+        }
+      ],
+      "scenarios": [
+        {
+          "id": "Q-004",
+          "situation": "The upload fails and a colleague sends you the new bucket key in chat.",
+          "question": "What do you do?",
+          "options": [
+            "Paste it into the job file",
+            "Ask the head of platform to update the secret properly, and tell the colleague to rotate it",
+            "Ignore the alert"
+          ],
+          "answer": 1,
+          "explanation": "T-007: keys go through the secret store only; a key shared in chat must be rotated.",
+          "refs": [
+            "T-007"
+          ]
+        }
+      ],
+      "status": "employee_provided",
+      "diagram_svg": "<svg viewBox=\"0 0 760 392\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-labelledby=\"p04-fix-title p04-fix-desc\" style=\"min-width:760px\"><title id=\"p04-fix-title\">When the nightly backup fails</title><desc id=\"p04-fix-desc\">Symptom, cause and fix for four backup failures: disk full, connection refused, the job did not run, and the upload fails. The last row still needs confirmation.</desc><defs><marker id=\"p04-fix-arrow\" markerWidth=\"8\" markerHeight=\"6\" refX=\"7\" refY=\"3\" orient=\"auto\"><polygon points=\"0 0, 8 3, 0 6\" fill=\"#5f5f5c\"/></marker><marker id=\"p04-fix-arrow-accent\" markerWidth=\"8\" markerHeight=\"6\" refX=\"7\" refY=\"3\" orient=\"auto\"><polygon points=\"0 0, 8 3, 0 6\" fill=\"#bf4520\"/></marker></defs><rect width=\"100%\" height=\"100%\" fill=\"#ffffff\"/><text x=\"32\" y=\"34\" fill=\"#5f5f5c\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"start\">What you see</text><text x=\"276\" y=\"34\" fill=\"#5f5f5c\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"start\">Usual cause</text><text x=\"520\" y=\"34\" fill=\"#5f5f5c\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"start\">What to do</text><rect x=\"24\" y=\"48\" width=\"200\" height=\"60\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"124\" y=\"82\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Job log: &quot;No space left on device&quot;</text><path d=\"M224,78 H266\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p04-fix-arrow)\"/><rect x=\"268\" y=\"48\" width=\"200\" height=\"60\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"368\" y=\"82\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Backup volume full</text><path d=\"M468,78 H510\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p04-fix-arrow)\"/><rect x=\"512\" y=\"48\" width=\"224\" height=\"60\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"624\" y=\"74\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Delete dumps older than 14 days</text><text x=\"624\" y=\"90\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">then re-run the job</text><rect x=\"24\" y=\"124\" width=\"200\" height=\"60\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"124\" y=\"158\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Job log: &quot;connection refused&quot;</text><path d=\"M224,154 H266\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p04-fix-arrow)\"/><rect x=\"268\" y=\"124\" width=\"200\" height=\"60\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"368\" y=\"150\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Database restarted</text><text x=\"368\" y=\"166\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">during the backup window</text><path d=\"M468,154 H510\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p04-fix-arrow)\"/><rect x=\"512\" y=\"124\" width=\"224\" height=\"60\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"624\" y=\"150\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Re-run the job</text><text x=\"624\" y=\"166\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">after 02:30</text><rect x=\"24\" y=\"200\" width=\"200\" height=\"60\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"124\" y=\"234\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Job did not run at all</text><path d=\"M224,230 H266\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p04-fix-arrow)\"/><rect x=\"268\" y=\"200\" width=\"200\" height=\"60\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"368\" y=\"226\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Timer disabled</text><text x=\"368\" y=\"242\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">after a server update</text><path d=\"M468,230 H510\" fill=\"none\" stroke=\"#bf4520\" stroke-width=\"1.4\" marker-end=\"url(#p04-fix-arrow-accent)\"/><rect x=\"512\" y=\"200\" width=\"224\" height=\"60\" rx=\"6\" fill=\"rgba(191,69,32,0.08)\" stroke=\"#bf4520\" stroke-width=\"1\"/><text x=\"624\" y=\"226\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Enable the timer</text><text x=\"624\" y=\"242\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">and run it once now</text><rect x=\"24\" y=\"276\" width=\"200\" height=\"60\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\" stroke-dasharray=\"4 3\"/><text x=\"124\" y=\"310\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Upload to the bucket fails</text><path d=\"M224,306 H266\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p04-fix-arrow)\"/><rect x=\"268\" y=\"276\" width=\"200\" height=\"60\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\" stroke-dasharray=\"4 3\"/><text x=\"368\" y=\"302\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Bucket credentials</text><text x=\"368\" y=\"318\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">rotated</text><path d=\"M468,306 H510\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p04-fix-arrow)\"/><rect x=\"512\" y=\"276\" width=\"224\" height=\"60\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\" stroke-dasharray=\"4 3\"/><text x=\"624\" y=\"302\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Ask the head of platform</text><text x=\"624\" y=\"318\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">to update the secret</text><rect x=\"24\" y=\"360\" width=\"28\" height=\"16\" rx=\"4\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-dasharray=\"4 3\"/><text x=\"60\" y=\"372\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"start\">Dashed = the AI worked this out; still needs confirmation (OQ-002)</text></svg>"
+    }
+  ],
+  "open_questions": [
+    {
+      "id": "OQ-001",
+      "question": "How long do we keep the broken database after a restore (7 days?)",
+      "who_to_ask": "Head of platform",
+      "refs": [
+        "R-002"
+      ],
+      "origin": "inferred"
+    },
+    {
+      "id": "OQ-002",
+      "question": "Who can update the bucket credentials besides the head of platform?",
+      "who_to_ask": "Head of platform",
+      "refs": [
+        "T-007"
+      ],
+      "origin": "inferred"
+    }
+  ],
+  "glossary": [
+    {
+      "term": "Restore",
+      "meaning": "Loading a backup into a database"
+    },
+    {
+      "term": "RAID controller",
+      "meaning": "The card that combines the disks and reports their health"
+    },
+    {
+      "term": "ESD",
+      "meaning": "Electrostatic discharge: static electricity that can damage electronics"
+    },
+    {
+      "term": ".env",
+      "meaning": "The local settings file with keys; never committed"
+    }
+  ],
+  "change_log": [
+    {
+      "date": "2026-11-24",
+      "version": 3,
+      "change": "Four tasks captured; the AI chose a document type and drew a diagram for each",
+      "by": "giver"
+    }
+  ],
+  "handover_message": "Here is the knowledge pack for platform engineering. Attach the zip to an AI chat and say \"teach me from this pack\", or open START-HERE.html. (This is a fictional example.)"
+}

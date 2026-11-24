@@ -37,7 +37,7 @@ jobs:
             echo "::error::skills/knowledge-handover/assets/pack-builder.html is stale. Run: python3 tools/build_dist.py and commit the result."
             exit 1
           }
-      - name: Build the example pack
+      - name: Build the example packs
         run: npm run example
 
   e2e:

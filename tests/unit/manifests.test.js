@@ -87,3 +87,21 @@ test('example pack is in English and shows every view, each task with its own di
   const w = core.validate(k, images);
   assert.deepStrictEqual(w.filter((x) => /diagram|missing step|continues into|unknown status|has no id|view/.test(x)), []);
 });
+
+test('the two examples together use all four document types, and the IT one is complete', () => {
+  const core = require('../../skills/knowledge-handover/scripts/pack-core.js');
+  const docs = require('../../skills/knowledge-handover/scripts/documents.js');
+  const bank = read('examples/bank-reconciliation/knowledge.json');
+  const it = read('examples/it-operations/knowledge.json');
+  const types = new Set(bank.processes.concat(it.processes).map((p) => docs.docType(p)));
+  assert.deepStrictEqual([...types].sort(), ['dev_guide', 'runbook', 'sop', 'work_instruction']);
+  assert.strictEqual(it.language, 'en');
+  for (const p of it.processes) {
+    assert.match(p.diagram_svg || '', /^<svg[\s\S]*role="img"[\s\S]*<\/svg>$/, p.id + ' has a diagram');
+    assert.ok((p.scenarios || []).length >= 1, p.id + ' has practice');
+    assert.strictEqual(core.effectiveView(p), p.view, p.id + ' view has its data');
+  }
+  assert.ok(it.processes.some((p) => (p.steps || []).some((s) => s.command)), 'commands');
+  assert.ok(it.processes.some((p) => (p.ppe || []).length && (p.steps || []).some((s) => s.spec)), 'PPE and specs');
+  assert.deepStrictEqual(core.validate(it).filter((w) => !/not yet confirmed/.test(w)), []);
+});

@@ -123,7 +123,7 @@ test('autoMermaid draws branches', () => {
 });
 
 test('example and recorded test packs build without broken links', () => {
-  const dirs = [path.join(ROOT, 'examples', 'bank-reconciliation')].concat(
+  const dirs = [path.join(ROOT, 'examples', 'bank-reconciliation'), path.join(ROOT, 'examples', 'it-operations')].concat(
     fs.readdirSync(path.join(ROOT, 'tests', 'runs')).map((d) => path.join(ROOT, 'tests', 'runs', d))
       .filter((d) => fs.existsSync(path.join(d, 'knowledge.json'))));
   assert.ok(dirs.length >= 6);
@@ -195,4 +195,119 @@ test('a pack with handover data keeps the handover file and an AI-written messag
   const r = core.build(k, {}, { template, fontsCss: '' });
   assert.ok(r.files.some((f) => /handover-status\.md$/.test(f.path)));
   assert.strictEqual(r.files.find((f) => /handover-message\.txt$/.test(f.path)).data, 'Hi from Sam');
+});
+
+// ── Fields for engineering, IT and software work ───────────────────────────
+const techPack = () => ({
+  pack_id: 'KP-T', version: 1, language: 'en', processes: [{
+    id: 'P01', slug: 'restore', name: 'Restore the database', doc_type: 'runbook',
+    prerequisites: ['VPN access'], tools: ['Laptop with psql'], ppe: ['None'], rollback: 'Point the app back at the old database', escalation: 'Call the on-call DBA',
+    steps: [{ id: 'P01.S01', title: 'Restore', command: 'pg_restore -d <DB_NAME> nightly.dump', expected: 'No errors', spec: 'Under 10 minutes', rollback: 'Drop the new database', status: 'employee_provided' }],
+  }],
+});
+
+test('workflow and procedure files carry commands, expected results, specs, undo and task setup', () => {
+  const r = core.build(techPack(), {}, { template, fontsCss: '' });
+  const f = (rel) => r.files.find((x) => x.path === 'KP-T/processes/P01-restore/' + rel).data;
+  const proc = f('procedures.md');
+  assert.match(proc, /```\npg_restore -d <DB_NAME> nightly\.dump\n```/);
+  assert.match(proc, /\*\*Expected result:\*\* No errors/);
+  assert.match(proc, /\*\*Spec:\*\* Under 10 minutes/);
+  assert.match(proc, /\*\*Undo:\*\* Drop the new database/);
+  const wf = f('workflow.md');
+  for (const re of [/\*\*Document type:\*\* runbook/, /## Before you start\n\n- VPN access/, /## Tools and materials\n\n- Laptop with psql/, /## Protective equipment\n\n- None/, /\*\*Rollback:\*\* Point the app back/, /\*\*Escalation:\*\* Call the on-call DBA/]) assert.match(wf, re);
+  assert.match(core.mdForAI(techPack()), /pg_restore -d <DB_NAME>/);
+});
+
+test('validate warns about an unknown document type', () => {
+  const k = techPack(); k.processes[0].doc_type = 'novel';
+  assert.ok(core.validate(k).some((w) => /P01: unknown doc_type "novel"/.test(w)));
+});
+
+test('secret-looking values are replaced in every output, with a warning to change them', () => {
+  const SECRETS = {
+    github: 'ghp_' + 'a1B2c3D4e5F6g7H8i9J0k1L2m3N4o5P6q7R8',
+    aws: 'AKIA' + 'IOSFODNN7EXAMPLE',
+    slack: 'xoxb-' + '123456789012-abcdefABCDEF',
+    openai: 'sk-' + 'proj-abcdefghijklmnopqrstuvwx12',
+    password: 'hunter2xyz9',
+    urlpass: 's3cr3tPass',
+    bearer: 'eyJhbGciOiJIUzI1NiJ9abcdefghijklmnop',
+  };
+  const k = techPack();
+  const s = k.processes[0].steps[0];
+  s.command = 'export GITHUB_TOKEN=' + SECRETS.github + ' && aws configure set aws_access_key_id ' + SECRETS.aws;
+  s.detail = 'Post to Slack with ' + SECRETS.slack + ' and OpenAI key ' + SECRETS.openai;
+  s.expected = 'mysql --password=' + SECRETS.password + ' works; or https://admin:' + SECRETS.urlpass + '@db.example.com';
+  k.processes[0].rollback = 'curl -H "Authorization: Bearer ' + SECRETS.bearer + '" ...';
+  k.processes[0].escalation = '-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEA\n-----END RSA PRIVATE KEY-----';
+  assert.ok(core.validate(k).some((w) => /P01\.S01: looks like a secret/.test(w)), 'warned before building');
+  const r = core.build(k, {}, { template, fontsCss: '' });
+  assert.ok(r.warnings.some((w) => /P01\.S01: looks like a secret.*<REDACTED>.*[Cc]hange/.test(w)));
+  assert.ok(r.warnings.some((w) => /^P01: looks like a secret/.test(w)));
+  const all = r.files.map((f) => (typeof f.data === 'string' ? f.data : Buffer.from(f.data).toString('latin1'))).join('\n');
+  for (const [name, secret] of Object.entries(SECRETS)) assert.ok(!all.includes(secret), name + ' leaked');
+  assert.ok(!all.includes('MIIEowIBAAKCAQEA'), 'private key leaked');
+  assert.match(all, /<REDACTED>/);
+  assert.match(all, /GITHUB_TOKEN=<REDACTED>/);
+});
+
+test('ordinary text and placeholders are not mistaken for secrets', () => {
+  const k = techPack();
+  k.processes[0].steps[0].detail = 'The password: ask the chief accountant. Token: required. Use <API_TOKEN> or $API_TOKEN or ${DB_PASSWORD}. Set password=<YOUR_PASSWORD>.';
+  const r = core.build(k, {}, { template, fontsCss: '' });
+  assert.ok(!r.warnings.some((w) => /secret/.test(w)), r.warnings.join('\n'));
+  assert.match(r.files.find((f) => f.path.endsWith('knowledge.json')).data, /ask the chief accountant\. Token: required\. Use <API_TOKEN>/);
+});
+
+test('redaction catches prefixed names, common token formats, CLI passwords and Thai labels', () => {
+  const LEAKS = {
+    prefixed: 'export DB_PASSWORD=Hunter2abc',
+    yaml: 'db_password: Hunter2abc',
+    aws: 'AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
+    stripeName: 'STRIPE_API_KEY=abcd1234efgh5678',
+    google: 'GOOGLE_CLIENT_SECRET=GOCSPX-abc123def456',
+    stripe: 'sk_' + 'live_51Habcdefghijklmnop1234',
+    stripeR: 'rk_' + 'live_51Habcdefghijklmnop1234',
+    azure: 'DefaultEndpointsProtocol=https;AccountName=x;AccountKey=abcdEFGH1234ijklMNOP5678qrst==;',
+    mysql: 'mysql -u root -pS3cretPass billing',
+    curl: 'curl -u admin:S3cretPass https://api.example.com',
+    basic: 'Authorization: Basic YWRtaW46UzNjcmV0UGFzcw==',
+    npm: 'npm_' + 'abcdefghijklmnopqrstuvwxyz0123456789',
+    gitlab: 'glpat-' + 'abcdefghijklmnopqrst',
+    longPass: 'password: correcthorsebatterystaple',
+    thai: 'รหัสผ่าน: Hunter2abc',
+    pin: 'PIN 4821 for the safe',
+    otp: 'OTP: 482913',
+  };
+  const secretOf = { prefixed: 'Hunter2abc', yaml: 'Hunter2abc', aws: 'wJalrXUtnFEMI', stripeName: 'abcd1234efgh5678', google: 'GOCSPX-abc123def456', stripe: 'live_51Habcdefghijklmnop1234', stripeR: 'live_51Habcdefghijklmnop1234', azure: 'abcdEFGH1234ijklMNOP5678qrst', mysql: 'S3cretPass', curl: 'S3cretPass', basic: 'YWRtaW46UzNjcmV0UGFzcw', npm: 'abcdefghijklmnopqrstuvwxyz0123456789', gitlab: 'abcdefghijklmnopqrst', longPass: 'correcthorsebatterystaple', thai: 'Hunter2abc', pin: '4821', otp: '482913' };
+  for (const [name, text] of Object.entries(LEAKS)) {
+    const k = { processes: [{ id: 'P01', name: 'x', steps: [{ id: 'P01.S01', title: 't', command: text }] }] };
+    const warn = core.redactSecrets(k);
+    assert.ok(warn.length, name + ' not caught');
+    assert.ok(!k.processes[0].steps[0].command.includes(secretOf[name]), name + ' leaked: ' + k.processes[0].steps[0].command);
+  }
+});
+
+test('redaction leaves IDs, paths, ports and ordinary words alone', () => {
+  for (const text of ['pass: P01.S03', 'token: TKT-2026-00123', 'secret: Q3-2026 plan', 'pwd: /home/user1/app', 'https://user:8080@host', 'the team password manager', 'Token: required.', 'token bucket of 20']) {
+    const k = { processes: [{ id: 'P01', steps: [{ id: 'P01.S01', detail: text }] }] };
+    assert.deepStrictEqual(core.redactSecrets(k), [], text);
+    assert.strictEqual(k.processes[0].steps[0].detail, text);
+  }
+});
+
+test('a redacted diagram stays valid SVG', () => {
+  const k = { processes: [{ id: 'P01', diagram_svg: '<svg xmlns="http://www.w3.org/2000/svg"><text>password=Hunter2abc</text></svg>' }] };
+  core.redactSecrets(k);
+  const svg = k.processes[0].diagram_svg;
+  assert.doesNotMatch(svg, /Hunter2abc/);
+  assert.doesNotMatch(svg, /<REDACTED>/);
+  execFileSync('python3', ['-c', 'import sys,xml.dom.minidom;xml.dom.minidom.parseString(sys.argv[1])', svg]);
+});
+
+test('an unknown doc_type does not hide a view warning', () => {
+  const w = core.validate({ pack_id: 'K', processes: [{ id: 'P01', doc_type: 'novel', view: 'timeline' }] });
+  assert.ok(w.some((x) => /unknown doc_type/.test(x)));
+  assert.ok(w.some((x) => /view "timeline" needs/.test(x)));
 });
