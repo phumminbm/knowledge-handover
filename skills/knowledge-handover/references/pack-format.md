@@ -58,7 +58,8 @@ accent           hex colour chosen by the giver (default "#bf4520")
 title            e.g. "งานบัญชีเจ้าหนี้ · ฝ่ายการเงิน"
 confidentiality  "public" | "internal" | "confidential" | "unset"
 ui_labels        optional object to translate page labels for languages other than th/en;
-                 SOP labels use the same object with a `sop_` prefix (e.g. "sop_purpose")
+                 document labels use the same object with a `doc_` prefix (e.g. "doc_purpose",
+                 "doc_ifGo": "If {a}: go to step {b}"); keys are listed in scripts/documents.js
 giver            { name, role_title, team, organization, contact_after_leaving }   all optional; contact_after_leaving = how to reach them later, when they are moving on
 stage            "discovery" | "interview" | "review" | "complete"
 role             { summary, context, stakeholders: [{ name, relationship }], status }
@@ -74,6 +75,12 @@ handover         { snapshot_date, expires,
 processes        [{ id, name, summary, trigger, frequency, complete (bool),
                     view: "steps"|"checklist"|"timeline"|"decision"|"troubleshoot",   optional, default "steps"
                     view_confirmed (bool),
+                    doc_type: "sop"|"work_instruction"|"runbook"|"dev_guide",           optional, default "sop"
+                    prerequisites: [],                   optional: access, approvals or state needed before starting
+                    tools: [],                           optional: tools and materials
+                    ppe: [],                             optional: protective equipment
+                    rollback,                            optional: how to undo the whole task
+                    escalation,                          optional: who to call, and when
                     coverage: { trigger, steps, inputs_outputs, systems, people, decisions,
                                 exceptions, checks, failures, deadlines, risk, wish_known }
                               each "done" | "skipped" | "missing",
@@ -90,6 +97,10 @@ processes        [{ id, name, summary, trigger, frequency, complete (bool),
                               when,                                 optional: when the step happens ("Day 1", "Before 10:00")
                               branch_question,                      optional: the question shown above the branch buttons
                               next,                                 optional: step ID (or "end") to go to after this step
+                              command,                              optional: the exact command, code or query; placeholders like <DB_NAME> for anything secret or local
+                              expected,                             optional: what you should see when it worked
+                              spec,                                 optional: a value or tolerance ("25 ± 2 N·m", "pH 6.5–7.0")
+                              rollback,                             optional: how to undo this step
                               status, source }],
                     rules: [{ id, text, why, applies_when, status, source }],
                     troubleshooting: [{ id, symptom, cause, fix, status }],
@@ -119,7 +130,19 @@ Each task has a `view`: how START-HERE.html lays it out. Pick it yourself from t
 | `decision` | approvals, eligibility checks, triage, "it depends" judgement | the rules of thumb, then the branch questions one by one |
 | `troubleshoot` | on-call, repairs, IT support, "something went wrong" | symptoms first, each with cause and fix |
 
-A view needs its data: `checklist` and `timeline` need steps, `decision` needs branching steps or rules, `troubleshoot` needs troubleshooting entries. Without it the page falls back to `steps` and the builder warns. For a `timeline`, give every step a `when`.
+\1
+### Document types
+
+Each task also has a `doc_type`: the document its line of work uses. Pick it yourself, like the view, and tell the giver in one line ("This is server maintenance, so it becomes a work instruction with the PPE and torque values up front"). Change it only if they object.
+
+| `doc_type` | For | Written as |
+|---|---|---|
+| `sop` (default) | office, service, admin, care | Word (`.docx`) + print page |
+| `work_instruction` | engineering, maintenance, production, labs, on-site work | Word (`.docx`) + print page; safety and PPE first, tools, specs, quality checks, sign-off |
+| `runbook` | IT operations, DevOps, support, on-call | Markdown (`.md`) + print page; commands, expected results, undo, escalation, rollback |
+| `dev_guide` | software development | Markdown (`.md`) + print page; prerequisites, commands, conventions, common problems |
+
+For technical work, record `command` exactly as typed and `expected` as it appears on screen; use `spec` for a measured value or tolerance and `rollback` for how to undo a step or the whole task. On the task, fill `prerequisites`, `tools`, `ppe` and `escalation` when they apply; leave them out otherwise. Anything secret or environment-specific becomes a placeholder such as `<DB_NAME>` or `<API_TOKEN>`; never a real value. The builder replaces anything that still looks like a password, key or token with `<REDACTED>` in every file, and warns the giver to change it.
 
 ## 4. Minimal example
 
@@ -170,9 +193,10 @@ A view needs its data: `checklist` and `timeline` need steps, `decision` needs b
 │   ├── decisions.md              rules, decisions, exceptions
 │   ├── troubleshooting.md
 │   └── scenarios.md
-├── sop/
-│   ├── <id>-<slug>.docx          the task as a standard operating procedure, to edit or file
-│   └── <id>-<slug>.html          the same SOP, print-ready (Ctrl+P / ⌘P → Save as PDF)
+├── documents/
+│   ├── <id>-<slug>.docx          SOP or work instruction, to edit or file
+│   ├── <id>-<slug>.md            runbook or developer guide, for a repo or wiki
+│   └── <id>-<slug>.html          the same document, print-ready (Ctrl+P / ⌘P → Save as PDF)
 ├── visuals/                      original images, untouched
 ├── open-questions.md
 ├── glossary.md
@@ -181,4 +205,4 @@ A view needs its data: `checklist` and `timeline` need steps, `decision` needs b
 └── README.md                     how to open and use the pack
 ```
 
-Only files with content are written. Every task gets `sop/<id>-<slug>.docx` and `sop/<id>-<slug>.html`: a standard operating procedure (purpose, scope, responsibilities, procedure shaped by the task's view, rules, safety, records, open questions, revision history). Its status stays "Draft" until every item is `validated`; unconfirmed items are flagged; document number, effective date and approver are left blank. `START-HERE.html` embeds the images, so it can be sent alone; very large photo sets may make it heavy, so prefer a few clear images per task.
+Only files with content are written. Every task gets `documents/<id>-<slug>.html` plus a `.docx` (SOP, work instruction) or `.md` (runbook, developer guide). Each has the sections of its type and the procedure in the shape of the task's view. Status stays "Draft" until the task is complete, every item is `validated`, every "who can do it" label and pin is confirmed, and no open question points at it. Unconfirmed items are flagged. Document number, owner, effective date, approver and sign-off are left blank.

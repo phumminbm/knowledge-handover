@@ -26,8 +26,8 @@ Work manuals are usually written in a rush, miss the exceptions, and nobody know
 
 - **Easy for the giver:** start with one sentence, answer mostly by tapping, stop and continue any time.
 - **Easy for the receiver:** nothing to install. Open `START-HERE.html`, or attach the Pack to any AI chat and say *"teach me from this pack"*.
-- **Any job:** office work, on-site work, care work. Screenshots or on-site photos.
-- **Ready to file:** every task also comes as an SOP, in Word and as a page to print or save as PDF.
+- **Any job:** office, on-site, care, engineering, IT operations, software. Screenshots, on-site photos, or exact commands.
+- **The document your field uses:** every task also comes as an SOP, a work instruction, a runbook or a developer guide (Word or Markdown, plus a page to print or save as PDF).
 - **Any AI:** Claude, ChatGPT, Codex, Gemini, Cursor, Copilot, and plain chats on free plans.
 - **Honest:** every item is marked **Confirmed**, **Not yet reviewed**, **Needs confirmation** or **Open question**, so nobody mistakes a guess for a rule.
 - **Your data stays with you:** no server, no account, no tracking. See [PRIVACY.md](PRIVACY.md).
@@ -61,7 +61,7 @@ Search the whole Pack with `/` or Ctrl+K, and pick up where you left off from th
 
 ## See the example from every angle
 
-The example Pack is a fictional cash-and-bank accounting job with six tasks that cover all five layouts, each with a different kind of diagram. Nothing to install: it opens in your browser.
+There are two fictional example Packs: a cash-and-bank accounting job (six tasks covering all five layouts, each with a different kind of diagram) and a platform-engineering job (a runbook with exact commands, a developer guide, a work instruction with PPE and torque specs, and a troubleshooting runbook). Nothing to install: it opens in your browser.
 
 | What you want to see | Open it |
 |---|---|
@@ -73,8 +73,12 @@ The example Pack is a fictional cash-and-bank accounting job with six tasks that
 | **What's wrong?** | [When online banking goes wrong](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P05) |
 | Practice questions | [Approve a supplier payment › Practice](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P04/quiz) |
 | Questions the Pack can't answer yet | [Open questions](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/questions) |
-| An SOP document | [print-ready page](https://phumminbm.github.io/knowledge-handover/example/sop/P04-supplier-payment-approval.html) · [Word file](https://phumminbm.github.io/knowledge-handover/example/sop/P04-supplier-payment-approval.docx) |
-| Every file in the Pack: SOPs and documents per task, `PACK-FOR-AI.md`, `knowledge.json` | [example-pack.zip](https://phumminbm.github.io/knowledge-handover/example/example-pack.zip) |
+| An SOP (Word) | [print page](https://phumminbm.github.io/knowledge-handover/example/documents/P04-supplier-payment-approval.html) · [Word file](https://phumminbm.github.io/knowledge-handover/example/documents/P04-supplier-payment-approval.docx) |
+| The engineering example | [START-HERE.html](https://phumminbm.github.io/knowledge-handover/example-it/START-HERE.html) |
+| A runbook with commands | [print page](https://phumminbm.github.io/knowledge-handover/example-it/documents/P01-restore-database.html) · [Markdown](https://phumminbm.github.io/knowledge-handover/example-it/documents/P01-restore-database.md) |
+| A developer guide | [print page](https://phumminbm.github.io/knowledge-handover/example-it/documents/P02-local-setup.html) · [Markdown](https://phumminbm.github.io/knowledge-handover/example-it/documents/P02-local-setup.md) |
+| A work instruction with PPE and specs | [print page](https://phumminbm.github.io/knowledge-handover/example-it/documents/P03-replace-disk.html) · [Word file](https://phumminbm.github.io/knowledge-handover/example-it/documents/P03-replace-disk.docx) |
+| Every file in the Pack: documents per task, `PACK-FOR-AI.md`, `knowledge.json` | [example-pack.zip](https://phumminbm.github.io/knowledge-handover/example/example-pack.zip) |
 | The source the AI wrote | [`examples/bank-reconciliation/knowledge.json`](examples/bank-reconciliation/knowledge.json) |
 
 ### The AI draws the diagram that fits the work
@@ -202,16 +206,25 @@ knowledge-handover_KP-2569-0042_2026-11-30.zip
 ├── handover-status.md   only when handing over: work in progress, deadlines, accounts to transfer
 ├── processes/…          one folder per task: workflow, procedures, decisions, troubleshooting, scenarios
 ├── visuals/             original images, untouched
-├── sop/                 every task as an SOP: Word (.docx) and a print-ready page (save as PDF)
+├── documents/           every task as an SOP, work instruction, runbook or developer guide (.docx or .md, plus a print page)
 ├── open-questions.md    what is still unanswered, and whom to ask
 └── knowledge.json       the source of everything; paste it back into a chat to update the Pack
 ```
 
-## SOP documents, ready to file
+## The document each line of work uses
 
-Every task in a Pack is also written as a standard operating procedure: purpose, scope, responsibilities, the procedure in the shape of the task, rules, safety, records, open questions and revision history. You get a Word file to edit and file, and a print-ready page to save as PDF. Document number, effective date and approver are left blank for your organisation to fill in. The status stays "Draft" until every item is confirmed, and anything not yet confirmed is flagged. If your organisation has its own SOP template, send it during the interview and an AI that can edit documents fills that in too.
+Every task in a Pack is also written as the document its field uses. The AI picks the type from the work and tells you; say if you want it differently.
 
-<img src="docs/images/sop.jpg" alt="The supplier-payment SOP from the example as a Word document and as a print-ready page with its decision tree" width="860">
+| Type | For | You get |
+|---|---|---|
+| **SOP** | office, service, admin, care | Word file + print page (PDF) |
+| **Work instruction** | engineering, maintenance, production, labs | Word file + print page: safety and PPE first, tools, specs and tolerances, quality checks, sign-off |
+| **Runbook** | IT operations, DevOps, on-call | Markdown for your repo or wiki + print page: exact commands, what you should see, how to undo, escalation, rollback |
+| **Developer guide** | software development | Markdown + print page: prerequisites, setup commands, conventions, common problems |
+
+Each one has the procedure in the shape of the task (steps with screenshots, checklist, timeline, decision table or symptom table) and, in the print version, the diagram. Document number, owner, effective date, approver and sign-off are left blank for your organisation. The status stays "Draft" until everything is confirmed, and anything the AI worked out on its own is flagged. Secrets never get in: anything that looks like a password, key or token is replaced with `<REDACTED>` in every file, and you are told to change it. If your organisation has its own template, send it during the interview and an AI that can edit documents fills that in too.
+
+<img src="docs/images/documents.jpg" alt="Four documents from the examples: an SOP and a work instruction in Word, and a runbook and a developer guide as print pages with commands" width="860">
 
 ## Use your Pack with your own AI
 
@@ -245,12 +258,12 @@ Still stuck? [Open an issue](https://github.com/phumminbm/knowledge-handover/iss
 skills/knowledge-handover/
 ├── SKILL.md            goal, scope and the lines the AI must not cross
 ├── references/         discovery, interview, images & safety, pack format, saving & hosts, teaching
-├── scripts/            pack-core.js (shared builder), build_pack.js (Node CLI)
+├── scripts/            pack-core.js (shared builder), documents.js (SOPs, work instructions, runbooks, developer guides), build_pack.js (Node CLI)
 ├── assets/             START-HERE template, Pack Builder, embedded fonts
 └── diagram/            bundled diagram engine (11 diagram types) and its licenses
 .claude-plugin/ .codex-plugin/ .agents/   plugin manifests for each host, all pointing at skills/
 tools/build_dist.py     builds the Pack Builder, PROMPT.md and the skill zip
-examples/               a fictional example Pack
+examples/               two fictional example Packs (accounting; platform engineering)
 tests/                  unit tests, browser security tests, and AI test scenarios
 ```
 
@@ -259,7 +272,7 @@ npm install && npx playwright install chromium
 npm test                  # unit tests
 python3 tools/build_dist.py
 npm run test:e2e          # browser tests
-npm run example           # builds the example Pack into build/example
+npm run example           # builds the example Packs into build/example and build/example-it
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) and, for coding agents, [AGENTS.md](AGENTS.md). Changes are listed in [CHANGELOG.md](CHANGELOG.md).

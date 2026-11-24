@@ -26,8 +26,8 @@ Skill สำหรับ AI ที่สัมภาษณ์คนทำงา�
 
 - **ง่ายสำหรับผู้ส่งงาน:** เริ่มด้วยประโยคเดียว ตอบด้วยการกดเลือกเป็นส่วนใหญ่ หยุดแล้วกลับมาทำต่อเมื่อไหร่ก็ได้
 - **ง่ายสำหรับผู้รับงาน:** ไม่ต้องติดตั้งอะไร เปิด `START-HERE.html` ได้เลย หรือแนบ Pack ในแชต AI แล้วพิมพ์ว่า *"สอนงานจาก pack นี้"*
-- **ใช้ได้กับทุกงาน:** งานออฟฟิศ งานหน้างาน งานดูแลผู้ป่วย ใช้ได้ทั้งภาพหน้าจอและภาพถ่ายหน้างาน
-- **พร้อมเข้าแฟ้ม:** ทุกงานมีเอกสาร SOP ให้ด้วย ทั้งไฟล์ Word และหน้าที่พิมพ์หรือบันทึกเป็น PDF ได้
+- **ใช้ได้กับทุกงาน:** งานออฟฟิศ งานหน้างาน งานดูแลผู้ป่วย วิศวกรรม IT operations และซอฟต์แวร์ ใช้ได้ทั้งภาพหน้าจอ ภาพถ่ายหน้างาน หรือคำสั่งที่พิมพ์จริง
+- **ได้เอกสารแบบที่สายงานคุณใช้:** ทุกงานมีเอกสารให้ด้วย เป็น SOP, Work Instruction, Runbook หรือ Developer guide (ไฟล์ Word หรือ Markdown และหน้าที่พิมพ์หรือบันทึกเป็น PDF ได้)
 - **ใช้ได้กับทุก AI:** Claude, ChatGPT, Codex, Gemini, Cursor, Copilot รวมถึงแชตแพ็กเกจฟรี
 - **ซื่อตรงกับข้อมูล:** ทุกข้อมีสถานะ **ยืนยันแล้ว**, **ยังไม่ได้ตรวจ**, **รอยืนยัน** หรือ **ยังไม่มีคำตอบ** จะได้ไม่มีใครเข้าใจผิดว่าสิ่งที่ AI เดาเป็นกฎจริง
 - **ข้อมูลอยู่กับคุณ:** ไม่มีเซิร์ฟเวอร์ ไม่ต้องสมัครบัญชี ไม่มีการติดตามการใช้งาน ดูรายละเอียดที่ [PRIVACY.md](PRIVACY.md)
@@ -61,7 +61,7 @@ AI จะเลือกรูปแบบหน้าและวาดได�
 
 ## ดูตัวอย่างให้ครบทุกมุม
 
-Pack ตัวอย่างเป็นงานบัญชีเงินสดและธนาคารสมมติ (เป็นภาษาอังกฤษ) มี 6 งาน ครบทั้ง 5 รูปแบบหน้า และแต่ละงานมีไดอะแกรมคนละแบบ ไม่ต้องติดตั้งอะไร เปิดในเบราว์เซอร์ได้เลย
+มี Pack ตัวอย่างสมมติ 2 ชุด (เป็นภาษาอังกฤษ): งานบัญชีเงินสดและธนาคาร (6 งาน ครบทั้ง 5 รูปแบบหน้า และแต่ละงานมีไดอะแกรมคนละแบบ) และงาน platform engineering (Runbook ที่มีคำสั่งจริง, Developer guide, Work Instruction ที่มี PPE และค่าแรงขัน, และ Runbook สำหรับแก้ปัญหา) ไม่ต้องติดตั้งอะไร เปิดในเบราว์เซอร์ได้เลย
 
 | อยากดูอะไร | เปิดที่นี่ |
 |---|---|
@@ -73,8 +73,12 @@ Pack ตัวอย่างเป็นงานบัญชีเงินส
 | **เจออาการอะไร** | [When online banking goes wrong](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P05) |
 | แบบฝึกหัด | [Approve a supplier payment › Practice](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P04/quiz) |
 | เรื่องที่ Pack ยังไม่มีคำตอบ | [Open questions](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/questions) |
-| เอกสาร SOP | [หน้าพร้อมพิมพ์](https://phumminbm.github.io/knowledge-handover/example/sop/P04-supplier-payment-approval.html) · [ไฟล์ Word](https://phumminbm.github.io/knowledge-handover/example/sop/P04-supplier-payment-approval.docx) |
-| ไฟล์ทั้งหมดใน Pack: SOP และเอกสารรายงาน, `PACK-FOR-AI.md`, `knowledge.json` | [example-pack.zip](https://phumminbm.github.io/knowledge-handover/example/example-pack.zip) |
+| SOP (Word) | [หน้าพร้อมพิมพ์](https://phumminbm.github.io/knowledge-handover/example/documents/P04-supplier-payment-approval.html) · [ไฟล์ Word](https://phumminbm.github.io/knowledge-handover/example/documents/P04-supplier-payment-approval.docx) |
+| ตัวอย่างสายวิศวกรรม/IT | [START-HERE.html](https://phumminbm.github.io/knowledge-handover/example-it/START-HERE.html) |
+| Runbook ที่มีคำสั่ง | [หน้าพร้อมพิมพ์](https://phumminbm.github.io/knowledge-handover/example-it/documents/P01-restore-database.html) · [Markdown](https://phumminbm.github.io/knowledge-handover/example-it/documents/P01-restore-database.md) |
+| Developer guide | [หน้าพร้อมพิมพ์](https://phumminbm.github.io/knowledge-handover/example-it/documents/P02-local-setup.html) · [Markdown](https://phumminbm.github.io/knowledge-handover/example-it/documents/P02-local-setup.md) |
+| Work Instruction ที่มี PPE และสเปก | [หน้าพร้อมพิมพ์](https://phumminbm.github.io/knowledge-handover/example-it/documents/P03-replace-disk.html) · [ไฟล์ Word](https://phumminbm.github.io/knowledge-handover/example-it/documents/P03-replace-disk.docx) |
+| ไฟล์ทั้งหมดใน Pack: เอกสารรายงาน, `PACK-FOR-AI.md`, `knowledge.json` | [example-pack.zip](https://phumminbm.github.io/knowledge-handover/example/example-pack.zip) |
 | ข้อมูลต้นฉบับที่ AI เขียน | [`examples/bank-reconciliation/knowledge.json`](examples/bank-reconciliation/knowledge.json) |
 
 ### AI วาดไดอะแกรมให้เข้ากับลักษณะงาน
@@ -202,16 +206,25 @@ knowledge-handover_KP-2569-0042_2026-11-30.zip
 ├── handover-status.md   เฉพาะตอนส่งต่องาน: งานค้าง กำหนดส่ง บัญชีที่ต้องโอนสิทธิ์
 ├── processes/…          แยกโฟลเดอร์ละงาน: ขั้นตอน กฎ การแก้ปัญหา สถานการณ์ตัวอย่าง
 ├── visuals/             ภาพต้นฉบับ ไม่มีการแก้ไข
-├── sop/                 ทุกงานเป็นเอกสาร SOP: ไฟล์ Word (.docx) และหน้าพร้อมพิมพ์ (บันทึกเป็น PDF ได้)
+├── documents/           ทุกงานเป็น SOP, Work Instruction, Runbook หรือ Developer guide (.docx หรือ .md และหน้าพร้อมพิมพ์)
 ├── open-questions.md    เรื่องที่ยังไม่มีคำตอบ และควรถามใคร
 └── knowledge.json       ข้อมูลต้นทางทั้งหมด วางกลับเข้าแชตเพื่ออัปเดต Pack ได้
 ```
 
-## เอกสาร SOP พร้อมเข้าแฟ้ม
+## เอกสารแบบที่แต่ละสายงานใช้
 
-ทุกงานใน Pack ถูกเขียนเป็นเอกสาร SOP ด้วย มีวัตถุประสงค์ ขอบเขต ผู้รับผิดชอบ ขั้นตอนตามลักษณะงาน กฎ ความปลอดภัย บันทึกที่ได้ คำถามที่ยังค้าง และประวัติการแก้ไข ได้ทั้งไฟล์ Word ไว้แก้และเก็บเข้าระบบ และหน้าพร้อมพิมพ์ไว้บันทึกเป็น PDF ช่องเลขที่เอกสาร วันที่มีผล และผู้อนุมัติ เว้นว่างไว้ให้องค์กรกรอกเอง สถานะเป็น "ฉบับร่าง" จนกว่าทุกข้อจะยืนยันแล้ว และข้อที่ยังไม่ยืนยันมีป้ายบอกชัด ถ้าองค์กรมีแม่แบบ SOP ของตัวเอง ส่งให้ AI ระหว่างสัมภาษณ์ได้ AI ที่แก้เอกสารได้จะกรอกแม่แบบนั้นให้ด้วย
+ทุกงานใน Pack ถูกเขียนเป็นเอกสารแบบที่สายงานนั้นใช้ด้วย AI เลือกประเภทให้ตามลักษณะงานแล้วบอกคุณ ถ้าอยากได้แบบอื่นบอกได้
 
-<img src="docs/images/sop.jpg" alt="SOP เรื่องอนุมัติจ่ายเงินผู้ขายจากตัวอย่าง เป็นไฟล์ Word และหน้าพร้อมพิมพ์พร้อมผังตัดสินใจ" width="860">
+| ประเภท | สำหรับ | ได้อะไร |
+|---|---|---|
+| **SOP** | งานออฟฟิศ งานบริการ งานธุรการ งานดูแล | ไฟล์ Word + หน้าพร้อมพิมพ์ (PDF) |
+| **Work Instruction** | วิศวกรรม ซ่อมบำรุง การผลิต ห้องแล็บ | ไฟล์ Word + หน้าพร้อมพิมพ์: ความปลอดภัยและ PPE มาก่อน เครื่องมือ ค่าสเปกและค่าเผื่อ จุดตรวจคุณภาพ ช่องลงนาม |
+| **Runbook** | IT operations, DevOps, on-call | Markdown สำหรับ repo หรือ wiki + หน้าพร้อมพิมพ์: คำสั่งที่ใช้จริง ผลที่ควรเห็น วิธีย้อนกลับ การส่งต่อปัญหา rollback |
+| **Developer guide** | พัฒนาซอฟต์แวร์ | Markdown + หน้าพร้อมพิมพ์: สิ่งที่ต้องมีก่อน คำสั่งติดตั้ง ข้อตกลงของทีม ปัญหาที่พบบ่อย |
+
+ทุกแบบมีขั้นตอนตามลักษณะงาน (ทีละขั้นพร้อมภาพหน้าจอ เช็กลิสต์ ไทม์ไลน์ ตารางตัดสินใจ หรือตารางอาการ) และในฉบับพิมพ์มีไดอะแกรมด้วย ช่องเลขที่เอกสาร เจ้าของ วันที่มีผล ผู้อนุมัติ และช่องลงนาม เว้นว่างไว้ให้องค์กรกรอกเอง สถานะเป็น "ฉบับร่าง" จนกว่าทุกอย่างจะยืนยันแล้ว และข้อที่ AI สรุปเองมีป้ายบอกชัด ข้อมูลลับไม่หลุดเข้าไป: อะไรที่ดูเหมือนรหัสผ่าน คีย์ หรือ token จะถูกแทนด้วย `<REDACTED>` ในทุกไฟล์ และระบบจะบอกให้คุณเปลี่ยนรหัสนั้น ถ้าองค์กรมีแม่แบบของตัวเอง ส่งให้ AI ระหว่างสัมภาษณ์ได้ AI ที่แก้เอกสารได้จะกรอกแม่แบบนั้นให้ด้วย
+
+<img src="docs/images/documents.jpg" alt="เอกสาร 4 แบบจากตัวอย่าง: SOP และ Work Instruction เป็นไฟล์ Word และ Runbook กับ Developer guide เป็นหน้าพร้อมพิมพ์ที่มีคำสั่ง" width="860">
 
 ## ใช้ Pack กับ AI ของคุณเอง
 

@@ -9,8 +9,32 @@ All notable changes to this project are recorded here. The format follows
 ## [0.3.0] - 2026-11-24
 
 ### Added
-- SOP documents: every task in a Pack is also written to `sop/` as a standard operating procedure, as a Word file (`.docx`) and as a print-ready page to save as PDF (`.html`). The layout covers purpose, scope, responsibilities, definitions, systems, the procedure in the shape of the task's view (with screenshots and pins, and in the print version the diagram), rules, troubleshooting, safety and risk, records, open questions and revision history. Document number, effective date and approver are left blank. Status stays "Draft" until every item is confirmed. Unconfirmed items are flagged. English and Thai labels.
-- The AI asks whether the organisation has its own SOP template and, when it can edit documents, fills that too.
+- Task documents for every line of work. Each task is also written to `documents/` as the document its field uses, chosen by the AI (`doc_type`):
+  - **SOP** (office, service, care): Word file + print page.
+  - **Work instruction** (engineering, maintenance, production, labs): Word file + print page, with safety and PPE first, tools, specs, quality checks and a blank sign-off.
+  - **Runbook** (IT operations, on-call): Markdown + print page, with exact commands, expected results, undo, escalation and rollback.
+  - **Developer guide** (software): Markdown + print page, with prerequisites, setup commands, conventions and common problems.
+
+  Every document has the procedure in the shape of the task's view and, in the print version, the diagram. English and Thai labels.
+- New optional fields:
+  - On a task: `doc_type`, `prerequisites`, `tools`, `ppe`, `rollback`, `escalation`.
+  - On a step: `command`, `expected`, `spec`, `rollback`.
+
+  They are shown in `START-HERE.html`, the Markdown files and `PACK-FOR-AI.md`.
+- Secrets are caught by the builder. Anything that looks like a password, key or token (private keys, cloud, GitHub, Slack and API tokens, bearer tokens, credentials in URLs, `password=` style values) is replaced with `<REDACTED>` in every file. The builder names the item and tells the giver to change the secret.
+- A second example Pack, `examples/it-operations/`: a runbook with commands, a developer guide, a work instruction with PPE and torque specs, and a troubleshooting runbook. It is published at `/example-it/`.
+- The AI asks for the organisation's own template and fills it when it can edit documents. For technical work it asks for exact commands, expected results, tolerances and how to undo, with placeholders for anything secret.
+
+### Honesty in documents
+- Status stays "Draft" until all of these hold, and is never "Approved":
+  - the task is complete;
+  - every item is confirmed;
+  - every "who can do it" label and pin is confirmed;
+  - no open question points at the task.
+- An incomplete task says so.
+- A proposed "who can do it" label is marked "proposed, not confirmed".
+- The giver is shown as "Described by", not as the owner.
+- Document number, owner, effective date, approver and sign-off stay blank.
 - The READMEs show an illustrated interview (English and Thai): options to tap, asking for the real form, asking only about the gap, a diagram to check, and the save block.
 
 ### Fixed

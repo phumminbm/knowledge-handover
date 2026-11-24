@@ -5,9 +5,9 @@
  * No dependencies.
  */
 (function (root, factory) {
-  if (typeof module === 'object' && module.exports) module.exports = factory(require('./sop.js'));
-  else root.KHCore = factory(root.KHSop);
-})(typeof self !== 'undefined' ? self : this, function (SOP) {
+  if (typeof module === 'object' && module.exports) module.exports = factory(require('./documents.js'));
+  else root.KHCore = factory(root.KHDocs);
+})(typeof self !== 'undefined' ? self : this, function (DOCS) {
   'use strict';
 
   // ── Statuses ────────────────────────────────────────────────────────────
@@ -131,9 +131,59 @@
     return VIEW_NEEDS[v](p) ? v : 'steps';
   }
 
+  // ── Secrets ─────────────────────────────────────────────────────────────
+  // A Pack must never carry passwords, keys or tokens (hard line in SKILL.md). If one slips
+  // in, the builder replaces it everywhere and tells the giver to change it.
+  var REDACTED = '<REDACTED>';
+  var SECRET_PATTERNS = [
+    [/-----BEGIN [A-Z ]*PRIVATE KEY-----[\s\S]*?(?:-----END [A-Z ]*PRIVATE KEY-----|$)/g, 'private key'],
+    [/\b(?:gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{40,})/g, 'GitHub token'],
+    [/\b(?:AKIA|ASIA)[0-9A-Z]{16}\b/g, 'AWS key'],
+    [/\bxox[abposr]-[A-Za-z0-9-]{10,}/g, 'Slack token'],
+    [/\bsk-(?:ant-|proj-)?[A-Za-z0-9_-]{20,}/g, 'API key'],
+    [/\bAIza[0-9A-Za-z_-]{35}\b/g, 'Google API key'],
+    [/\beyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}/g, 'token'],
+    [/(\bBearer\s+)([A-Za-z0-9._~+\/=-]{20,})/gi, 'bearer token', 2],
+    [/(:\/\/[^\/\s:@<>]+:)([^\/\s@<>]+)(@)/g, 'password in a URL', 2],
+    [/(\b(?:password|passwd|pwd|pass|secret|token|api[_-]?key|access[_-]?key|client[_-]?secret)\b["']?\s*[:=]\s*["']?)([^\s"'<>,;]{6,})/gi, 'password or key', 2, true]
+  ];
+  function scrub(text) {
+    var kinds = [];
+    SECRET_PATTERNS.forEach(function (sp) {
+      text = text.replace(sp[0], function (m) {
+        var g = arguments, val = sp[2] ? g[sp[2]] : m;
+        if (sp[3] && (!/[0-9]/.test(val) || !/[A-Za-z]/.test(val) || /^(\$|\*+$|x+$)/i.test(val))) return m;
+        if (kinds.indexOf(sp[1]) < 0) kinds.push(sp[1]);
+        return sp[2] ? g[1] + REDACTED + (sp[2] === 2 && typeof g[3] === 'string' && g[3] === '@' ? '@' : '') : REDACTED;
+      });
+    });
+    return { text: text, kinds: kinds };
+  }
+  // Replaces secret-looking values in place; returns warnings naming the item that held each.
+  function redactSecrets(root) {
+    var found = {}, order = [];
+    var note = function (where, kinds) {
+      if (!found[where]) { found[where] = []; order.push(where); }
+      kinds.forEach(function (x) { if (found[where].indexOf(x) < 0) found[where].push(x); });
+    };
+    (function walk(o, owner) {
+      var id = !Array.isArray(o) && typeof o.id === 'string' && o.id ? o.id : owner;
+      Object.keys(o).forEach(function (key) {
+        var v = o[key];
+        if (typeof v === 'string') {
+          var r = scrub(v);
+          if (r.kinds.length) { o[key] = r.text; note(id, r.kinds); }
+        } else if (v && typeof v === 'object') walk(v, id);
+      });
+    })(root || {}, 'pack');
+    return order.map(function (where) {
+      return where + ': looks like a secret (' + found[where].join(', ') + '); it was replaced with ' + REDACTED + ' in the Pack. Change that secret now, and use a placeholder such as <API_TOKEN> instead.';
+    });
+  }
+
   // ── Validation ──────────────────────────────────────────────────────────
   function validate(k, imageNames) {
-    var w = [];
+    var w = redactSecrets(JSON.parse(JSON.stringify(k || {})));
     var have = {};
     (imageNames || []).forEach(function (n) { have[n] = 1; });
     if (!k.pack_id) w.push('pack_id is missing; a temporary one will be used.');
@@ -144,6 +194,7 @@
     (k.processes || []).forEach(function (p) {
       if (!p.id) w.push('A process has no id: "' + (p.name || '?') + '".');
       if (p.view && VIEWS.indexOf(p.view) < 0) w.push(p.id + ': unknown view "' + p.view + '"; showing steps instead.');
+      if (p.doc_type && DOCS && DOCS.DOC_TYPES.indexOf(p.doc_type) < 0) w.push(p.id + ': unknown doc_type "' + p.doc_type + '"; writing an SOP instead.');
       else if (p.view && effectiveView(p) !== p.view) w.push(p.id + ': view "' + p.view + '" needs ' + VIEW_MISSING[p.view] + '; showing steps instead.');
       if (p.diagram_svg && /<script|<foreignObject|\son[a-z]+\s*=|javascript:|@import|url\(\s*['"]?\s*(?!#)/i.test(p.diagram_svg)) {
         w.push(p.id + ': the diagram contains scripts, event handlers or outside links; START-HERE.html removes them, so check the diagram still reads correctly.');
@@ -198,6 +249,12 @@
     return '- **' + label + ':** ' + (Array.isArray(v) ? v.join(', ') : v) + '\n';
   }
   function mdEsc(s) { return String(s == null ? '' : s); }
+  function codeFence(code) {
+    var runs = String(code).match(/`+/g) || [], n = 3;
+    runs.forEach(function (r) { n = Math.max(n, r.length + 1); });
+    var f = new Array(n + 1).join('`');
+    return f + '\n' + String(code).replace(/\r\n/g, '\n') + '\n' + f;
+  }
 
   function autoMermaid(p) {
     var steps = p.steps || [];
@@ -270,6 +327,12 @@
     o += (p.summary ? p.summary + '\n\n' : '') + line('Starts when', p.trigger) + line('Frequency', p.frequency);
     o += line('Status', (p.complete ? 'complete' : 'incomplete — see open-questions.md'));
     o += line('View', effectiveView(p));
+    o += line('Document type', DOCS ? DOCS.docType(p) : (p.doc_type || 'sop'));
+    o += line('Rollback', p.rollback) + line('Escalation', p.escalation);
+    [['Before you start', p.prerequisites], ['Tools and materials', p.tools], ['Protective equipment', p.ppe]].forEach(function (sec) {
+      var xs = Array.isArray(sec[1]) ? sec[1].filter(Boolean) : [];
+      if (xs.length) o += '\n## ' + sec[0] + '\n\n' + xs.map(function (x) { return '- ' + mdEsc(x) + '\n'; }).join('');
+    });
     if (p.coverage) {
       o += '\n## Coverage\n\n' + Object.keys(p.coverage).map(function (key) { return '- ' + key + ': ' + p.coverage[key] + '\n'; }).join('');
     }
@@ -296,7 +359,8 @@
     (p.steps || []).forEach(function (s) {
       o += '## ' + s.id + ' · ' + mdEsc(s.title) + '\n\n' + st(k, s) + (s.safety ? ' `' + L.safety + '`' : '') + '\n\n';
       if (s.detail) o += s.detail + '\n\n';
-      o += line('When', s.when) + line('Why', s.why) + line('Who does it', s.actor) + line('System / equipment', s.system) + line('Inputs', s.inputs) + line('Outputs', s.outputs) + line('How to check', s.check) + line('Risk', s.risk);
+      if (s.command) o += codeFence(s.command) + '\n\n';
+      o += line('When', s.when) + line('Why', s.why) + line('Who does it', s.actor) + line('System / equipment', s.system) + line('Inputs', s.inputs) + line('Outputs', s.outputs) + line('Spec', s.spec) + line('Expected result', s.expected) + line('How to check', s.check) + line('Undo', s.rollback) + line('Risk', s.risk);
       if (s.who_can_do) o += line('Who can do it', L[s.who_can_do] + (s.who_can_do_confirmed ? '' : ' (proposed, not confirmed)'));
       if (s.image) o += line('Image', 'visuals/' + s.image);
       (s.pins || []).forEach(function (pin) { o += '  - Pin ' + pin.n + ': ' + mdEsc(pin.label) + (pin.confirmed ? '' : ' (position not confirmed)') + '\n'; });
@@ -421,7 +485,7 @@
       '- **Easiest start:** attach this zip (or `PACK-FOR-AI.md`) to any AI chat and say "teach me from this pack". The AI explains the work' + (hasHandover(k) ? ' and what is urgent' : '') + ' first, then gives you `START-HERE.html`.',
       '- **Without an AI:** open `START-HERE.html` in any web browser. ' + (hasHandover(k) ? 'Urgent items are at the top, then the' : 'It shows the') + ' work map and a step-by-step walkthrough for each task. It works offline and can be sent on its own.',
       '- **Learn with an AI:** attach `PACK-FOR-AI.md` to any AI chat and ask it to teach you from the pack.',
-      '- **SOP documents:** `sop/` has every task as a Word file (`.docx`) and as a print-ready page (`.html`; press Ctrl+P and choose Save as PDF). Document number, effective date and approver are left blank to fill in.',
+      '- **Documents:** `documents/` has every task as the document its line of work uses: an SOP or work instruction as a Word file (`.docx`), a runbook or developer guide in Markdown (`.md`), and each as a print-ready page (`.html`; press Ctrl+P and choose Save as PDF). Document number, owner, effective date and approver are left blank to fill in.',
       '- **Unanswered questions:** `open-questions.md`.',
       '- **Original images:** `visuals/` (unaltered).',
       '- **Keeping it current:** `knowledge.json` is the source of everything here. Paste it into a chat that has the knowledge-handover skill, or into the Pack Builder, to update and rebuild the pack.',
@@ -535,12 +599,13 @@
   function build(pack, images, opts) {
     opts = opts || {};
     var k = JSON.parse(JSON.stringify(pack));
+    var secretWarnings = redactSecrets(k);
     if (!k.pack_id) k.pack_id = 'KP-DRAFT';
     if (!k.accent) k.accent = '#bf4520';
     if (!k.saved_at) k.saved_at = today();
     images = images || {};
     var names = Object.keys(images);
-    var warnings = validate(k, names);
+    var warnings = secretWarnings.concat(validate(k, names));
     var root = safeSeg(k.pack_id, 'KP-DRAFT') + '/';
     var files = [];
     var add = function (path, data) { if (data) files.push({ path: root + path, data: data }); };
@@ -567,11 +632,13 @@
       add(dir + 'decisions.md', mdRules(k, p));
       add(dir + 'troubleshooting.md', mdTrouble(k, p));
       add(dir + 'scenarios.md', mdScenarios(k, p));
-      if (SOP) {
-        // The SOP page gets the same display images as START-HERE; the Word file gets the originals.
+      if (DOCS) {
+        // The print page gets the same display images as START-HERE; the Word file gets the originals.
         var ctx = { view: effectiveView(p), labels: labels(k), images: images, imageUrls: urls, b64: function (s) { return base64(enc.encode(s)); } };
-        add('sop/' + folderFor(p) + '.html', SOP.sopHtml(k, p, ctx));
-        add('sop/' + folderFor(p) + '.docx', zip(SOP.sopDocxParts(k, p, ctx)));
+        var base = 'documents/' + folderFor(p);
+        add(base + '.html', DOCS.docHtml(k, p, ctx));
+        if (DOCS.FORMATS[DOCS.docType(p)] === 'md') add(base + '.md', DOCS.docMarkdown(k, p, ctx));
+        else add(base + '.docx', zip(DOCS.docDocxParts(k, p, ctx)));
       }
     });
     add('open-questions.md', mdOpen(k));
@@ -585,7 +652,7 @@
   }
 
   return {
-    STATUSES: STATUSES, BADGE: BADGE, labels: labels, VIEWS: VIEWS, effectiveView: effectiveView, hasHandover: hasHandover,
+    STATUSES: STATUSES, BADGE: BADGE, labels: labels, redactSecrets: redactSecrets, VIEWS: VIEWS, effectiveView: effectiveView, hasHandover: hasHandover,
     parseSave: parseSave, mergePacks: mergePacks, validate: validate,
     build: build, zip: zip, base64: base64, crc32: crc32,
     autoMermaid: autoMermaid, mdForAI: mdForAI, renderStartHere: renderStartHere

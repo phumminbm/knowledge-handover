@@ -42,13 +42,17 @@ jobs:
         env:
           PAGES_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
         run: python3 tools/build_dist.py --pages-url "$PAGES_URL"
-      - name: Add the example pack to the site
+      - name: Add the example packs to the site
         run: |
           node skills/knowledge-handover/scripts/build_pack.js examples/bank-reconciliation/knowledge.json \
             --images examples/bank-reconciliation/images --out build/example
           mkdir -p site/example
           cp -r build/example/KP-2026-0001/. site/example/
           cp build/example/*.zip site/example/example-pack.zip
+          node skills/knowledge-handover/scripts/build_pack.js examples/it-operations/knowledge.json --out build/example-it
+          mkdir -p site/example-it
+          cp -r build/example-it/KP-2026-0002/. site/example-it/
+          cp build/example-it/*.zip site/example-it/example-pack.zip
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: dist

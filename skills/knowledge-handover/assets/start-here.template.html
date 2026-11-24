@@ -145,6 +145,7 @@ h1,.h1{font-family:var(--head);font-weight:400;font-size:clamp(2rem,3vw + 1rem,3
 .why{background:var(--surface);border-radius:var(--r-md);padding:.8rem 1rem;font-size:.9rem}
 .why b{font-weight:500}
 .facts{display:grid;gap:.4rem;margin-top:.9rem;font-size:.86rem}
+.cmd{background:var(--ink);color:#fff;border-radius:var(--r-md);padding:.75rem .95rem;margin:.7rem 0;font:.82rem/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre-wrap;word-break:break-all;overflow-x:auto}
 .facts div{display:grid;grid-template-columns:6.5rem minmax(0,1fr);gap:.5rem}
 .facts b{color:var(--muted);font-weight:400}
 .choices{margin-top:1.1rem;display:grid;gap:.5rem}
@@ -308,6 +309,7 @@ button.shot{display:block;width:100%;padding:0;cursor:zoom-in;text-align:left}
     openQ: 'คำถามที่ยังไม่มีคำตอบ', ask: 'ถามใคร', glossary: 'คำศัพท์', changes: 'ประวัติการแก้ไข',
     home: '‹ หน้าแรก', freq: 'ความถี่', trigger: 'เริ่มเมื่อ', incNote: 'งานนี้ยังเก็บไม่ครบ เรื่องที่ยังไม่มีคำตอบอยู่ในหน้า',
     tRules: 'กฎและเหตุผล', tTrouble: 'ถ้าเจอปัญหา', tQuiz: 'ลองตอบ', step: 'ขั้น', of: 'จาก', next: 'ทำแล้ว ไปต่อ', back: 'ย้อน',
+    fSpec: 'ค่าที่กำหนด', fExpected: 'ควรเห็น', fUndo: 'ย้อนกลับ', fCommand: 'คำสั่ง', oBefore: 'ก่อนเริ่ม', oTools: 'เครื่องมือและวัสดุ', oPpe: 'อุปกรณ์ป้องกัน', oRollback: 'การย้อนกลับ', oEscalation: 'การส่งต่อปัญหา',
     finish: 'จบงานนี้', why: 'ทำไม', check: 'เช็คว่าถูก', who: 'ใครทำ', system: 'ใช้', inputs: 'ต้องมี', outputs: 'ได้', which: 'สถานการณ์ตรงกับข้อไหน',
     keys: 'ใช้ปุ่ม ← → ได้', askAI: 'ให้ AI อธิบายขั้นนี้', aiStep: function (s) { return 'จาก PACK-FOR-AI.md ช่วยอธิบายขั้น ' + s.id + ' "' + (s.title || '') + '" ให้เข้าใจง่าย ว่าทำยังไง ทำไมต้องทำ และต้องระวังอะไร'; },
     confirm: 'ข้อนี้ยังรอยืนยัน', confirmAsk: 'ควรถาม', confirmGen: 'ถามหัวหน้าหรือเจ้าของงานก่อนใช้', openNote: 'ข้อนี้ยังไม่มีคำตอบ',
@@ -331,6 +333,7 @@ button.shot{display:block;width:100%;padding:0;cursor:zoom-in;text-align:left}
     openQ: 'Questions still unanswered', ask: 'Ask', glossary: 'Glossary', changes: 'Change history',
     home: '‹ Home', freq: 'Frequency', trigger: 'Starts when', incNote: 'This task is not fully captured. What is still unanswered is listed under',
     tRules: 'Rules and reasons', tTrouble: 'If something goes wrong', tQuiz: 'Practice', step: 'Step', of: 'of', next: 'Done, next', back: 'Back',
+    fSpec: 'Spec', fExpected: 'You should see', fUndo: 'To undo', fCommand: 'Command', oBefore: 'Before you start', oTools: 'Tools and materials', oPpe: 'Protective equipment', oRollback: 'Rollback', oEscalation: 'Escalation',
     finish: 'Finish this task', why: 'Why', check: 'How to check', who: 'Who', system: 'Uses', inputs: 'You need', outputs: 'You get', which: 'Which case are you in?',
     keys: 'Use ← → keys', askAI: 'Ask an AI about this step', aiStep: function (s) { return 'Using PACK-FOR-AI.md, explain step ' + s.id + ' "' + (s.title || '') + '" simply: how to do it, why it matters and what to watch out for.'; },
     confirm: 'Not confirmed yet', confirmAsk: 'Ask', confirmGen: 'Check with your manager or the task owner before relying on it', openNote: 'This is still unanswered',
@@ -760,6 +763,14 @@ button.shot{display:block;width:100%;padding:0;cursor:zoom-in;text-align:left}
     else panel.appendChild(el('p', { cls: 'meta', text: T.noStep }));
     if (has(p.people)) panel.appendChild(el('div', { cls: 'card list', style: 'margin-top:1rem' }, [el('div', { cls: 'glabel', text: T.people, style: 'margin-top:0' })].concat(
       p.people.map(function (x) { return el('div', { cls: 'row' }, [el('b', { text: x.name_or_role || '' }), el('div', { cls: 'sub', text: x.involvement || '' })]); }))));
+    [[T.oBefore, p.prerequisites], [T.oTools, p.tools], [T.oPpe, p.ppe]].forEach(function (sec) {
+      var xs = Array.isArray(sec[1]) ? sec[1].filter(function (x) { return typeof x === 'string' && x; }) : [];
+      if (xs.length) panel.appendChild(el('div', { cls: 'card list', style: 'margin-top:1rem' }, [el('div', { cls: 'glabel', text: sec[0], style: 'margin-top:0' })].concat(
+        xs.map(function (x) { return el('div', { cls: 'row' }, [el('b', { text: x })]); }))));
+    });
+    [[T.oRollback, p.rollback], [T.oEscalation, p.escalation]].forEach(function (sec) {
+      if (sec[1]) panel.appendChild(el('div', { cls: 'card list', style: 'margin-top:1rem' }, [el('div', { cls: 'glabel', text: sec[0], style: 'margin-top:0' }), el('div', { cls: 'row' }, [el('span', { text: String(sec[1]) })])]));
+    });
     if (has(p.systems)) panel.appendChild(el('div', { cls: 'card list', style: 'margin-top:1rem' }, [el('div', { cls: 'glabel', text: T.systems, style: 'margin-top:0' })].concat(
       p.systems.map(function (x) { return el('div', { cls: 'row' }, [el('b', { text: x.name || '' }), el('div', { cls: 'sub', text: (x.purpose || '') + (x.source_of_truth ? ' · ' + T.sot : '') })]); }))));
   }
@@ -1013,7 +1024,10 @@ button.shot{display:block;width:100%;padding:0;cursor:zoom-in;text-align:left}
       }
       var facts = el('div', { cls: 'facts' }, [
         s.when ? el('div', null, [el('b', { text: T.when }), el('span', { text: s.when })]) : null,
+        s.spec ? el('div', null, [el('b', { text: T.fSpec }), el('span', { text: s.spec })]) : null,
+        s.expected ? el('div', null, [el('b', { text: T.fExpected }), el('span', { text: s.expected })]) : null,
         s.check ? el('div', null, [el('b', { text: T.check }), el('span', { text: s.check })]) : null,
+        s.rollback ? el('div', null, [el('b', { text: T.fUndo }), el('span', { text: s.rollback })]) : null,
         has(s.inputs) ? el('div', null, [el('b', { text: T.inputs }), el('span', { text: s.inputs.join(', ') })]) : null,
         has(s.outputs) ? el('div', null, [el('b', { text: T.outputs }), el('span', { text: s.outputs.join(', ') })]) : null,
         s.system ? el('div', null, [el('b', { text: T.system }), el('span', { text: s.system })]) : null,
@@ -1022,6 +1036,7 @@ button.shot{display:block;width:100%;padding:0;cursor:zoom-in;text-align:left}
       panel.appendChild(el('h2', { cls: 'step-title', text: s.title || '' }));
       var right = el('div', { cls: 'step' }, [
         s.detail ? el('p', { text: s.detail }) : null,
+        s.command ? el('pre', { cls: 'cmd', 'aria-label': T.fCommand }, [el('code', { text: String(s.command) })]) : null,
         s.why ? el('div', { cls: 'why' }, [el('b', { text: T.why + ' ' }), s.why]) : null,
         s.safety ? el('div', { cls: 'notice safe' }, [el('b', { text: T.safety }), ' · ' + T.safetyNote]) : null,
         facts,
@@ -1084,7 +1099,7 @@ button.shot{display:block;width:100%;padding:0;cursor:zoom-in;text-align:left}
     var out = [];
     procs.forEach(function (p) {
       out.push({ type: 'task', title: p.name || p.id, text: [p.name, p.summary].join(' '), route: '#/task/' + p.id, where: p.frequency || '' });
-      (p.steps || []).forEach(function (s) { out.push({ type: 'step', title: s.title || s.id, text: [s.title, s.detail, s.why, s.check].join(' '), route: '#/task/' + p.id + '/walk/' + s.id, where: p.name || '' }); });
+      (p.steps || []).forEach(function (s) { out.push({ type: 'step', title: s.title || s.id, text: [s.title, s.detail, s.why, s.check, s.command].join(' '), route: '#/task/' + p.id + '/walk/' + s.id, where: p.name || '' }); });
       (p.rules || []).forEach(function (r) { out.push({ type: 'rule', title: r.text || r.id, text: [r.text, r.why, r.applies_when].join(' '), route: '#/task/' + p.id + '/rules', where: p.name || '' }); });
       (p.troubleshooting || []).forEach(function (t) { out.push({ type: 'trouble', title: t.symptom || t.id, text: [t.symptom, t.cause, t.fix].join(' '), route: '#/task/' + p.id + '/trouble', where: p.name || '' }); });
     });

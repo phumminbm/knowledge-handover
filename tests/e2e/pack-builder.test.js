@@ -80,7 +80,7 @@ test('no horizontal scroll at 360px', { skip }, async () => {
   await context.close();
 });
 
-test('the zip from the Pack Builder includes a Word and a print SOP for every task', { skip }, async () => {
+test('the zip from the Pack Builder includes each task\'s document and its print page', { skip }, async () => {
   const { page, context, errors } = await open();
   await paste(page);
   await page.setInputFiles('#files', IMGS);
@@ -89,9 +89,11 @@ test('the zip from the Pack Builder includes a Word and a print SOP for every ta
   const file = await (await dl).path();
   const { execFileSync } = require('child_process');
   const names = execFileSync('python3', ['-c', 'import sys,zipfile;print("\\n".join(zipfile.ZipFile(sys.argv[1]).namelist()))', file]).toString().split('\n');
+  const docs = require('../../skills/knowledge-handover/scripts/documents.js');
   for (const p of example().processes) {
-    assert.ok(names.includes('KP-2026-0001/sop/' + p.id + '-' + p.slug + '.docx'), p.id + ' docx');
-    assert.ok(names.includes('KP-2026-0001/sop/' + p.id + '-' + p.slug + '.html'), p.id + ' html');
+    const ext = docs.FORMATS[docs.docType(p)];
+    assert.ok(names.includes('KP-2026-0001/documents/' + p.id + '-' + p.slug + '.' + ext), p.id + ' ' + ext);
+    assert.ok(names.includes('KP-2026-0001/documents/' + p.id + '-' + p.slug + '.html'), p.id + ' html');
   }
   assert.deepStrictEqual(errors, []);
   await context.close();

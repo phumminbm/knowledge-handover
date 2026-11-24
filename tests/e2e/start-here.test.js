@@ -453,3 +453,20 @@ test('phone walk-through opens the step list from a button', { skip }, async () 
   assert.strictEqual(await page.isVisible('.rail'), true);
   await context.close();
 });
+
+test('steps show commands, specs, expected results and undo; the overview shows setup, safety and escalation', { skip }, async () => {
+  const k = fixture();
+  const p = k.processes[0];
+  Object.assign(p.steps[0], { command: 'pg_restore -d <DB_NAME> nightly.dump', spec: '25 ± 2 N·m', expected: 'No errors printed', rollback: 'Drop the new database' });
+  Object.assign(p, { prerequisites: ['VPN access'], tools: ['Torx T10'], ppe: ['Safety glasses'], rollback: 'Point the app back', escalation: 'Call the on-call DBA' });
+  const { page, errors, context } = await openPack(browser, k, { hash: '#/task/P01/walk/P01.S01' });
+  assert.strictEqual(await page.textContent('pre.cmd code'), 'pg_restore -d <DB_NAME> nightly.dump');
+  const facts = await page.textContent('.facts');
+  for (const t of ['25 ± 2 N·m', 'No errors printed', 'Drop the new database']) assert.ok(facts.includes(t), t);
+  await page.goto(page.url().split('#')[0] + '#/task/P01/overview');
+  await page.waitForSelector('.panel');
+  const ov = await page.textContent('.panel');
+  for (const t of ['Before you start', 'VPN access', 'Tools and materials', 'Torx T10', 'Protective equipment', 'Safety glasses', 'Point the app back', 'Call the on-call DBA']) assert.ok(ov.includes(t), t);
+  assert.deepStrictEqual(errors, []);
+  await context.close();
+});

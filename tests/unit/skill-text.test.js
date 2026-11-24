@@ -74,14 +74,20 @@ test('diagrams show unconfirmed parts as dashed, with a legend', () => {
   assert.match(section, /legend/);
 });
 
-test('the AI asks for the organisation SOP template and knows the Pack includes SOPs', () => {
+test('the AI picks a document type per task, asks for the organisation template, and keeps commands exact', () => {
   const interview = read('references/interview.md');
   const section = interview.slice(interview.indexOf('## Ask for the real thing'), interview.indexOf('\n## ', interview.indexOf('## Ask for the real thing') + 5));
-  assert.match(section, /SOP template/);
+  assert.match(section, /template/);
+  assert.doesNotMatch(section, /numbering rule/, 'never invites the AI to make up document numbers');
+  assert.match(interview, /doc_type/);
+  assert.match(interview, /placeholder/i);
   const skill = read('SKILL.md');
+  const step4 = skill.slice(skill.indexOf('4. **Go deep'), skill.indexOf('5. **Review'));
+  assert.match(step4, /doc_type/);
   const step6 = skill.slice(skill.indexOf('6. **Build and share'), skill.indexOf('The giver can stop'));
-  assert.match(step6, /sop\//);
-  assert.match(step6, /\.docx/);
+  assert.match(step6, /documents\//);
   assert.match(step6, /never (fill|invent|guess)[^.]*(document number|approver)/i);
-  assert.match(read('references/pack-format.md'), /sop\/<id>-<slug>\.docx/);
+  const fmt = read('references/pack-format.md');
+  for (const re of [/documents\/<id>-<slug>/, /work_instruction/, /runbook/, /dev_guide/, /`command`/, /`expected`/, /`spec`/, /`rollback`/, /`prerequisites`/, /`ppe`/, /`escalation`/, /doc_purpose/, /<REDACTED>/]) assert.match(fmt, re);
+  assert.match(read('references/teaching.md'), /command/i);
 });

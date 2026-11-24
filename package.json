@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "python3 tools/build_dist.py",
-    "example": "node skills/knowledge-handover/scripts/build_pack.js examples/bank-reconciliation/knowledge.json --images examples/bank-reconciliation/images --out build/example",
+    "example": "node skills/knowledge-handover/scripts/build_pack.js examples/bank-reconciliation/knowledge.json --images examples/bank-reconciliation/images --out build/example && node skills/knowledge-handover/scripts/build_pack.js examples/it-operations/knowledge.json --out build/example-it",
     "test": "node --test tests/unit/*.test.js",
     "test:e2e": "node --test tests/e2e/*.test.js",
     "check": "npm test && npm run build && npm run test:e2e"
