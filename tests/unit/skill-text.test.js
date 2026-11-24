@@ -65,3 +65,11 @@ test('images-and-safety covers files and links, not only pictures', () => {
   assert.match(doc, /## Files, examples and links/);
   assert.doesNotMatch(doc, /only where it helps/);
 });
+
+test('diagrams show unconfirmed parts as dashed, with a legend', () => {
+  const doc = read('SKILL.md');
+  const section = doc.slice(doc.indexOf('## Diagrams and pages'), doc.indexOf('## Reference library'));
+  assert.match(section, /dashed/);
+  assert.match(section, /ai_inferred/);
+  assert.match(section, /legend/);
+});

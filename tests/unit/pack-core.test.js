@@ -77,7 +77,7 @@ test('build produces every Pack file', () => {
     assert.ok(paths.includes(p), 'missing ' + p);
   }
   assert.ok(paths.some((p) => /^processes\/P01-[^/]+\/workflow\.md$/.test(p)));
-  assert.match(r.zipName, /^knowledge-handover_KP-2569-0001_\d{4}-\d{2}-\d{2}\.zip$/);
+  assert.match(r.zipName, /^knowledge-handover_KP-2026-0001_\d{4}-\d{2}-\d{2}\.zip$/);
 });
 
 test('START-HERE.html keeps pack text inside its data script', () => {

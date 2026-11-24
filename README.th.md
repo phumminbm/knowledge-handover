@@ -14,7 +14,7 @@ Skill สำหรับ AI ที่สัมภาษณ์คนทำงา�
 [![Release](https://img.shields.io/github/v/release/phumminbm/knowledge-handover?style=flat-square&color=bf4520)](https://github.com/phumminbm/knowledge-handover/releases/latest)
 [![License: MIT](https://img.shields.io/badge/license-MIT-555555?style=flat-square)](LICENSE)
 
-[ติดตั้ง](#ติดตั้ง) · [ใช้งานอย่างไร](#ใช้งานอย่างไร) · [ดูตัวอย่าง Pack](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html) · [Pack Builder](https://phumminbm.github.io/knowledge-handover/) · [แก้ปัญหา](#ถ้าใช้แล้วติดปัญหา)
+[ติดตั้ง](#ติดตั้ง) · [ใช้งานอย่างไร](#ใช้งานอย่างไร) · [ดูตัวอย่าง Pack](#ดูตัวอย่างให้ครบทุกมุม) · [Pack Builder](https://phumminbm.github.io/knowledge-handover/) · [แก้ปัญหา](#ถ้าใช้แล้วติดปัญหา)
 
 <img src="docs/images/walkthrough.jpg" alt="ขั้นตอนหนึ่งใน START-HERE.html: ภาพหน้าจอจริงของผู้ส่งงานพร้อมหมุดตัวเลข เหตุผลของขั้นตอน และวิธีเช็กว่าทำถูก" width="860">
 
@@ -57,6 +57,37 @@ AI จะเลือกรูปแบบหน้าและวาดได�
 ค้นหาได้ทั้ง Pack ด้วยปุ่ม `/` หรือ Ctrl+K และกดเรียนต่อจากจุดเดิมได้จากหน้าแรก
 
 <img src="docs/images/views.jpg" alt="งานที่แสดงเป็นเช็กลิสต์ ขั้นความปลอดภัยขึ้นก่อน และเมนูข้างแสดงทุกงานพร้อมรูปแบบ" width="860">
+
+## ดูตัวอย่างให้ครบทุกมุม
+
+Pack ตัวอย่างเป็นงานบัญชีเงินสดและธนาคารสมมติ (เป็นภาษาอังกฤษ) มี 6 งาน ครบทั้ง 5 รูปแบบหน้า และแต่ละงานมีไดอะแกรมคนละแบบ ไม่ต้องติดตั้งอะไร เปิดในเบราว์เซอร์ได้เลย
+
+| อยากดูอะไร | เปิดที่นี่ |
+|---|---|
+| หน้าที่ผู้รับงานจะได้ | [START-HERE.html](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html) |
+| **ทีละขั้น** พร้อมภาพหน้าจอจริงและหมุดตัวเลข | [Month-end bank reconciliation](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P01/walk/P01.S01) |
+| **ไทม์ไลน์** | [Prepare the monthly VAT data](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P02) |
+| **เช็กลิสต์** ขั้นความปลอดภัยขึ้นก่อน | [Count petty cash and close the safe](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P03) |
+| **หาว่าต้องทำอะไร** | [Approve a supplier payment](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P04) |
+| **เจออาการอะไร** | [When online banking goes wrong](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P05) |
+| แบบฝึกหัด | [Approve a supplier payment › Practice](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/task/P04/quiz) |
+| เรื่องที่ Pack ยังไม่มีคำตอบ | [Open questions](https://phumminbm.github.io/knowledge-handover/example/START-HERE.html#/questions) |
+| ไฟล์ทั้งหมดใน Pack: เอกสารรายงาน, `PACK-FOR-AI.md`, `knowledge.json` | [example-pack.zip](https://phumminbm.github.io/knowledge-handover/example/example-pack.zip) |
+| ข้อมูลต้นฉบับที่ AI เขียน | [`examples/bank-reconciliation/knowledge.json`](examples/bank-reconciliation/knowledge.json) |
+
+### AI วาดไดอะแกรมให้เข้ากับลักษณะงาน
+
+งานที่มีทางเลือกใช่/ไม่ใช่ได้ผังขั้นตอน งานตามปฏิทินได้ไทม์ไลน์ งานที่ส่งต่อกันหลายคนได้ผังแบ่งช่องตามคน (swimlane) งานอนุมัติได้ผังตัดสินใจ งานแก้ปัญหาได้ตาราง อาการ → สาเหตุ → วิธีแก้ และงานที่มีสถานะได้ผังสถานะ ส่วนไหนที่ AI สรุปเองจะวาดเป็นเส้นประจนกว่าจะมีคนยืนยัน
+
+<img src="docs/images/diagrams.jpg" alt="ไดอะแกรม 6 แบบจากตัวอย่าง: ผังขั้นตอน ไทม์ไลน์ swimlane ผังตัดสินใจ ตารางอาการ-สาเหตุ-วิธีแก้ และผังสถานะ" width="860">
+
+### ฝึกทำ บนหน้าเว็บหรือกับ AI
+
+ทุกงานมีแบบฝึกหัดจากสถานการณ์จริงได้ ทุกคำตอบบอกเหตุผล
+
+<img src="docs/images/practice.jpg" alt="แบบฝึกหัดเรื่องอนุมัติจ่ายเงินผู้ขาย พร้อมเฉลยและรหัสกฎ" width="860">
+
+ถ้าใช้กับ AI ผู้รับงานแนบไฟล์ zip (หรือ `PACK-FOR-AI.md`) แล้วพิมพ์ว่า *"สอนงานจาก pack นี้"* ส่วนบนของ `PACK-FOR-AI.md` บอก AI ว่าต้องสอนอย่างไร: เล่าภาพรวมของงาน ถามระดับของผู้เรียน พาทำทีละขั้นแล้วรอให้ตอบว่า "เสร็จแล้ว" ถามว่าเป็นกรณีไหนเมื่อถึงทางเลือก อ้างรหัสของแต่ละข้อ เตือนทุกครั้งที่ใช้ข้อที่ยังไม่ได้ยืนยัน ใช้แบบฝึกหัด และบอกตรง ๆ เมื่อ Pack ไม่มีคำตอบ
 
 ## ติดตั้ง
 

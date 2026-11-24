@@ -63,8 +63,27 @@ test('example pack has a real diagram that passes validation', () => {
   assert.deepStrictEqual(core.validate(k, ['P01-S01.png', 'P01-S02.png']).filter((w) => /diagram/.test(w)), []);
 });
 
-test('example pack uses two views', () => {
+test('example pack is in English and shows every view, each task with its own diagram and practice', () => {
+  const core = require('../../skills/knowledge-handover/scripts/pack-core.js');
   const k = read('examples/bank-reconciliation/knowledge.json');
-  assert.deepStrictEqual(k.processes.map((p) => p.view), ['steps', 'timeline']);
-  assert.ok(k.processes[1].steps.every((s) => s.when));
+  assert.strictEqual(k.language, 'en');
+  assert.doesNotMatch(JSON.stringify(k), /[\u0E00-\u0E7F]/, 'no Thai text left');
+  assert.deepStrictEqual([...new Set(k.processes.map((p) => p.view))].sort(), ['checklist', 'decision', 'steps', 'timeline', 'troubleshoot']);
+  const kinds = k.processes.map((p) => (p.diagram_svg.match(/<title id="p\d+-([a-z]+)-title"/) || [])[1]);
+  assert.deepStrictEqual(kinds, ['flow', 'time', 'lanes', 'tree', 'fix', 'state'], 'six different kinds of diagram');
+  for (const p of k.processes) {
+    assert.strictEqual(core.effectiveView(p), p.view, p.id + ' has the data its view needs');
+    assert.match(p.diagram_svg || '', /^<svg[\s\S]*role="img"[\s\S]*<title id=[\s\S]*<\/svg>$/, p.id + ' has a diagram');
+    assert.ok((p.scenarios || []).length >= 1, p.id + ' has a practice question');
+  }
+  const byView = Object.fromEntries(k.processes.map((p) => [p.view, p]));
+  assert.ok(byView.timeline.steps.length >= 4 && byView.timeline.steps.every((s) => s.when));
+  assert.ok(byView.checklist.steps.some((s) => s.safety && s.status === 'validated'), 'a confirmed safety step');
+  assert.ok(byView.decision.rules.length >= 2 && byView.decision.steps.filter((s) => s.branches).length >= 2);
+  assert.ok(byView.troubleshoot.troubleshooting.length >= 3);
+  const ids = k.processes.map((p) => p.id);
+  for (const t of k.tasks) if (t.captured !== 'not_started') assert.ok(ids.includes(t.id), t.id + ' is captured');
+  const images = require('fs').readdirSync(path.join(ROOT, 'examples', 'bank-reconciliation', 'images'));
+  const w = core.validate(k, images);
+  assert.deepStrictEqual(w.filter((x) => /diagram|missing step|continues into|unknown status|has no id|view/.test(x)), []);
 });

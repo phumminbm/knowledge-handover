@@ -92,7 +92,7 @@ When a receiver or giver reports something new, stale or wrong: propose the spec
 
 ## Diagrams and pages
 
-Draw with the bundled engine in `diagram/` — read `diagram/RULES.md` first, then the one type reference you need. Pages and diagrams use the Pack's accent colour and the embedded Poppins + Prompt fonts so they work offline. On hosts that can't render HTML, use numbered steps plus a Mermaid block.
+Draw with the bundled engine in `diagram/` — read `diagram/RULES.md` first, then the one type reference you need. Pages and diagrams use the Pack's accent colour and the embedded Poppins + Prompt fonts so they work offline. Draw any box or arrow that rests on an item marked `ai_inferred`, `needs_update` or `open_question` with a dashed outline, and add a one-line legend saying dashed parts still need confirmation, so a picture never makes a guess look settled. On hosts that can't render HTML, use numbered steps plus a Mermaid block.
 
 ## Reference library
 

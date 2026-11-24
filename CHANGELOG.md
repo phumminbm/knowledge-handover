@@ -6,6 +6,16 @@ All notable changes to this project are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.2.4] - 2026-11-24
+
+### Changed
+- The example Pack is now in English and covers every layout: six tasks (step by step, timeline, checklist, find what to do, what's wrong, and a second step-by-step task), each with a different kind of diagram (flowchart, timeline, swimlane, decision tree, symptom → cause → fix, state diagram) and practice questions.
+- The READMEs have a "See the example from every angle" section with direct links to each layout, the practice questions, the open questions and the example's files (`example-pack.zip` on the project site).
+- Diagrams draw anything that rests on an unconfirmed item with a dashed outline and a legend, so a picture never makes a guess look settled.
+
+### Fixed
+- A task with one step said "1 steps".
+
 ## [0.2.3] - 2026-11-24
 
 ### Changed
@@ -58,7 +68,8 @@ First public release.
 - The Pack Builder shows pasted values and file names as text.
 - Pack, process and image names are cleaned before they become file paths, so a save block cannot write outside the Pack folder or add `../` entries to the zip.
 
-[Unreleased]: https://github.com/phumminbm/knowledge-handover/compare/v0.2.3...HEAD
+[Unreleased]: https://github.com/phumminbm/knowledge-handover/compare/v0.2.4...HEAD
+[0.2.4]: https://github.com/phumminbm/knowledge-handover/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/phumminbm/knowledge-handover/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/phumminbm/knowledge-handover/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/phumminbm/knowledge-handover/compare/v0.2.0...v0.2.1

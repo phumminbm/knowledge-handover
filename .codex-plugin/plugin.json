@@ -1,7 +1,7 @@
 {
   "name": "knowledge-handover",
   "description": "Interview someone about how they really do their work and turn it into a Knowledge Pack: one zip with a browser walkthrough, their real screenshots or photos, and a file any AI can teach from. For new-hire manuals, stand-ins, team SOPs, know-how only one person has, and handovers.",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "author": {
     "name": "phumminbm",
     "url": "https://github.com/phumminbm"

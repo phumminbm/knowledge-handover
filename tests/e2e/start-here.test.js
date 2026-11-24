@@ -383,8 +383,26 @@ test('overview section labels are labels, not boxes', { skip }, async () => {
 test('the example pack shows its diagram on the overview tab', { skip }, async () => {
   const { example } = require('./helpers');
   const { page, errors, context } = await openPack(browser, example(), { hash: '#/task/P01/overview' });
-  assert.match(await page.textContent('.diagram svg title'), /กระทบยอดธนาคาร/);
+  assert.match(await page.textContent('.diagram svg title'), /bank reconciliation/i);
   assert.ok((await page.$$('.diagram svg polygon')).length >= 2);
+  assert.deepStrictEqual(errors, []);
+  await context.close();
+});
+
+test('every example task opens in its own view and shows its diagram', { skip }, async () => {
+  const { example } = require('./helpers');
+  const k = example();
+  const TAB = { steps: 'walk', checklist: 'checklist', timeline: 'timeline', decision: 'decide', troubleshoot: 'fix' };
+  const { page, errors, context } = await openPack(browser, k);
+  assert.match(await page.textContent('#app'), /When it happens · 1 step(?!s)/);
+  for (const p of k.processes) {
+    await page.goto(page.url().split('#')[0] + '#/task/' + p.id);
+    await page.waitForSelector('.tabs [aria-selected="true"]');
+    assert.strictEqual(await page.getAttribute('.tabs [aria-selected="true"]', 'data-tab'), TAB[p.view], p.id);
+    await page.goto(page.url().split('#')[0] + '#/task/' + p.id + '/overview');
+    await page.waitForSelector('.diagram svg title', { state: 'attached' });
+    assert.ok((await page.textContent('.diagram svg title')).length > 3, p.id + ' diagram has a title');
+  }
   assert.deepStrictEqual(errors, []);
   await context.close();
 });

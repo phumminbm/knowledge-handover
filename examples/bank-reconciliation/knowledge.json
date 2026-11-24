@@ -1,29 +1,33 @@
 {
   "schema_version": "1.0",
-  "pack_id": "KP-2569-0001",
-  "version": 5,
-  "saved_at": "2026-11-23",
-  "language": "th",
+  "pack_id": "KP-2026-0001",
+  "version": 6,
+  "saved_at": "2026-11-24",
+  "language": "en",
   "accent": "#bf4520",
-  "title": "งานบัญชีเงินสด · ฝ่ายบัญชี (ตัวอย่าง)",
+  "title": "Cash and bank accounting (example)",
   "confidentiality": "internal",
   "giver": {
-    "role_title": "เจ้าหน้าที่บัญชี",
-    "team": "ฝ่ายบัญชี",
-    "organization": "บริษัทตัวอย่าง จำกัด"
+    "role_title": "Accounts officer",
+    "team": "Finance",
+    "organization": "Example Co. (fictional)"
   },
   "stage": "review",
   "role": {
-    "summary": "ดูแลบัญชีเงินสดและธนาคาร ปิดงวดสิ้นเดือน และเตรียมข้อมูลภาษีซื้อ-ขาย",
-    "context": "ทำงานคนเดียวในส่วนนี้ หัวหน้าบัญชีตรวจทุกสิ้นเดือน",
+    "summary": "Looks after cash and bank accounts, the month-end bank reconciliation, petty cash and VAT data.",
+    "context": "Works alone on this; the chief accountant reviews everything at month end.",
     "stakeholders": [
       {
-        "name": "หัวหน้าบัญชี",
-        "relationship": "ตรวจและอนุมัติไฟล์กระทบยอดทุกเดือน"
+        "name": "Chief accountant",
+        "relationship": "Reviews and approves the reconciliation every month"
       },
       {
-        "name": "ฝ่ายการเงิน",
-        "relationship": "ส่งรายการโอนและเช็คจ่ายให้ทุกสัปดาห์"
+        "name": "Finance team",
+        "relationship": "Sends transfers and cheques to be recorded"
+      },
+      {
+        "name": "External accountants",
+        "relationship": "File the VAT return"
       }
     ],
     "status": "employee_provided"
@@ -31,25 +35,55 @@
   "tasks": [
     {
       "id": "P01",
-      "name": "กระทบยอดธนาคารสิ้นเดือน",
-      "frequency": "ทุกเดือน",
+      "name": "Month-end bank reconciliation",
+      "frequency": "Monthly",
       "priority": 1,
-      "why_priority": "ทำคนเดียว และต้องเสร็จก่อนปิดงวด",
+      "why_priority": "Only this person does it, and it must be done before the month closes",
       "captured": "complete"
     },
     {
       "id": "P02",
-      "name": "เตรียมข้อมูลภาษีซื้อ-ขาย",
-      "frequency": "ทุกเดือน",
+      "name": "Prepare the monthly VAT data",
+      "frequency": "Monthly",
       "priority": 2,
-      "why_priority": "มีกำหนดส่ง",
+      "why_priority": "Has a fixed deadline",
       "captured": "partial"
     },
     {
       "id": "P03",
-      "name": "บันทึกเงินรับรายวัน",
-      "frequency": "ทุกวัน",
+      "name": "Count petty cash and close the safe",
+      "frequency": "Daily",
       "priority": 3,
+      "why_priority": "Every day; a shortage must be known the same day",
+      "captured": "complete"
+    },
+    {
+      "id": "P04",
+      "name": "Approve a supplier payment",
+      "frequency": "Weekly",
+      "priority": 4,
+      "why_priority": "Money leaves the company and is hard to get back",
+      "captured": "complete"
+    },
+    {
+      "id": "P05",
+      "name": "When online banking goes wrong",
+      "frequency": "When it happens",
+      "priority": 5,
+      "captured": "complete"
+    },
+    {
+      "id": "P06",
+      "name": "Track issued cheques",
+      "frequency": "Weekly",
+      "priority": 6,
+      "captured": "complete"
+    },
+    {
+      "id": "P07",
+      "name": "Record daily receipts",
+      "frequency": "Daily",
+      "priority": 7,
       "captured": "not_started"
     }
   ],
@@ -58,48 +92,48 @@
     "expires": "2026-12-07",
     "deadlines": [
       {
-        "what": "ส่งไฟล์กระทบยอด พ.ย. ให้หัวหน้า",
+        "what": "Send the November reconciliation to the chief accountant",
         "when": "2026-12-03",
         "status": "employee_provided"
       },
       {
-        "what": "ส่งข้อมูลภาษี พ.ย. ให้สำนักงานบัญชี",
+        "what": "Send November VAT data to the external accountants",
         "when": "2026-12-10",
         "status": "employee_provided"
       }
     ],
     "in_progress": [
       {
-        "item": "ยอดต่าง ต.ค. 1,200 บาท",
-        "state": "ยังหาไม่เจอ",
-        "next_step": "ถามฝ่ายการเงินเรื่องเช็ค #4471",
+        "item": "October difference of $120",
+        "state": "Not found yet",
+        "next_step": "Ask the finance team about cheque #4471",
         "status": "employee_provided"
       }
     ],
     "waiting_on_us": [
       {
-        "who": "หัวหน้าบัญชี",
-        "what": "สรุปยอดต่าง ต.ค.",
+        "who": "Chief accountant",
+        "what": "Summary of the October difference",
         "status": "employee_provided"
       }
     ],
     "watch": [
       {
-        "what": "ค่าธรรมเนียมธนาคารใหม่",
-        "why": "ธนาคารแจ้งปรับค่าธรรมเนียมตั้งแต่ ธ.ค.",
+        "what": "New bank fees",
+        "why": "The bank announced new fees from December",
         "status": "employee_provided"
       }
     ],
     "access": [
       {
-        "system": "ระบบบัญชี",
-        "account_or_role": "สิทธิ์ผู้บันทึก",
+        "system": "Accounting system",
+        "account_or_role": "Bookkeeper role",
         "action": "transfer",
         "status": "employee_provided"
       },
       {
-        "system": "ธนาคารออนไลน์ (ดูอย่างเดียว)",
-        "account_or_role": "ผู้ใช้ของเจ้าหน้าที่บัญชี",
+        "system": "Online banking (view only)",
+        "account_or_role": "Accounts officer user",
         "action": "request",
         "status": "employee_provided"
       }
@@ -109,11 +143,13 @@
     {
       "id": "P01",
       "slug": "bank-reconciliation",
-      "name": "กระทบยอดธนาคารสิ้นเดือน",
-      "summary": "เทียบยอดเงินในบัญชีธนาคารกับยอดในระบบบัญชี ให้ตรงกันก่อนปิดงวด",
-      "trigger": "วันทำการแรกของเดือน หลังธนาคารออก statement",
-      "frequency": "ทุกเดือน",
+      "name": "Month-end bank reconciliation",
+      "summary": "Match the bank balance to the accounting system before the month is closed.",
+      "trigger": "First business day of the month, once the bank issues the statement",
+      "frequency": "Monthly",
       "complete": true,
+      "view": "steps",
+      "view_confirmed": true,
       "coverage": {
         "trigger": "done",
         "steps": "done",
@@ -130,38 +166,38 @@
       },
       "people": [
         {
-          "name_or_role": "หัวหน้าบัญชี",
-          "involvement": "ตรวจและอนุมัติไฟล์ recon"
+          "name_or_role": "Chief accountant",
+          "involvement": "Reviews and approves the reconciliation file"
         },
         {
-          "name_or_role": "ฝ่ายการเงิน",
-          "involvement": "ยืนยันเช็คที่ยังไม่ขึ้นเงิน"
+          "name_or_role": "Finance team",
+          "involvement": "Confirms cheques not yet presented"
         }
       ],
       "systems": [
         {
-          "name": "ธนาคารออนไลน์",
-          "purpose": "ดาวน์โหลด statement",
+          "name": "Online banking",
+          "purpose": "Download the statement",
           "source_of_truth": true
         },
         {
-          "name": "ระบบบัญชี",
-          "purpose": "ดึงรายงานเงินสด",
+          "name": "Accounting system",
+          "purpose": "Run the cash report",
           "source_of_truth": false
         }
       ],
       "steps": [
         {
           "id": "P01.S01",
-          "title": "ดาวน์โหลด statement เดือนที่แล้ว",
-          "detail": "เข้าธนาคารออนไลน์ เลือกบัญชีกระแสรายวัน แล้วดาวน์โหลดเป็น PDF",
-          "why": "ยอดจากธนาคารคือตัวตั้งที่ถูกต้องที่สุด",
-          "actor": "เจ้าหน้าที่บัญชี",
-          "system": "ธนาคารออนไลน์",
+          "title": "Download last month's statement",
+          "detail": "In online banking, choose the current account, set the period to last month and download it as PDF.",
+          "why": "The bank's figure is the most reliable starting point.",
+          "actor": "Accounts officer",
+          "system": "Online banking",
           "outputs": [
-            "statement PDF"
+            "Statement PDF"
           ],
-          "check": "ชื่อไฟล์และช่วงวันที่ตรงกับเดือนที่ปิด",
+          "check": "The file name and date range match the month being closed.",
           "risk": "low",
           "who_can_do": "ai_with_approval",
           "who_can_do_confirmed": true,
@@ -169,36 +205,43 @@
           "pins": [
             {
               "n": 1,
-              "x": 0.5,
+              "x": 0.9,
               "y": 0.22,
-              "label": "เลือกบัญชีกระแสรายวัน",
+              "label": "Choose the current account",
               "confirmed": true
             },
             {
               "n": 2,
-              "x": 0.55,
+              "x": 0.9,
+              "y": 0.36,
+              "label": "Set the period to last month",
+              "confirmed": true
+            },
+            {
+              "n": 3,
+              "x": 0.9,
               "y": 0.51,
-              "label": "ปุ่มดาวน์โหลด PDF",
+              "label": "Download PDF",
               "confirmed": true
             }
           ],
           "status": "employee_provided",
-          "source": "สัมภาษณ์ 2026-11-20"
+          "source": "Interview 2026-11-20 and screenshot P01-S01.png"
         },
         {
           "id": "P01.S02",
-          "title": "ดึงรายงานเงินสดจากระบบบัญชี",
-          "detail": "เลือกช่วงวันที่ 1 ถึงวันสุดท้ายของเดือน แล้วกดดึงรายงาน",
-          "why": "ถ้าช่วงวันไม่ตรงกับ statement ยอดจะเพี้ยนทันที",
-          "actor": "เจ้าหน้าที่บัญชี",
-          "system": "ระบบบัญชี",
+          "title": "Run the cash report in the accounting system",
+          "detail": "Set the date range from the 1st to the last day of the month and run the report.",
+          "why": "If the dates differ from the statement, the totals will not match.",
+          "actor": "Accounts officer",
+          "system": "Accounting system",
           "inputs": [
-            "ช่วงวันที่ของเดือน"
+            "Date range of the month"
           ],
           "outputs": [
-            "รายงานเงินสด"
+            "Cash report"
           ],
-          "check": "ยอดยกมาตรงกับยอดยกไปของเดือนก่อน",
+          "check": "The opening balance equals last month's closing balance.",
           "risk": "low",
           "who_can_do": "ai_with_approval",
           "who_can_do_confirmed": true,
@@ -206,67 +249,75 @@
           "pins": [
             {
               "n": 1,
-              "x": 0.62,
+              "x": 0.9,
               "y": 0.36,
-              "label": "ช่วงวันที่ 1 ถึงสิ้นเดือน",
+              "label": "1st to last day of the month",
               "confirmed": true
+            },
+            {
+              "n": 2,
+              "x": 0.9,
+              "y": 0.65,
+              "label": "Run report",
+              "confirmed": false
             }
           ],
           "status": "validated",
-          "source": "สัมภาษณ์ 2026-11-20"
+          "validated_by": "Chief accountant",
+          "source": "Interview 2026-11-20"
         },
         {
           "id": "P01.S03",
-          "title": "เทียบยอดคงเหลือปลายเดือน",
-          "detail": "ดูยอดคงเหลือใน statement เทียบกับยอดในรายงาน",
-          "why": "ถ้าตรงกันงานจบเร็ว ถ้าไม่ตรงต้องไล่หาก่อนปิดงวด",
-          "actor": "เจ้าหน้าที่บัญชี",
-          "check": "จดยอดทั้งสองไว้ในไฟล์ recon",
+          "title": "Compare the closing balances",
+          "detail": "Compare the closing balance on the statement with the one in the report.",
+          "why": "If they match the job is quick; if not, the difference must be found before closing.",
+          "actor": "Accounts officer",
+          "check": "Write both balances in the reconciliation file.",
           "risk": "medium",
           "who_can_do": "ai_alone",
           "who_can_do_confirmed": false,
+          "branch_question": "Do the two balances match?",
           "branches": [
             {
-              "label": "ตรงกัน",
+              "label": "They match",
               "goto": "P01.S05"
             },
             {
-              "label": "ไม่ตรง",
+              "label": "They don't match",
               "goto": "P01.S04"
             }
           ],
-          "status": "employee_provided",
-          "branch_question": "ยอดสองฝั่งตรงกันไหม"
+          "status": "employee_provided"
         },
         {
           "id": "P01.S04",
-          "title": "ไล่หารายการที่ขาด",
-          "detail": "ดูเช็คที่ยังไม่ขึ้นเงินก่อน แล้วค่อยดูค่าธรรมเนียมธนาคารและรายการโอนข้ามเดือน",
-          "why": "สาเหตุที่พบบ่อยที่สุดคือเช็คจ่ายที่ผู้รับยังไม่นำไปขึ้นเงิน",
-          "actor": "เจ้าหน้าที่บัญชี",
-          "check": "ยอดหลังปรับปรุงต้องเท่ากัน",
+          "title": "Find what is missing",
+          "detail": "Check cheques not yet presented first, then bank fees, then transfers that crossed the month end.",
+          "why": "The most common cause is a cheque the payee has not banked yet.",
+          "actor": "Accounts officer",
+          "check": "The adjusted balances are equal.",
           "risk": "medium",
           "who_can_do": "ai_with_approval",
           "who_can_do_confirmed": true,
+          "branch_question": "Did you find what is missing?",
           "branches": [
             {
-              "label": "เจอแล้ว",
+              "label": "Found it",
               "goto": "P01.S05"
             },
             {
-              "label": "หาไม่เจอ",
+              "label": "Can't find it",
               "goto": "P01.S06"
             }
           ],
-          "status": "employee_provided",
-          "branch_question": "หาเจอไหมว่ารายการไหนขาด"
+          "status": "employee_provided"
         },
         {
           "id": "P01.S06",
-          "title": "แจ้งยอดต่างที่หาไม่เจอ",
-          "detail": "บันทึกยอดต่างในไฟล์ recon พร้อมสิ่งที่ตรวจไปแล้ว และแจ้งหัวหน้าบัญชี",
-          "why": "หัวหน้าต้องตัดสินว่าจะปิดงวดหรือรอ",
-          "actor": "เจ้าหน้าที่บัญชี",
+          "title": "Report a difference you cannot find",
+          "detail": "Record the difference in the reconciliation file with what you already checked, and tell the chief accountant.",
+          "why": "The chief accountant decides whether to close the month or wait.",
+          "actor": "Accounts officer",
           "risk": "medium",
           "who_can_do": "human_only",
           "who_can_do_confirmed": true,
@@ -275,14 +326,14 @@
         },
         {
           "id": "P01.S05",
-          "title": "บันทึกผลและส่งหัวหน้า",
-          "detail": "กรอกผลในไฟล์ recon ของเดือน แล้วส่งหัวหน้าบัญชีภายในวันที่ 3",
-          "why": "หัวหน้าใช้ไฟล์นี้ปิดงวดบัญชี",
-          "actor": "เจ้าหน้าที่บัญชี",
+          "title": "Record the result and send it",
+          "detail": "Fill in this month's reconciliation file and email it to the chief accountant by the 3rd.",
+          "why": "The chief accountant uses this file to close the books.",
+          "actor": "Accounts officer",
           "outputs": [
-            "ไฟล์ recon ของเดือน"
+            "Reconciliation file for the month"
           ],
-          "check": "หัวหน้าตอบรับอีเมล",
+          "check": "The chief accountant replies to confirm.",
           "risk": "low",
           "who_can_do": "ai_with_approval",
           "who_can_do_confirmed": true,
@@ -292,97 +343,819 @@
       "rules": [
         {
           "id": "R-001",
-          "text": "ยอดต่างไม่เกิน 100 บาท บันทึกเป็นค่าธรรมเนียมได้เลยโดยไม่ต้องไล่หา",
-          "why": "ไม่คุ้มเวลา และส่วนใหญ่เป็นค่าธรรมเนียม",
+          "text": "A difference of $5 or less can be booked as a bank fee without searching for it.",
+          "why": "Not worth the time, and it is almost always a fee.",
           "status": "ai_inferred",
-          "source": "สรุปจากคำพูดในสัมภาษณ์ ยังไม่ได้ยืนยัน"
+          "source": "Summarised from the interview; not confirmed yet"
         },
         {
           "id": "R-002",
-          "text": "ใช้ statement ของธนาคารเป็นตัวตั้งเสมอ ห้ามแก้ยอดธนาคารให้ตรงกับระบบ",
-          "why": "ยอดธนาคารคือเงินจริง",
+          "text": "The bank statement is always the reference. Never change the bank figure to match the system.",
+          "why": "The bank figure is the real money.",
           "status": "validated"
         }
       ],
       "troubleshooting": [
         {
           "id": "T-001",
-          "symptom": "ยอดยกมาไม่ตรงกับเดือนก่อน",
-          "cause": "มีคนแก้รายการย้อนหลังในระบบ",
-          "fix": "ดูประวัติการแก้ไขในระบบ แล้วแจ้งหัวหน้า",
+          "symptom": "Opening balance differs from last month's closing balance",
+          "cause": "Someone edited a past entry in the system",
+          "fix": "Check the edit history in the system and tell the chief accountant.",
           "status": "employee_provided"
         }
       ],
       "scenarios": [
         {
           "id": "Q-001",
-          "situation": "ปลายเดือนยอดต่างกัน 5,000 บาท",
-          "question": "ควรเริ่มดูอะไรก่อน",
+          "situation": "At month end the balances differ by $500.",
+          "question": "What do you check first?",
           "options": [
-            "เช็คที่ยังไม่ขึ้นเงิน",
-            "โทรถามธนาคารทันที",
-            "แก้ยอดในระบบให้ตรง"
+            "Cheques not yet presented",
+            "Call the bank straight away",
+            "Change the system figure to match"
           ],
           "answer": 0,
-          "explanation": "สาเหตุที่พบบ่อยที่สุดคือเช็คที่ยังไม่ขึ้นเงิน และห้ามแก้ยอดให้ตรงเอง (R-002)",
+          "explanation": "Unpresented cheques are the most common cause, and you never change figures to make them match (R-002).",
           "refs": [
             "P01.S04",
             "R-002"
           ]
+        },
+        {
+          "id": "Q-002",
+          "situation": "The difference is $3 and it looks like a transfer fee.",
+          "question": "Can you book it as a fee?",
+          "options": [
+            "Yes, it is under $5",
+            "Yes, but the $5 limit is not confirmed yet, so note it in the file",
+            "No, always call the bank"
+          ],
+          "answer": 1,
+          "explanation": "The $5 limit (R-001) is the AI's summary of the interview and still needs confirmation (OQ-001), so the chief accountant must see it.",
+          "refs": [
+            "R-001",
+            "OQ-001"
+          ]
         }
       ],
       "status": "employee_provided",
-      "view": "steps",
-      "view_confirmed": true,
-      "diagram_svg": "<svg viewBox=\"0 0 620 636\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-labelledby=\"p01-flow-title p01-flow-desc\" style=\"min-width:620px\"><title id=\"p01-flow-title\">กระทบยอดธนาคารสิ้นเดือน</title><desc id=\"p01-flow-desc\">ผังขั้นตอนกระทบยอดธนาคาร: ดาวน์โหลด statement ดึงรายงานเงินสด เทียบยอด ถ้าไม่ตรงให้ไล่หารายการที่ขาด ถ้าหาไม่เจอให้แจ้งยอดต่าง แล้วบันทึกผลและส่งหัวหน้า</desc><defs><marker id=\"p01-arrow\" markerWidth=\"8\" markerHeight=\"6\" refX=\"7\" refY=\"3\" orient=\"auto\"><polygon points=\"0 0, 8 3, 0 6\" fill=\"#5f5f5c\"/></marker><marker id=\"p01-arrow-accent\" markerWidth=\"8\" markerHeight=\"6\" refX=\"7\" refY=\"3\" orient=\"auto\"><polygon points=\"0 0, 8 3, 0 6\" fill=\"#bf4520\"/></marker></defs><rect width=\"100%\" height=\"100%\" fill=\"#ffffff\"/><line x1=\"300\" y1=\"72\" x2=\"300\" y2=\"104\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p01-arrow)\"/><line x1=\"300\" y1=\"152\" x2=\"300\" y2=\"184\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p01-arrow)\"/><line x1=\"300\" y1=\"276\" x2=\"300\" y2=\"324\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p01-arrow)\"/><line x1=\"300\" y1=\"416\" x2=\"300\" y2=\"456\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p01-arrow)\"/><line x1=\"300\" y1=\"504\" x2=\"300\" y2=\"556\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p01-arrow)\"/><path d=\"M400,370 H492 Q500,370 500,378 V566 Q500,574 492,574 H402\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p01-arrow)\"/><path d=\"M400,230 H552 Q560,230 560,238 V586 Q560,594 552,594 H402\" fill=\"none\" stroke=\"#bf4520\" stroke-width=\"1.4\" marker-end=\"url(#p01-arrow-accent)\"/><rect x=\"436\" y=\"204\" width=\"56\" height=\"16\" rx=\"3\" fill=\"#ffffff\"/><text x=\"464\" y=\"216\" fill=\"#bf4520\" font-size=\"11\" font-weight=\"500\" font-family=\"'Prompt','Poppins',sans-serif\" text-anchor=\"middle\">ตรงกัน</text><rect x=\"308\" y=\"292\" width=\"52\" height=\"16\" rx=\"3\" fill=\"#ffffff\"/><text x=\"334\" y=\"304\" fill=\"#5f5f5c\" font-size=\"11\" font-weight=\"500\" font-family=\"'Prompt','Poppins',sans-serif\" text-anchor=\"middle\">ไม่ตรง</text><rect x=\"418\" y=\"344\" width=\"56\" height=\"16\" rx=\"3\" fill=\"#ffffff\"/><text x=\"446\" y=\"356\" fill=\"#5f5f5c\" font-size=\"11\" font-weight=\"500\" font-family=\"'Prompt','Poppins',sans-serif\" text-anchor=\"middle\">เจอแล้ว</text><rect x=\"308\" y=\"428\" width=\"60\" height=\"16\" rx=\"3\" fill=\"#ffffff\"/><text x=\"338\" y=\"440\" fill=\"#5f5f5c\" font-size=\"11\" font-weight=\"500\" font-family=\"'Prompt','Poppins',sans-serif\" text-anchor=\"middle\">หาไม่เจอ</text><rect x=\"200\" y=\"24\" width=\"200\" height=\"48\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"300\" y=\"53\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Prompt','Poppins',sans-serif\" text-anchor=\"middle\">ดาวน์โหลด statement</text><rect x=\"200\" y=\"104\" width=\"200\" height=\"48\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"300\" y=\"133\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Prompt','Poppins',sans-serif\" text-anchor=\"middle\">ดึงรายงานเงินสดจากระบบ</text><polygon points=\"300,184 400,230 300,276 200,230\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"300\" y=\"226\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Prompt','Poppins',sans-serif\" text-anchor=\"middle\">ยอดสองฝั่ง</text><text x=\"300\" y=\"242\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Prompt','Poppins',sans-serif\" text-anchor=\"middle\">ตรงกันไหม</text><polygon points=\"300,324 400,370 300,416 200,370\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"300\" y=\"366\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Prompt','Poppins',sans-serif\" text-anchor=\"middle\">หารายการ</text><text x=\"300\" y=\"382\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Prompt','Poppins',sans-serif\" text-anchor=\"middle\">ที่ขาดเจอไหม</text><rect x=\"200\" y=\"456\" width=\"200\" height=\"48\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"300\" y=\"485\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Prompt','Poppins',sans-serif\" text-anchor=\"middle\">แจ้งยอดต่างที่หาไม่เจอ</text><rect x=\"200\" y=\"556\" width=\"200\" height=\"56\" rx=\"6\" fill=\"rgba(191,69,32,0.08)\" stroke=\"#bf4520\" stroke-width=\"1\"/><text x=\"300\" y=\"581\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Prompt','Poppins',sans-serif\" text-anchor=\"middle\">บันทึกผลและส่งหัวหน้า</text><text x=\"300\" y=\"598\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Prompt','Poppins',sans-serif\" text-anchor=\"middle\">จบงาน</text></svg>"
+      "diagram_svg": "<svg viewBox=\"0 0 620 636\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-labelledby=\"p01-flow-title p01-flow-desc\" style=\"min-width:620px\"><title id=\"p01-flow-title\">Month-end bank reconciliation</title><desc id=\"p01-flow-desc\">Flowchart: download the statement, run the cash report, compare the balances. If they do not match, look for what is missing; if it cannot be found, report the difference. Then record the result and send it to the chief accountant.</desc><defs><marker id=\"p01-flow-arrow\" markerWidth=\"8\" markerHeight=\"6\" refX=\"7\" refY=\"3\" orient=\"auto\"><polygon points=\"0 0, 8 3, 0 6\" fill=\"#5f5f5c\"/></marker><marker id=\"p01-flow-arrow-accent\" markerWidth=\"8\" markerHeight=\"6\" refX=\"7\" refY=\"3\" orient=\"auto\"><polygon points=\"0 0, 8 3, 0 6\" fill=\"#bf4520\"/></marker></defs><rect width=\"100%\" height=\"100%\" fill=\"#ffffff\"/><path d=\"M300,72 V104\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p01-flow-arrow)\"/><path d=\"M300,152 V184\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p01-flow-arrow)\"/><path d=\"M300,276 V324\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p01-flow-arrow)\"/><path d=\"M300,416 V456\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p01-flow-arrow)\"/><path d=\"M300,504 V556\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p01-flow-arrow)\"/><path d=\"M400,370 H492 Q500,370 500,378 V566 Q500,574 492,574 H402\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p01-flow-arrow)\"/><path d=\"M400,230 H552 Q560,230 560,238 V586 Q560,594 552,594 H402\" fill=\"none\" stroke=\"#bf4520\" stroke-width=\"1.4\" marker-end=\"url(#p01-flow-arrow-accent)\"/><rect x=\"445.5\" y=\"203\" width=\"49\" height=\"16\" rx=\"3\" fill=\"#ffffff\"/><text x=\"470\" y=\"215\" fill=\"#bf4520\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Match</text><rect x=\"297\" y=\"291\" width=\"70\" height=\"16\" rx=\"3\" fill=\"#ffffff\"/><text x=\"332\" y=\"303\" fill=\"#5f5f5c\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">No match</text><rect x=\"421.5\" y=\"343\" width=\"49\" height=\"16\" rx=\"3\" fill=\"#ffffff\"/><text x=\"446\" y=\"355\" fill=\"#5f5f5c\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Found</text><rect x=\"297.5\" y=\"427\" width=\"77\" height=\"16\" rx=\"3\" fill=\"#ffffff\"/><text x=\"336\" y=\"439\" fill=\"#5f5f5c\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Not found</text><rect x=\"200\" y=\"24\" width=\"200\" height=\"48\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"300\" y=\"52\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Download the statement</text><rect x=\"200\" y=\"104\" width=\"200\" height=\"48\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"300\" y=\"132\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Run the cash report</text><polygon points=\"300,184 400,230 300,276 200,230\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"300\" y=\"226\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Do the two</text><text x=\"300\" y=\"242\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">balances match?</text><polygon points=\"300,324 400,370 300,416 200,370\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"300\" y=\"366\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Found what</text><text x=\"300\" y=\"382\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">is missing?</text><rect x=\"200\" y=\"456\" width=\"200\" height=\"48\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"300\" y=\"484\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Report the difference</text><rect x=\"200\" y=\"556\" width=\"200\" height=\"56\" rx=\"6\" fill=\"rgba(191,69,32,0.08)\" stroke=\"#bf4520\" stroke-width=\"1\"/><text x=\"300\" y=\"580\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Record and send</text><text x=\"300\" y=\"596\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Done</text></svg>"
     },
     {
       "id": "P02",
       "slug": "vat-data",
-      "name": "เตรียมข้อมูลภาษีซื้อ-ขาย",
-      "summary": "รวบรวมใบกำกับภาษีซื้อและขายของเดือน ส่งให้สำนักงานบัญชียื่นภาษี",
-      "frequency": "ทุกเดือน",
+      "name": "Prepare the monthly VAT data",
+      "summary": "Collect the month's purchase and sales VAT invoices and send them to the external accountants.",
+      "trigger": "Start of the month, after last month's sales are closed",
+      "frequency": "Monthly",
       "complete": false,
+      "view": "timeline",
+      "view_confirmed": true,
       "coverage": {
         "trigger": "done",
         "steps": "done",
         "inputs_outputs": "done",
-        "systems": "missing",
+        "systems": "done",
         "people": "done",
-        "decisions": "missing",
-        "exceptions": "skipped",
-        "checks": "skipped",
+        "decisions": "done",
+        "exceptions": "missing",
+        "checks": "done",
         "failures": "missing",
         "deadlines": "done",
-        "risk": "missing",
+        "risk": "skipped",
         "wish_known": "missing"
       },
+      "people": [
+        {
+          "name_or_role": "External accountants",
+          "involvement": "File the VAT return"
+        },
+        {
+          "name_or_role": "Chief accountant",
+          "involvement": "Looks over the summary before it is sent"
+        }
+      ],
+      "systems": [
+        {
+          "name": "Accounting system",
+          "purpose": "Sales VAT report",
+          "source_of_truth": true
+        }
+      ],
       "steps": [
         {
           "id": "P02.S01",
-          "title": "รวบรวมใบกำกับภาษีซื้อ",
-          "detail": "รวมใบกำกับจากแฟ้มเอกสารและอีเมล",
+          "title": "Collect purchase VAT invoices",
+          "detail": "Gather the invoices from the paper file and from email.",
+          "why": "Purchase VAT without an invoice cannot be claimed.",
+          "check": "The number of invoices equals the purchases in the system.",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
           "status": "employee_provided",
-          "when": "วันที่ 1–3 ของเดือน"
+          "when": "Days 1–3"
+        },
+        {
+          "id": "P02.S03",
+          "title": "Run the sales VAT report",
+          "detail": "Reports › Sales VAT, choose last month and export to Excel.",
+          "why": "The external accountants use this file as it is.",
+          "outputs": [
+            "Sales VAT report (Excel)"
+          ],
+          "who_can_do": "ai_with_approval",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided",
+          "when": "Days 1–3"
+        },
+        {
+          "id": "P02.S04",
+          "title": "Check tax IDs and dates on the invoices",
+          "detail": "Check the company name, tax ID and date against the entry in the system.",
+          "why": "An invoice with wrong details cannot be used; the supplier must issue a new one.",
+          "check": "Wrong invoices are in the \"to fix\" folder with a list of suppliers to contact.",
+          "risk": "medium",
+          "who_can_do": "ai_with_approval",
+          "who_can_do_confirmed": false,
+          "status": "employee_provided",
+          "when": "Days 4–5"
+        },
+        {
+          "id": "P02.S05",
+          "title": "Summarise for the chief accountant",
+          "detail": "Fill in purchase and sales VAT in the month's summary file and send it to the chief accountant.",
+          "why": "The chief accountant spots unusual totals faster.",
+          "outputs": [
+            "VAT summary for the month"
+          ],
+          "who_can_do": "ai_with_approval",
+          "who_can_do_confirmed": true,
+          "status": "validated",
+          "when": "Days 6–8"
         },
         {
           "id": "P02.S02",
-          "title": "ส่งให้สำนักงานบัญชี",
-          "detail": "ส่งภายในวันที่ 10 ของเดือนถัดไป",
+          "title": "Send to the external accountants",
+          "detail": "Send the sales report, the summary and scans of the purchase invoices by the 10th of the following month.",
+          "why": "They need time to file before the deadline.",
+          "check": "The external accountants confirm they have everything.",
+          "risk": "high",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
           "status": "employee_provided",
-          "when": "ภายในวันที่ 10"
+          "when": "By day 10"
+        }
+      ],
+      "rules": [
+        {
+          "id": "R-003",
+          "text": "Never use an invoice with the wrong company name or tax ID; ask the supplier for a new one.",
+          "why": "A wrong invoice makes the return fail.",
+          "status": "employee_provided"
+        }
+      ],
+      "scenarios": [
+        {
+          "id": "Q-003",
+          "situation": "On the 9th you find one more purchase invoice from last month.",
+          "question": "What do you do?",
+          "options": [
+            "Send it with this month's batch",
+            "Ask the external accountants which month to use",
+            "Leave it out"
+          ],
+          "answer": 1,
+          "explanation": "The Pack has no answer yet for late invoices (OQ-002), so ask rather than guess.",
+          "refs": [
+            "OQ-002"
+          ]
         }
       ],
       "status": "employee_provided",
-      "view": "timeline",
-      "view_confirmed": true
+      "diagram_svg": "<svg viewBox=\"0 0 760 292\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-labelledby=\"p02-time-title p02-time-desc\" style=\"min-width:760px\"><title id=\"p02-time-title\">VAT data by date</title><desc id=\"p02-time-desc\">Timeline of the month: days 1–3 collect purchase VAT invoices and run the sales VAT report, days 4–5 check tax IDs and dates, days 6–8 summarise for the chief accountant, and send to the external accountants by day 10.</desc><defs><marker id=\"p02-time-arrow\" markerWidth=\"8\" markerHeight=\"6\" refX=\"7\" refY=\"3\" orient=\"auto\"><polygon points=\"0 0, 8 3, 0 6\" fill=\"#5f5f5c\"/></marker><marker id=\"p02-time-arrow-accent\" markerWidth=\"8\" markerHeight=\"6\" refX=\"7\" refY=\"3\" orient=\"auto\"><polygon points=\"0 0, 8 3, 0 6\" fill=\"#bf4520\"/></marker></defs><rect width=\"100%\" height=\"100%\" fill=\"#ffffff\"/><line x1=\"30\" y1=\"92\" x2=\"740\" y2=\"92\" stroke=\"#e6e6e4\" stroke-width=\"2\"/><path d=\"M706,92 H744\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p02-time-arrow)\"/><text x=\"100\" y=\"64\" fill=\"#5f5f5c\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Days 1–3</text><circle cx=\"100\" cy=\"92\" r=\"7\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1.4\"/><line x1=\"100\" y1=\"99\" x2=\"100\" y2=\"124\" stroke=\"#5f5f5c\" stroke-width=\"1\"/><rect x=\"22\" y=\"124\" width=\"156\" height=\"52\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"100\" y=\"146\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Collect purchase</text><text x=\"100\" y=\"162\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">VAT invoices</text><rect x=\"22\" y=\"188\" width=\"156\" height=\"52\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"100\" y=\"210\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Run the sales</text><text x=\"100\" y=\"226\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">VAT report</text><text x=\"275\" y=\"64\" fill=\"#5f5f5c\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Days 4–5</text><circle cx=\"275\" cy=\"92\" r=\"7\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1.4\"/><line x1=\"275\" y1=\"99\" x2=\"275\" y2=\"124\" stroke=\"#5f5f5c\" stroke-width=\"1\"/><rect x=\"197\" y=\"124\" width=\"156\" height=\"52\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"275\" y=\"146\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Check tax IDs</text><text x=\"275\" y=\"162\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">and dates</text><text x=\"450\" y=\"64\" fill=\"#5f5f5c\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Days 6–8</text><circle cx=\"450\" cy=\"92\" r=\"7\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1.4\"/><line x1=\"450\" y1=\"99\" x2=\"450\" y2=\"124\" stroke=\"#5f5f5c\" stroke-width=\"1\"/><rect x=\"372\" y=\"124\" width=\"156\" height=\"52\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"450\" y=\"146\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Summarise for</text><text x=\"450\" y=\"162\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">the chief accountant</text><text x=\"625\" y=\"64\" fill=\"#bf4520\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">By day 10</text><circle cx=\"625\" cy=\"92\" r=\"7\" fill=\"#bf4520\" stroke=\"#bf4520\" stroke-width=\"1.4\"/><line x1=\"625\" y1=\"99\" x2=\"625\" y2=\"124\" stroke=\"#5f5f5c\" stroke-width=\"1\"/><rect x=\"547\" y=\"124\" width=\"156\" height=\"52\" rx=\"6\" fill=\"rgba(191,69,32,0.08)\" stroke=\"#bf4520\" stroke-width=\"1\"/><text x=\"625\" y=\"146\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Send to the</text><text x=\"625\" y=\"162\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">external accountants</text><text x=\"30\" y=\"270\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"start\">The orange date is the deadline. Late invoices: see open question OQ-002.</text></svg>"
+    },
+    {
+      "id": "P03",
+      "slug": "petty-cash-close",
+      "name": "Count petty cash and close the safe",
+      "summary": "Every evening: count the petty cash, compare it with the book, attach the receipts, then lock the safe and both sign.",
+      "trigger": "Every business day before 17:00",
+      "frequency": "Daily",
+      "complete": true,
+      "view": "checklist",
+      "view_confirmed": true,
+      "coverage": {
+        "trigger": "done",
+        "steps": "done",
+        "inputs_outputs": "done",
+        "systems": "skipped",
+        "people": "done",
+        "decisions": "done",
+        "exceptions": "done",
+        "checks": "done",
+        "failures": "done",
+        "deadlines": "done",
+        "risk": "done",
+        "wish_known": "done"
+      },
+      "people": [
+        {
+          "name_or_role": "A second staff member",
+          "involvement": "Present while the safe is open, and signs"
+        },
+        {
+          "name_or_role": "Chief accountant",
+          "involvement": "Holds the safe combination, receives the closing form"
+        }
+      ],
+      "steps": [
+        {
+          "id": "P03.S01",
+          "title": "Close the door; two people present while the safe is open",
+          "detail": "Close the finance room door and keep a second person with you from opening to closing.",
+          "why": "No one outside sees the cash or the combination, and there is always a witness.",
+          "safety": true,
+          "risk": "high",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "validated",
+          "validated_by": "Chief accountant",
+          "source": "Confirmed by the chief accountant 2026-11-24"
+        },
+        {
+          "id": "P03.S02",
+          "title": "Count the petty cash by note and coin",
+          "detail": "Count each denomination and write the counts on the cash count form.",
+          "why": "Counting by denomination makes mistakes easy to find.",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P03.S03",
+          "title": "Compare with the petty cash book",
+          "detail": "The counted total must equal the balance in the petty cash book.",
+          "why": "A shortage or overage has to be known the same day, not at month end.",
+          "check": "The difference is $0. If not, follow R-004.",
+          "risk": "medium",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P03.S04",
+          "title": "Attach today's receipts to the vouchers",
+          "detail": "One receipt per voucher, stapled top left.",
+          "why": "They are needed to top up petty cash at month end.",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P03.S05",
+          "title": "Lock the safe and spin the dial",
+          "detail": "Spin the dial several times after closing. The combination is not in this Pack; get it from the chief accountant.",
+          "why": "Stops anyone reopening it from the last position.",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P03.S06",
+          "title": "Both sign the closing form",
+          "detail": "Sign, date and write the counted total, then put the form in the chief accountant's tray.",
+          "why": "It records who counted and what the total was.",
+          "check": "The form has two signatures.",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        }
+      ],
+      "rules": [
+        {
+          "id": "R-004",
+          "text": "If the cash is short or over by any amount, record it on the form and tell the chief accountant the same day. Never add or remove money to make it match.",
+          "why": "Making it match hides the real problem.",
+          "status": "validated"
+        }
+      ],
+      "scenarios": [
+        {
+          "id": "Q-004",
+          "situation": "The count is $4 short and it is almost 17:00.",
+          "question": "What do you do?",
+          "options": [
+            "Put in $4 of your own",
+            "Record the shortage and tell the chief accountant today",
+            "Leave it and recount tomorrow"
+          ],
+          "answer": 1,
+          "explanation": "R-004: any difference is recorded and reported the same day; never make it match yourself.",
+          "refs": [
+            "R-004",
+            "P03.S03"
+          ]
+        }
+      ],
+      "status": "employee_provided",
+      "diagram_svg": "<svg viewBox=\"0 0 760 316\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-labelledby=\"p03-lanes-title p03-lanes-desc\" style=\"min-width:760px\"><title id=\"p03-lanes-title\">Who does what when closing the safe</title><desc id=\"p03-lanes-desc\">Swimlane with three people: the accounts officer closes the door, counts, compares to the book, attaches receipts and locks the safe; a second person stays throughout and signs; the chief accountant is told about any difference the same day and receives the signed form.</desc><defs><marker id=\"p03-lanes-arrow\" markerWidth=\"8\" markerHeight=\"6\" refX=\"7\" refY=\"3\" orient=\"auto\"><polygon points=\"0 0, 8 3, 0 6\" fill=\"#5f5f5c\"/></marker><marker id=\"p03-lanes-arrow-accent\" markerWidth=\"8\" markerHeight=\"6\" refX=\"7\" refY=\"3\" orient=\"auto\"><polygon points=\"0 0, 8 3, 0 6\" fill=\"#bf4520\"/></marker></defs><rect width=\"100%\" height=\"100%\" fill=\"#ffffff\"/><rect x=\"12\" y=\"20\" width=\"736\" height=\"92\" fill=\"#ffffff\" stroke=\"#e6e6e4\"/><text x=\"22\" y=\"70\" fill=\"#5f5f5c\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"start\">Accounts officer</text><rect x=\"12\" y=\"112\" width=\"736\" height=\"92\" fill=\"#f6f6f5\" stroke=\"#e6e6e4\"/><text x=\"22\" y=\"162\" fill=\"#5f5f5c\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"start\">Second person</text><rect x=\"12\" y=\"204\" width=\"736\" height=\"92\" fill=\"#ffffff\" stroke=\"#e6e6e4\"/><text x=\"22\" y=\"254\" fill=\"#5f5f5c\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"start\">Chief accountant</text><path d=\"M246,66 H252\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p03-lanes-arrow)\"/><path d=\"M370,66 H376\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p03-lanes-arrow)\"/><path d=\"M494,66 H500\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p03-lanes-arrow)\"/><path d=\"M618,66 H624\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p03-lanes-arrow)\"/><line x1=\"188\" y1=\"90\" x2=\"188\" y2=\"134\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" stroke-dasharray=\"4 3\"/><path d=\"M436,90 V224\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p03-lanes-arrow)\"/><rect x=\"397.5\" y=\"149\" width=\"77\" height=\"16\" rx=\"3\" fill=\"#ffffff\"/><text x=\"436\" y=\"161\" fill=\"#5f5f5c\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Not equal</text><path d=\"M684,90 V132\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p03-lanes-arrow)\"/><path d=\"M684,182 V224\" fill=\"none\" stroke=\"#bf4520\" stroke-width=\"1.4\" marker-end=\"url(#p03-lanes-arrow-accent)\"/><rect x=\"130\" y=\"42\" width=\"116\" height=\"48\" rx=\"6\" fill=\"rgba(191,69,32,0.08)\" stroke=\"#bf4520\" stroke-width=\"1\"/><text x=\"188\" y=\"62\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Close the door</text><text x=\"188\" y=\"78\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Safety</text><rect x=\"130\" y=\"134\" width=\"116\" height=\"48\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"188\" y=\"154\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Stays</text><text x=\"188\" y=\"170\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">throughout</text><rect x=\"254\" y=\"42\" width=\"116\" height=\"48\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"312\" y=\"70\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Count the cash</text><rect x=\"378\" y=\"42\" width=\"116\" height=\"48\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"436\" y=\"62\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Compare</text><text x=\"436\" y=\"78\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">with the book</text><rect x=\"378\" y=\"226\" width=\"116\" height=\"48\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"436\" y=\"246\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Told</text><text x=\"436\" y=\"262\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">the same day</text><rect x=\"502\" y=\"42\" width=\"116\" height=\"48\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"560\" y=\"70\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Attach receipts</text><rect x=\"626\" y=\"42\" width=\"116\" height=\"48\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"684\" y=\"62\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Lock the safe</text><text x=\"684\" y=\"78\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Spin the dial</text><rect x=\"626\" y=\"134\" width=\"116\" height=\"48\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"684\" y=\"162\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Both sign</text><rect x=\"626\" y=\"226\" width=\"116\" height=\"48\" rx=\"6\" fill=\"rgba(191,69,32,0.08)\" stroke=\"#bf4520\" stroke-width=\"1\"/><text x=\"684\" y=\"246\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Gets the form</text><text x=\"684\" y=\"262\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Done</text></svg>"
+    },
+    {
+      "id": "P04",
+      "slug": "supplier-payment-approval",
+      "name": "Approve a supplier payment",
+      "summary": "Check the documents, confirm the supplier's bank account, and get the right person to approve by amount before the Friday payment run.",
+      "trigger": "An invoice arrives; payments go out every Friday",
+      "frequency": "Weekly",
+      "complete": true,
+      "view": "decision",
+      "view_confirmed": true,
+      "coverage": {
+        "trigger": "done",
+        "steps": "done",
+        "inputs_outputs": "done",
+        "systems": "done",
+        "people": "done",
+        "decisions": "done",
+        "exceptions": "done",
+        "checks": "done",
+        "failures": "done",
+        "deadlines": "done",
+        "risk": "done",
+        "wish_known": "done"
+      },
+      "people": [
+        {
+          "name_or_role": "Chief accountant",
+          "involvement": "Approves up to $5,000"
+        },
+        {
+          "name_or_role": "General manager",
+          "involvement": "Approves over $5,000"
+        },
+        {
+          "name_or_role": "Purchasing",
+          "involvement": "Sends the approved purchase order"
+        }
+      ],
+      "systems": [
+        {
+          "name": "Accounting system",
+          "purpose": "Record the bill and schedule the payment",
+          "source_of_truth": true
+        },
+        {
+          "name": "Online banking",
+          "purpose": "Friday payment run",
+          "source_of_truth": false
+        }
+      ],
+      "steps": [
+        {
+          "id": "P04.S01",
+          "title": "Check the documents are complete",
+          "detail": "There must be an invoice and an approved purchase order with the same amount and supplier name.",
+          "why": "Paying without a purchase order means paying for something the company did not order.",
+          "branch_question": "Is there an invoice and an approved purchase order?",
+          "branches": [
+            {
+              "label": "Complete",
+              "goto": "P04.S02"
+            },
+            {
+              "label": "Something is missing",
+              "goto": "P04.S06"
+            }
+          ],
+          "who_can_do": "ai_with_approval",
+          "who_can_do_confirmed": true,
+          "status": "validated"
+        },
+        {
+          "id": "P04.S02",
+          "title": "Check for a new supplier or changed bank account",
+          "detail": "Compare the bank account on the invoice with the supplier record in the accounting system.",
+          "why": "Fraudsters send fake emails asking to change bank details.",
+          "branch_question": "Is this a new supplier, or is the bank account different from the record?",
+          "branches": [
+            {
+              "label": "Yes",
+              "goto": "P04.S03"
+            },
+            {
+              "label": "No",
+              "goto": "P04.S04"
+            }
+          ],
+          "risk": "high",
+          "who_can_do": "ai_with_approval",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P04.S03",
+          "title": "Call to confirm, using the number on the contract",
+          "detail": "Call the number in the contract or supplier record, never the one in the email. Note who confirmed and when.",
+          "why": "A number in a fake email leads to the fraudster.",
+          "risk": "high",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "validated",
+          "next": "P04.S04"
+        },
+        {
+          "id": "P04.S04",
+          "title": "Check the amount to choose the approver",
+          "detail": "Use the invoice total including tax.",
+          "why": "Approval limits depend on the amount.",
+          "branch_question": "Is the total over $5,000?",
+          "branches": [
+            {
+              "label": "Up to $5,000",
+              "goto": "P04.S05"
+            },
+            {
+              "label": "Over $5,000",
+              "goto": "P04.S07"
+            }
+          ],
+          "who_can_do": "ai_alone",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P04.S05",
+          "title": "Chief accountant approves; add to the Friday run",
+          "detail": "Send the documents to the chief accountant to sign, then schedule the payment in the accounting system.",
+          "why": "One run a week means fewer mistakes.",
+          "check": "Signed before it is scheduled.",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided",
+          "next": "end"
+        },
+        {
+          "id": "P04.S07",
+          "title": "General manager approves; add to the Friday run",
+          "detail": "Send it through the chief accountant to the general manager. If it is not signed by Thursday, move it to the next run.",
+          "why": "Large amounts need a director to see them.",
+          "check": "Signed by the general manager before it is scheduled.",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided",
+          "next": "end"
+        },
+        {
+          "id": "P04.S06",
+          "title": "Return it with a list of what is missing",
+          "detail": "Reply to the requester and list the missing documents one by one.",
+          "why": "They can fix everything in one go.",
+          "who_can_do": "ai_with_approval",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        }
+      ],
+      "rules": [
+        {
+          "id": "R-005",
+          "text": "Every payment needs an invoice and an approved purchase order.",
+          "why": "Never pay for something the company did not order.",
+          "status": "validated"
+        },
+        {
+          "id": "R-006",
+          "text": "For a new supplier or a changed bank account, confirm by calling the number on the contract, never the one in the email.",
+          "why": "Stops fake \"change of bank details\" emails.",
+          "status": "validated"
+        },
+        {
+          "id": "R-007",
+          "text": "Over $5,000 needs the general manager's approval.",
+          "why": "The chief accountant can approve up to $5,000.",
+          "status": "employee_provided"
+        },
+        {
+          "id": "R-008",
+          "text": "Up to $200 can be paid from petty cash without waiting for the Friday run.",
+          "why": "Summarised from \"small things we just pay in cash\".",
+          "status": "ai_inferred",
+          "source": "AI summary of the interview; not confirmed yet"
+        }
+      ],
+      "scenarios": [
+        {
+          "id": "Q-005",
+          "situation": "A regular supplier emails new bank details and a number to call back.",
+          "question": "How do you confirm?",
+          "options": [
+            "Call the number in the email",
+            "Call the number on the contract or supplier record",
+            "Reply to the email and ask"
+          ],
+          "answer": 1,
+          "explanation": "R-006: the email may be fake, and so may its phone number and reply address.",
+          "refs": [
+            "R-006",
+            "P04.S03"
+          ]
+        },
+        {
+          "id": "Q-006",
+          "situation": "An invoice for $6,200 including tax, documents complete, existing supplier.",
+          "question": "Who approves it?",
+          "options": [
+            "The chief accountant",
+            "The general manager",
+            "No one; schedule it"
+          ],
+          "answer": 1,
+          "explanation": "R-007: over $5,000 needs the general manager.",
+          "refs": [
+            "R-007",
+            "P04.S07"
+          ]
+        }
+      ],
+      "status": "employee_provided",
+      "diagram_svg": "<svg viewBox=\"0 0 730 600\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-labelledby=\"p04-tree-title p04-tree-desc\" style=\"min-width:730px\"><title id=\"p04-tree-title\">Approve a supplier payment</title><desc id=\"p04-tree-desc\">Decision tree: return incomplete requests; for a new supplier or new bank account, call the number on the contract; over $5,000 the general manager approves, otherwise the chief accountant; then add it to the Friday payment run.</desc><defs><marker id=\"p04-tree-arrow\" markerWidth=\"8\" markerHeight=\"6\" refX=\"7\" refY=\"3\" orient=\"auto\"><polygon points=\"0 0, 8 3, 0 6\" fill=\"#5f5f5c\"/></marker><marker id=\"p04-tree-arrow-accent\" markerWidth=\"8\" markerHeight=\"6\" refX=\"7\" refY=\"3\" orient=\"auto\"><polygon points=\"0 0, 8 3, 0 6\" fill=\"#bf4520\"/></marker></defs><rect width=\"100%\" height=\"100%\" fill=\"#ffffff\"/><path d=\"M330,112 V158\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p04-tree-arrow)\"/><path d=\"M330,242 V288\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p04-tree-arrow)\"/><path d=\"M330,372 V420\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p04-tree-arrow)\"/><path d=\"M330,468 V520\" fill=\"none\" stroke=\"#bf4520\" stroke-width=\"1.4\" marker-end=\"url(#p04-tree-arrow-accent)\"/><path d=\"M435,70 H508\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p04-tree-arrow)\"/><path d=\"M435,200 H508\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p04-tree-arrow)\"/><path d=\"M610,224 V322 Q610,330 602,330 H437\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p04-tree-arrow)\"/><path d=\"M225,330 H123 Q115,330 115,338 V418\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p04-tree-arrow)\"/><path d=\"M115,468 V540 Q115,548 123,548 H228\" fill=\"none\" stroke=\"#bf4520\" stroke-width=\"1.4\" marker-end=\"url(#p04-tree-arrow-accent)\"/><rect x=\"440.5\" y=\"51\" width=\"63\" height=\"16\" rx=\"3\" fill=\"#ffffff\"/><text x=\"472\" y=\"63\" fill=\"#5f5f5c\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Missing</text><rect x=\"327\" y=\"126\" width=\"70\" height=\"16\" rx=\"3\" fill=\"#ffffff\"/><text x=\"362\" y=\"138\" fill=\"#5f5f5c\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Complete</text><rect x=\"452\" y=\"181\" width=\"40\" height=\"16\" rx=\"3\" fill=\"#ffffff\"/><text x=\"472\" y=\"193\" fill=\"#5f5f5c\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Yes</text><rect x=\"332\" y=\"256\" width=\"40\" height=\"16\" rx=\"3\" fill=\"#ffffff\"/><text x=\"352\" y=\"268\" fill=\"#5f5f5c\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">No</text><rect x=\"151\" y=\"311\" width=\"42\" height=\"16\" rx=\"3\" fill=\"#ffffff\"/><text x=\"172\" y=\"323\" fill=\"#5f5f5c\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Over</text><rect x=\"335.5\" y=\"387\" width=\"49\" height=\"16\" rx=\"3\" fill=\"#ffffff\"/><text x=\"360\" y=\"399\" fill=\"#5f5f5c\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Up to</text><polygon points=\"330,28 435,70 330,112 225,70\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"330\" y=\"66\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Documents</text><text x=\"330\" y=\"82\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">complete?</text><polygon points=\"330,158 435,200 330,242 225,200\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"330\" y=\"196\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">New supplier or</text><text x=\"330\" y=\"212\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">new bank account?</text><polygon points=\"330,288 435,330 330,372 225,330\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"330\" y=\"326\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Over</text><text x=\"330\" y=\"342\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">$5,000?</text><rect x=\"510\" y=\"46\" width=\"200\" height=\"48\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"610\" y=\"66\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Return to requester</text><text x=\"610\" y=\"82\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">List what is missing</text><rect x=\"510\" y=\"176\" width=\"200\" height=\"48\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"610\" y=\"196\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Call to confirm</text><text x=\"610\" y=\"212\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Number on the contract</text><rect x=\"20\" y=\"420\" width=\"190\" height=\"48\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"115\" y=\"440\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">General manager</text><text x=\"115\" y=\"456\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">approves</text><rect x=\"230\" y=\"420\" width=\"200\" height=\"48\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"330\" y=\"440\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Chief accountant</text><text x=\"330\" y=\"456\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">approves</text><rect x=\"230\" y=\"520\" width=\"200\" height=\"56\" rx=\"6\" fill=\"rgba(191,69,32,0.08)\" stroke=\"#bf4520\" stroke-width=\"1\"/><text x=\"330\" y=\"544\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Add to Friday run</text><text x=\"330\" y=\"560\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Done</text></svg>"
+    },
+    {
+      "id": "P05",
+      "slug": "online-banking-problems",
+      "name": "When online banking goes wrong",
+      "summary": "Common problems with online banking, their causes and what to do.",
+      "trigger": "Online banking does not work as usual",
+      "frequency": "When it happens",
+      "complete": true,
+      "view": "troubleshoot",
+      "view_confirmed": true,
+      "coverage": {
+        "trigger": "done",
+        "steps": "done",
+        "inputs_outputs": "done",
+        "systems": "done",
+        "people": "done",
+        "decisions": "done",
+        "exceptions": "done",
+        "checks": "done",
+        "failures": "done",
+        "deadlines": "skipped",
+        "risk": "done",
+        "wish_known": "done"
+      },
+      "people": [
+        {
+          "name_or_role": "Chief accountant",
+          "involvement": "Administers the company's online banking"
+        },
+        {
+          "name_or_role": "Bank helpline",
+          "involvement": "Traces stuck transfers"
+        }
+      ],
+      "systems": [
+        {
+          "name": "Online banking",
+          "purpose": "Statements and transfers",
+          "source_of_truth": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "P05.S01",
+          "title": "Note the message and the time",
+          "detail": "A screenshot is fine, but cover account numbers and amounts before you pass it on.",
+          "why": "The bank and the chief accountant need the exact message.",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        }
+      ],
+      "troubleshooting": [
+        {
+          "id": "T-002",
+          "symptom": "No one-time code arrives on the phone",
+          "cause": "The phone number on the user is still the previous officer's",
+          "fix": "Ask the chief accountant to have the bank change the number. Never ask for or use someone else's code.",
+          "status": "validated"
+        },
+        {
+          "id": "T-003",
+          "symptom": "The downloaded statement is empty",
+          "cause": "The bank has not closed the day yet (before 10:00 on the 1st)",
+          "fix": "Wait until after 10:00 and download again.",
+          "status": "employee_provided"
+        },
+        {
+          "id": "T-004",
+          "symptom": "A transfer shows \"pending\" for more than an hour",
+          "cause": "It went to another bank after the cut-off time",
+          "fix": "Do not send it again. Check the next business morning; if it is still pending, call the bank helpline.",
+          "status": "employee_provided"
+        },
+        {
+          "id": "T-005",
+          "symptom": "Cannot log in: the account is locked",
+          "cause": "Wrong password more than 3 times",
+          "fix": "The chief accountant unlocks it on the admin page.",
+          "status": "ai_inferred"
+        }
+      ],
+      "scenarios": [
+        {
+          "id": "Q-007",
+          "situation": "No code arrives. A colleague offers to receive it on their phone instead.",
+          "question": "What do you do?",
+          "options": [
+            "Accept, to get the job done on time",
+            "Decline, and ask the chief accountant to change the number",
+            "Keep requesting a new code until one arrives"
+          ],
+          "answer": 1,
+          "explanation": "T-002: a one-time code belongs to one person only. The real cause is the old phone number.",
+          "refs": [
+            "T-002"
+          ]
+        }
+      ],
+      "status": "employee_provided",
+      "diagram_svg": "<svg viewBox=\"0 0 760 392\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-labelledby=\"p05-fix-title p05-fix-desc\" style=\"min-width:760px\"><title id=\"p05-fix-title\">When online banking goes wrong</title><desc id=\"p05-fix-desc\">Symptom, cause and fix for four problems: no one-time code, an empty statement file, a transfer stuck as pending, and a locked account. The last row still needs confirmation.</desc><defs><marker id=\"p05-fix-arrow\" markerWidth=\"8\" markerHeight=\"6\" refX=\"7\" refY=\"3\" orient=\"auto\"><polygon points=\"0 0, 8 3, 0 6\" fill=\"#5f5f5c\"/></marker><marker id=\"p05-fix-arrow-accent\" markerWidth=\"8\" markerHeight=\"6\" refX=\"7\" refY=\"3\" orient=\"auto\"><polygon points=\"0 0, 8 3, 0 6\" fill=\"#bf4520\"/></marker></defs><rect width=\"100%\" height=\"100%\" fill=\"#ffffff\"/><text x=\"32\" y=\"34\" fill=\"#5f5f5c\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"start\">What you see</text><text x=\"276\" y=\"34\" fill=\"#5f5f5c\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"start\">Usual cause</text><text x=\"520\" y=\"34\" fill=\"#5f5f5c\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"start\">What to do</text><rect x=\"24\" y=\"48\" width=\"200\" height=\"60\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"124\" y=\"82\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">No one-time code arrives</text><path d=\"M224,78 H266\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p05-fix-arrow)\"/><rect x=\"268\" y=\"48\" width=\"200\" height=\"60\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"368\" y=\"74\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Phone number still</text><text x=\"368\" y=\"90\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">belongs to the last officer</text><path d=\"M468,78 H510\" fill=\"none\" stroke=\"#bf4520\" stroke-width=\"1.4\" marker-end=\"url(#p05-fix-arrow-accent)\"/><rect x=\"512\" y=\"48\" width=\"224\" height=\"60\" rx=\"6\" fill=\"rgba(191,69,32,0.08)\" stroke=\"#bf4520\" stroke-width=\"1\"/><text x=\"624\" y=\"74\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Chief accountant changes it</text><text x=\"624\" y=\"90\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Never borrow a code</text><rect x=\"24\" y=\"124\" width=\"200\" height=\"60\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"124\" y=\"158\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Statement file is empty</text><path d=\"M224,154 H266\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p05-fix-arrow)\"/><rect x=\"268\" y=\"124\" width=\"200\" height=\"60\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"368\" y=\"150\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Bank has not closed</text><text x=\"368\" y=\"166\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">the day (before 10:00)</text><path d=\"M468,154 H510\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p05-fix-arrow)\"/><rect x=\"512\" y=\"124\" width=\"224\" height=\"60\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"624\" y=\"150\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Wait until after 10:00</text><text x=\"624\" y=\"166\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">and download again</text><rect x=\"24\" y=\"200\" width=\"200\" height=\"60\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"124\" y=\"226\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Transfer &quot;pending&quot;</text><text x=\"124\" y=\"242\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">for over an hour</text><path d=\"M224,230 H266\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p05-fix-arrow)\"/><rect x=\"268\" y=\"200\" width=\"200\" height=\"60\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"368\" y=\"226\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Sent to another bank</text><text x=\"368\" y=\"242\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">after the cut-off</text><path d=\"M468,230 H510\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p05-fix-arrow)\"/><rect x=\"512\" y=\"200\" width=\"224\" height=\"60\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"624\" y=\"226\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Do not send it again</text><text x=\"624\" y=\"242\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Check next business day</text><rect x=\"24\" y=\"276\" width=\"200\" height=\"60\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\" stroke-dasharray=\"4 3\"/><text x=\"124\" y=\"310\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Account locked</text><path d=\"M224,306 H266\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p05-fix-arrow)\"/><rect x=\"268\" y=\"276\" width=\"200\" height=\"60\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\" stroke-dasharray=\"4 3\"/><text x=\"368\" y=\"302\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Wrong password</text><text x=\"368\" y=\"318\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">more than 3 times</text><path d=\"M468,306 H510\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p05-fix-arrow)\"/><rect x=\"512\" y=\"276\" width=\"224\" height=\"60\" rx=\"6\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\" stroke-dasharray=\"4 3\"/><text x=\"624\" y=\"302\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Chief accountant</text><text x=\"624\" y=\"318\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">unlocks it</text><rect x=\"24\" y=\"360\" width=\"28\" height=\"16\" rx=\"4\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-dasharray=\"4 3\"/><text x=\"60\" y=\"372\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"start\">Dashed = the AI worked this out; still needs confirmation (OQ-004)</text></svg>"
+    },
+    {
+      "id": "P06",
+      "slug": "issued-cheques",
+      "name": "Track issued cheques",
+      "summary": "Follow every cheque from writing to clearing, chase the ones not banked, and void the ones that expire.",
+      "trigger": "A cheque is written; check the statement every Monday",
+      "frequency": "Weekly",
+      "complete": true,
+      "view": "steps",
+      "view_confirmed": true,
+      "coverage": {
+        "trigger": "done",
+        "steps": "done",
+        "inputs_outputs": "done",
+        "systems": "done",
+        "people": "done",
+        "decisions": "done",
+        "exceptions": "done",
+        "checks": "done",
+        "failures": "done",
+        "deadlines": "done",
+        "risk": "done",
+        "wish_known": "skipped"
+      },
+      "people": [
+        {
+          "name_or_role": "Two authorised signers",
+          "involvement": "Sign every cheque"
+        },
+        {
+          "name_or_role": "Payee",
+          "involvement": "Banks the cheque"
+        }
+      ],
+      "systems": [
+        {
+          "name": "Cheque register (spreadsheet)",
+          "purpose": "One row per cheque and its status",
+          "source_of_truth": true
+        },
+        {
+          "name": "Online banking",
+          "purpose": "See which cheques were presented",
+          "source_of_truth": false
+        }
+      ],
+      "steps": [
+        {
+          "id": "P06.S01",
+          "title": "Record the cheque in the register",
+          "detail": "Cheque number, payee, amount and date, status \"Written\".",
+          "why": "Every open cheque explains part of a reconciliation difference.",
+          "who_can_do": "ai_with_approval",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P06.S02",
+          "title": "Get two signatures",
+          "detail": "Both authorised signers sign; set the status to \"Signed\".",
+          "why": "One signature is not valid for the company's bank.",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "validated"
+        },
+        {
+          "id": "P06.S03",
+          "title": "Hand it over and note the date",
+          "detail": "Give it to the payee against a signature, or post it; set the status to \"Handed over\".",
+          "why": "The 30-day and 6-month clocks start here.",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P06.S04",
+          "title": "Check the statement every Monday",
+          "detail": "Look for the cheque number in online banking.",
+          "why": "Tells you which cheques have cleared.",
+          "branch_question": "Has the cheque been presented?",
+          "branches": [
+            {
+              "label": "Presented",
+              "goto": "P06.S05"
+            },
+            {
+              "label": "Not after 30 days",
+              "goto": "P06.S06"
+            }
+          ],
+          "who_can_do": "ai_with_approval",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P06.S06",
+          "title": "Remind the payee",
+          "detail": "Email the payee; set the status to \"Overdue\".",
+          "why": "Old cheques keep the reconciliation open.",
+          "branch_question": "What happened next?",
+          "branches": [
+            {
+              "label": "They banked it",
+              "goto": "P06.S05"
+            },
+            {
+              "label": "Still not after 6 months",
+              "goto": "P06.S07"
+            }
+          ],
+          "who_can_do": "ai_with_approval",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        },
+        {
+          "id": "P06.S07",
+          "title": "Void it; reissue only if still owed",
+          "detail": "Mark it \"Expired\", then \"Voided\" in the register. Ask the chief accountant before writing a new cheque.",
+          "why": "An expired cheque must never be paid twice.",
+          "risk": "high",
+          "who_can_do": "human_only",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided",
+          "next": "end"
+        },
+        {
+          "id": "P06.S05",
+          "title": "Mark it as cleared",
+          "detail": "Set the status to \"Cleared\" with the date it appeared on the statement.",
+          "why": "Closed cheques drop out of the reconciliation.",
+          "who_can_do": "ai_with_approval",
+          "who_can_do_confirmed": true,
+          "status": "employee_provided"
+        }
+      ],
+      "rules": [
+        {
+          "id": "R-009",
+          "text": "Every cheque needs two authorised signatures.",
+          "why": "The bank rejects cheques with one signature.",
+          "status": "validated"
+        },
+        {
+          "id": "R-010",
+          "text": "A cheque not presented within 6 months is void. Never write a replacement before voiding the first.",
+          "why": "Prevents paying the same bill twice.",
+          "status": "employee_provided"
+        }
+      ],
+      "scenarios": [
+        {
+          "id": "Q-008",
+          "situation": "A supplier says they lost a cheque you gave them 7 months ago and asks for a new one.",
+          "question": "What do you do first?",
+          "options": [
+            "Write a new cheque straight away",
+            "Void the old one in the register, then ask the chief accountant about reissuing",
+            "Tell them it is too late"
+          ],
+          "answer": 1,
+          "explanation": "R-010: void the first cheque before any replacement, so it can never be paid twice.",
+          "refs": [
+            "R-010",
+            "P06.S07"
+          ]
+        }
+      ],
+      "status": "employee_provided",
+      "diagram_svg": "<svg viewBox=\"0 0 730 270\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-labelledby=\"p06-state-title p06-state-desc\" style=\"min-width:730px\"><title id=\"p06-state-title\">The life of an issued cheque</title><desc id=\"p06-state-desc\">State diagram: a cheque is written, signed and handed over, and is cleared once presented. After 30 days it is overdue and the payee is reminded. After 6 months it expires and is voided; if the money is still owed, a new cheque is written.</desc><defs><marker id=\"p06-state-arrow\" markerWidth=\"8\" markerHeight=\"6\" refX=\"7\" refY=\"3\" orient=\"auto\"><polygon points=\"0 0, 8 3, 0 6\" fill=\"#5f5f5c\"/></marker><marker id=\"p06-state-arrow-accent\" markerWidth=\"8\" markerHeight=\"6\" refX=\"7\" refY=\"3\" orient=\"auto\"><polygon points=\"0 0, 8 3, 0 6\" fill=\"#bf4520\"/></marker></defs><rect width=\"100%\" height=\"100%\" fill=\"#ffffff\"/><circle cx=\"32\" cy=\"64\" r=\"8\" fill=\"#0b0b0b\"/><path d=\"M40,64 H62\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p06-state-arrow)\"/><path d=\"M188,64 H220\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p06-state-arrow)\"/><path d=\"M346,64 H380\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p06-state-arrow)\"/><path d=\"M506,64 H578\" fill=\"none\" stroke=\"#bf4520\" stroke-width=\"1.4\" marker-end=\"url(#p06-state-arrow-accent)\"/><path d=\"M444,88 V156\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p06-state-arrow)\"/><path d=\"M506,182 H600 Q642,182 642,140 V90\" fill=\"none\" stroke=\"#bf4520\" stroke-width=\"1.4\" marker-end=\"url(#p06-state-arrow-accent)\"/><path d=\"M382,182 H348\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p06-state-arrow)\"/><path d=\"M222,182 H190\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" marker-end=\"url(#p06-state-arrow)\"/><path d=\"M126,158 V90\" fill=\"none\" stroke=\"#5f5f5c\" stroke-width=\"1.2\" stroke-dasharray=\"4 3\" marker-end=\"url(#p06-state-arrow)\"/><rect x=\"503.5\" y=\"45\" width=\"77\" height=\"16\" rx=\"3\" fill=\"#ffffff\"/><text x=\"542\" y=\"57\" fill=\"#bf4520\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Presented</text><rect x=\"412.5\" y=\"115\" width=\"63\" height=\"16\" rx=\"3\" fill=\"#ffffff\"/><text x=\"444\" y=\"127\" fill=\"#5f5f5c\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">30 days</text><rect x=\"531.5\" y=\"163\" width=\"77\" height=\"16\" rx=\"3\" fill=\"#ffffff\"/><text x=\"570\" y=\"175\" fill=\"#bf4520\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Presented</text><rect x=\"339.5\" y=\"163\" width=\"49\" height=\"16\" rx=\"3\" fill=\"#ffffff\"/><text x=\"364\" y=\"175\" fill=\"#5f5f5c\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">6 mo.</text><rect x=\"73.5\" y=\"115\" width=\"105\" height=\"16\" rx=\"3\" fill=\"#ffffff\"/><text x=\"126\" y=\"127\" fill=\"#5f5f5c\" font-size=\"11\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">If still owed</text><rect x=\"64\" y=\"40\" width=\"124\" height=\"48\" rx=\"24\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"126\" y=\"60\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Written</text><text x=\"126\" y=\"76\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">In the register</text><rect x=\"222\" y=\"40\" width=\"124\" height=\"48\" rx=\"24\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"284\" y=\"60\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Signed</text><text x=\"284\" y=\"76\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Two signatures</text><rect x=\"382\" y=\"40\" width=\"124\" height=\"48\" rx=\"24\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"444\" y=\"60\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Handed over</text><text x=\"444\" y=\"76\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Date noted</text><rect x=\"580\" y=\"40\" width=\"124\" height=\"48\" rx=\"24\" fill=\"rgba(191,69,32,0.08)\" stroke=\"#bf4520\" stroke-width=\"1\"/><text x=\"642\" y=\"60\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Cleared</text><text x=\"642\" y=\"76\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">On the statement</text><rect x=\"382\" y=\"158\" width=\"124\" height=\"48\" rx=\"24\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"444\" y=\"178\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Overdue</text><text x=\"444\" y=\"194\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Remind the payee</text><rect x=\"222\" y=\"158\" width=\"124\" height=\"48\" rx=\"24\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"284\" y=\"178\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Expired</text><text x=\"284\" y=\"194\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Void it</text><rect x=\"64\" y=\"158\" width=\"124\" height=\"48\" rx=\"24\" fill=\"#ffffff\" stroke=\"#0b0b0b\" stroke-width=\"1\"/><text x=\"126\" y=\"178\" fill=\"#0b0b0b\" font-size=\"12\" font-weight=\"500\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Voided</text><text x=\"126\" y=\"194\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"middle\">Not payable</text><text x=\"24\" y=\"250\" fill=\"#5f5f5c\" font-size=\"11\" font-family=\"'Poppins','Prompt',sans-serif\" text-anchor=\"start\">Rounded boxes are the states a cheque can be in; arrows are what moves it on.</text></svg>"
     }
   ],
   "open_questions": [
     {
       "id": "OQ-001",
-      "question": "เกณฑ์ยอดต่างที่บันทึกเป็นค่าธรรมเนียมได้เลยคือเท่าไร (100 บาทถูกไหม)",
-      "who_to_ask": "หัวหน้าบัญชี",
+      "question": "What difference can be booked as a bank fee without searching ($5 — is that right)?",
+      "who_to_ask": "Chief accountant",
       "refs": [
         "R-001"
       ],
@@ -390,31 +1163,69 @@
     },
     {
       "id": "OQ-002",
-      "question": "ใบกำกับภาษีที่มาช้าเกินเดือน ต้องทำอย่างไร",
-      "who_to_ask": "สำนักงานบัญชี",
+      "question": "What do we do with a VAT invoice that arrives after the month is sent?",
+      "who_to_ask": "External accountants",
       "refs": [
         "P02"
       ],
       "origin": "skipped"
+    },
+    {
+      "id": "OQ-003",
+      "question": "Can amounts up to $200 really be paid from petty cash?",
+      "who_to_ask": "Chief accountant",
+      "refs": [
+        "R-008"
+      ],
+      "origin": "inferred"
+    },
+    {
+      "id": "OQ-004",
+      "question": "When online banking is locked, can the chief accountant unlock it, or must the bank do it?",
+      "who_to_ask": "Chief accountant",
+      "refs": [
+        "T-005"
+      ],
+      "origin": "inferred"
     }
   ],
   "glossary": [
     {
-      "term": "recon",
-      "meaning": "ไฟล์กระทบยอดธนาคารประจำเดือน"
+      "term": "Reconciliation file",
+      "meaning": "The monthly spreadsheet that matches the bank balance to the books"
     },
     {
-      "term": "statement",
-      "meaning": "รายการเดินบัญชีที่ธนาคารออกให้"
+      "term": "Statement",
+      "meaning": "The list of account transactions issued by the bank"
+    },
+    {
+      "term": "Petty cash",
+      "meaning": "A small amount of cash in the safe for minor expenses, topped up at month end"
+    },
+    {
+      "term": "VAT invoice",
+      "meaning": "A supplier invoice showing VAT, needed to claim purchase VAT"
+    },
+    {
+      "term": "Payment run",
+      "meaning": "Friday, when all approved supplier payments are sent together"
+    },
+    {
+      "term": "One-time code",
+      "meaning": "The code the bank sends to a phone to approve a login or transfer; never shared"
+    },
+    {
+      "term": "Cheque register",
+      "meaning": "The spreadsheet with one row per issued cheque and its status"
     }
   ],
   "images": {
     "P01-S01.png": {
-      "caption": "หน้าดาวน์โหลด statement (ภาพตัวอย่าง)",
+      "caption": "Statement download page (fictional example screen)",
       "sensitive_checked": true
     },
     "P01-S02.png": {
-      "caption": "หน้ารายงานเงินสด (ภาพตัวอย่าง)",
+      "caption": "Cash report page (fictional example screen)",
       "sensitive_checked": true
     }
   },
@@ -422,15 +1233,21 @@
     {
       "date": "2026-11-20",
       "version": 1,
-      "change": "เริ่มสัมภาษณ์ รู้จักงาน 3 งาน",
+      "change": "First interview; listed seven tasks",
       "by": "giver"
     },
     {
       "date": "2026-11-23",
       "version": 5,
-      "change": "เก็บ P01 ครบ เริ่ม P02",
+      "change": "P01 complete, P02 started",
+      "by": "giver"
+    },
+    {
+      "date": "2026-11-24",
+      "version": 6,
+      "change": "P03–P06 complete; the AI drew a diagram for every task",
       "by": "giver"
     }
   ],
-  "handover_message": "ส่งไฟล์ส่งต่องานบัญชีเงินสดให้นะครับ วิธีที่ง่ายที่สุด: แนบไฟล์ zip นี้ในแชต AI (ถ้าแนบ zip ไม่ได้ ให้แนบ PACK-FOR-AI.md) แล้วพิมพ์ว่า \"สอนงานจาก pack นี้\" AI จะเล่าภาพรวมกับเรื่องด่วนให้ก่อน แล้วส่งไฟล์ START-HERE.html ให้พร้อมพาทำทีละขั้น ถ้าไม่ใช้ AI เปิด START-HERE.html ในเบราว์เซอร์ได้เลย เรื่องที่ยังไม่มีคำตอบอยู่ใน open-questions.md (ไฟล์นี้เป็นตัวอย่างสมมติ)"
+  "handover_message": "Here is the knowledge pack for cash and bank accounting. Easiest way to use it: attach the zip to an AI chat (or just PACK-FOR-AI.md if a zip is not accepted) and say \"teach me from this pack\". Without an AI, open START-HERE.html in a browser. Questions still open are in open-questions.md. (This is a fictional example.)"
 }

@@ -324,7 +324,7 @@ button.shot{display:block;width:100%;padding:0;cursor:zoom-in;text-align:left}
     deadlines: 'Deadlines', inprog: 'Work in progress', waiting: 'People waiting on us', watch: 'Watch list', access: 'Accounts and access (no passwords)',
     days: function (n) { return n < 0 ? Math.abs(n) + ' days overdue' : n === 0 ? 'today' : n === 1 ? 'tomorrow' : 'in ' + n + ' days'; },
     pending: 'in progress', waitingLbl: 'waiting', expired: 'This urgent list is old (valid until', expired2: '). Check with your manager that it is still current.',
-    tasks: 'Tasks in this role', tasksSub: 'by priority', steps: 'steps', learned: 'learned', walk: 'Walk me through', overview: 'Overview',
+    tasks: 'Tasks in this role', tasksSub: 'by priority', steps: 'steps', oneStep: 'step', learned: 'learned', walk: 'Walk me through', overview: 'Overview',
     notCaptured: 'Details for this task were not captured', incomplete: 'Not fully captured',
     aiTitle: 'Learn with an AI', aiText: 'Open any AI chat, attach PACK-FOR-AI.md (in the same folder as this page) and paste this prompt',
     aiPrompt: 'Teach me from this pack. Start with the urgent items if there are any, then walk me through the tasks step by step.', copy: 'Copy prompt', copied: 'Copied',
@@ -643,7 +643,7 @@ button.shot{display:block;width:100%;padding:0;cursor:zoom-in;text-align:left}
     return el('article', { cls: 'card' }, [
       el('span', { cls: 'vlabel', text: T.vLabel[v] }),
       el('h3', { text: p.name || t.name || '' }),
-      el('div', { cls: 'meta', text: [p.frequency || t.frequency, n ? n + ' ' + T.steps : '', p.complete ? '' : T.incomplete].filter(Boolean).join(' · ') }),
+      el('div', { cls: 'meta', text: [p.frequency || t.frequency, n ? n + ' ' + (n === 1 && T.oneStep ? T.oneStep : T.steps) : '', p.complete ? '' : T.incomplete].filter(Boolean).join(' · ') }),
       n ? el('div', { cls: 'bar', role: 'progressbar', 'aria-valuemin': '0', 'aria-valuemax': String(n), 'aria-valuenow': String(done) }, [el('i', { style: 'width:' + Math.round(done / n * 100) + '%' })]) : null,
       n ? el('div', { cls: 'meta', text: T.learned + ' ' + done + '/' + n }) : null,
       el('div', { cls: 'acts' }, [
