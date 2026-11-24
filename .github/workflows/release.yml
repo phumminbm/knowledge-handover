@@ -68,9 +68,21 @@ jobs:
         with:
           name: dist
           path: dist/
+      # A release created in the GitHub web page already has its notes; generating them
+      # again would append a second copy. Generate only when the tag was pushed on its own.
+      - name: Check whether the release already exists
+        id: existing
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
       - uses: softprops/action-gh-release@8a0cd651e5b2365bd640854a3fa5dfc70e4875f3 # v3.0.4
         with:
-          generate_release_notes: true
+          generate_release_notes: ${{ steps.existing.outputs.exists != 'true' }}
           files: |
             dist/knowledge-handover.zip
             dist/PROMPT.md

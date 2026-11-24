@@ -43,9 +43,9 @@ npx playwright install chromium
 
 1. Move the `Unreleased` notes in `CHANGELOG.md` under a new version heading.
 2. Set the same version in `.claude-plugin/plugin.json`, `.codex-plugin/plugin.json` and `package.json`.
-3. Merge to `main`, then tag: `git tag v0.2.0 && git push origin v0.2.0`.
+3. Merge to `main`, then either tag (`git tag v0.2.0 && git push origin v0.2.0`) or, on GitHub, open **Releases › Draft a new release**, type the new tag, target `main`, press **Generate release notes** and publish.
 
-The Release workflow checks that the tag matches the version, builds the files and publishes the GitHub Release. GitHub Pages (the Pack Builder and the example Pack) is updated from `main` on every merge.
+The Release workflow checks that the tag matches the version, builds the files and attaches them to the GitHub Release (writing release notes only if the release has none yet). GitHub Pages (the Pack Builder and the example Pack) is updated from `main` on every merge.
 
 ## Code of conduct
 
