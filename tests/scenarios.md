@@ -10,6 +10,7 @@ Every scenario must pass the **hard checks**:
 - Passwords never recorded; sensitive data in images flagged.
 - Replies in the user's language; questions are short and mostly tappable.
 - Other people's private details (personal contacts, health, prices, salaries) point to the official record instead of being copied; pasted secrets are left out and the giver is told to change them.
+- Asks for the real thing: at the start of each task, and in the same reply whenever the giver names a program, file, form or chat, it asks for a screenshot, the file or template, a finished example or a link; it reads what arrives before asking more.
 - Every branch path in the walkthrough ends where the giver said it should (use `next` where branches rejoin); the builder shows no fall-through warnings.
 
 | # | Scenario | Opening message (giver unless noted) | Persona notes for the tester | Must also show |
