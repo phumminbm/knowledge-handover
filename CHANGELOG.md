@@ -6,6 +6,11 @@ All notable changes to this project are recorded here. The format follows
 
 ## [Unreleased]
 
+### Changed
+- READMEs: a one-line prompt that lets an AI which can run commands (Claude Code, Codex, Cursor, Gemini CLI) install the skill and start right away, with a note that web and app chats still need the zip upload.
+- READMEs: the starting examples now lead with manuals and training, and include one for an AI assistant; handing over before leaving is one example among them.
+- READMEs: "Why" says up front that a Pack can be the knowledge base for an AI assistant, and links to "Use your Pack with your own AI".
+
 ## [0.3.0] - 2026-11-24
 
 ### Added
