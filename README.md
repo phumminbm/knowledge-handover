@@ -42,9 +42,11 @@ Say something like this, in any language:
 >
 > *"ช่วยทำคู่มืองานใบเสนอราคาให้ทีมหน่อย"*
 >
-> *"I'm leaving next month, help me hand over my work."*
->
 > *"Write down how I do the month-end close, I have screenshots."*
+>
+> *"Capture how I inspect incoming goods so I can train the team."*
+>
+> *"I'm leaving next month, help me hand over my work."*
 
 The AI gets to know the work, asks you to send screenshots, the files you work in, a finished example or a link whenever you mention one (and reads them, so it asks you less), asks about what you'd forget to write down (exceptions, deadlines, who to call), draws what it understood for you to check, and ends every session with a **save block**. Keep the save block, and paste it into a new chat to continue.
 
@@ -184,6 +186,16 @@ Download the same **[knowledge-handover.zip](https://github.com/phumminbm/knowle
 ### Any other AI chat (Gemini, free ChatGPT, Copilot chat, …)
 
 Download **[PROMPT.md](https://github.com/phumminbm/knowledge-handover/releases/latest/download/PROMPT.md)** and paste it at the start of the chat, or put it in a Gem, Project or custom instructions. The AI gives you save blocks, and you build the Pack in the [Pack Builder](https://phumminbm.github.io/knowledge-handover/).
+
+### Let your AI install it (Claude Code, Codex, Cursor, Gemini CLI and other tools that run commands)
+
+Tell the AI:
+
+```text
+Install the skill from https://github.com/phumminbm/knowledge-handover, then help me write a manual for [the task] for my team.
+```
+
+The AI runs the install commands below for you. If it asks you to start a new chat or session first, do that and type the second half of the sentence again. On claude.ai or ChatGPT in the browser or app, the AI cannot install skills itself; use the zip upload above.
 
 <details>
 <summary><b>Claude Code</b></summary>

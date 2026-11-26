@@ -42,9 +42,11 @@ Skill สำหรับ AI ที่สัมภาษณ์คนทำงา�
 >
 > *"ช่วยทำคู่มือออกใบกำกับภาษีในโปรแกรมให้คนใหม่ ฉันมีรูปหน้าจอ"*
 >
-> *"อีก 2 อาทิตย์จะลาออก ช่วยเก็บงานส่งต่อให้หน่อย"*
+> *"ช่วยเก็บวิธีตรวจรับสินค้าของฉันไว้ใช้เทรนทีมหน่อย"*
 >
-> *"I'm leaving next month, help me hand over my work."*
+> *"Help me write a manual of my job for the new staff joining next month."*
+>
+> *"อีก 2 อาทิตย์จะลาออก ช่วยเก็บงานส่งต่อให้หน่อย"*
 
 AI จะทำความรู้จักงานของคุณ ขอภาพหน้าจอ ไฟล์ที่ใช้ทำงาน ตัวอย่างงานที่ทำเสร็จ หรือลิงก์ ทุกครั้งที่คุณพูดถึง (แล้วอ่านเอง จะได้ถามคุณน้อยลง) ถามเรื่องที่มักลืมเขียน (กรณีพิเศษ กำหนดส่ง ต้องติดต่อใคร) วาดภาพสิ่งที่เข้าใจให้คุณตรวจ และให้ **save block** ทุกครั้งที่จบรอบ เก็บ save block ไว้ แล้ววางในแชตใหม่เมื่ออยากทำต่อ
 
@@ -184,6 +186,16 @@ knowledge-handover_KP-2569-0042_2026-11-30.zip
 ### แชต AI อื่น ๆ (Gemini, ChatGPT ฟรี, Copilot chat ฯลฯ)
 
 ดาวน์โหลด **[PROMPT.md](https://github.com/phumminbm/knowledge-handover/releases/latest/download/PROMPT.md)** แล้ววางไว้ตอนเริ่มแชต หรือใส่ไว้ใน Gem, Project หรือ custom instructions AI จะให้ save block มา แล้วคุณนำไปสร้าง Pack ใน [Pack Builder](https://phumminbm.github.io/knowledge-handover/)
+
+### ให้ AI ติดตั้งให้ (Claude Code, Codex, Cursor, Gemini CLI และโปรแกรมที่รันคำสั่งได้)
+
+พิมพ์บอก AI ว่า
+
+```text
+ติดตั้ง skill จาก https://github.com/phumminbm/knowledge-handover ให้หน่อย แล้วช่วยทำคู่มืองาน [ชื่องาน] ให้ทีม
+```
+
+AI จะรันคำสั่งติดตั้งด้านล่างให้เอง ถ้า AI บอกให้เปิดแชตหรือ session ใหม่ก่อน ให้เปิดใหม่แล้วพิมพ์ครึ่งหลังของประโยคอีกครั้ง ส่วน claude.ai และ ChatGPT บนเว็บหรือแอป AI ติดตั้ง skill เองไม่ได้ ให้ใช้วิธีอัปโหลด zip ด้านบน
 
 <details>
 <summary><b>Claude Code</b></summary>
